@@ -1,0 +1,18 @@
+<app-navbar></app-navbar>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
+
+<!-- Scroll to Top Button -->
+<button class="scroll-to-top" (click)="scrollToTop()" [class.show]="isScrollButtonVisible">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/919953656810" target="_blank" class="floating-btn whatsapp-btn" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Call Floating Button -->
+<a href="tel:9953656810" class="floating-btn call-btn" aria-label="Call Now">
+  <i class="fas fa-phone-alt"></i>
+</a>

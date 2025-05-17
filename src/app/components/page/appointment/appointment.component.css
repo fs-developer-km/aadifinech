@@ -1,0 +1,20 @@
+/* .img-half {
+    width: 45%;
+    max-width: 600px;
+}
+
+.video-box2 {
+    padding-left: 70px;
+}
+
+@media (max-width: 1200px) {
+    .img-half {
+        position: static !important;
+        width: 100%;
+        transform: none !important;
+        margin-bottom: 30px;
+    }
+    .video-box2 {
+        padding-left: 0;
+    }
+} */

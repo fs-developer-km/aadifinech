@@ -1,0 +1,152 @@
+<header class="th-header header-layout6">
+  <!-- Header Top Bar -->
+  <div class="header-top">
+    <div class="container">
+      <div class="row justify-content-center justify-content-md-between align-items-center gy-2">
+        <div class="col-auto d-none d-md-block">
+          <div class="header-links">
+            <ul>
+              <li><i class="fa-solid fa-phone"></i> <a href="tel:+919953656810">+91 99536 56810</a></li>
+              <li class="d-none d-xl-inline-block">
+                <i class="fa-solid fa-location-dot"></i> Office No. 301, i-THUM Building, Tower - A, Sector - 62, Noida
+              </li>
+              <li><i class="fa-solid fa-envelope"></i>
+                <a href="mailto:customer.care@aadifintech.com">customer.care&#64;aadifintech.com</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="header-links">
+            <ul>
+              <li class="d-none d-lg-inline-block">
+                <div class="dropdown-link">
+                  <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Language
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">German</a></li>
+                    <li><a href="#">French</a></li>
+                    <li><a href="#">Italian</a></li>
+                    <li><a href="#">Latvian</a></li>
+                    <li><a href="#">Spanish</a></li>
+                    <li><a href="#">Greek</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div class="header-social">
+                  <span class="social-title">Follow Us:</span>
+                  <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook-f"></i></a>
+                  <a href="https://www.twitter.com/"><i class="fa-brands fa-twitter"></i></a>
+                  <a href="https://www.linkedin.com/"><i class="fa-brands fa-linkedin-in"></i></a>
+                  <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Main Menu Area -->
+  <div class="sticky-wrapper">
+    <div class="sticky-active">
+      <div class="menu-area" style="background-image: url('/img/update1/bg/pattern_bg_2.png');">
+        <div class="container">
+          <div class="row align-items-center justify-content-between">
+            <!-- Logo -->
+            <div class="col-auto">
+              <div class="header-logo">
+                <a routerLink="/" style="text-decoration: none; color: #fff;">
+                  <h5 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;">AADI FINTECH</h5>
+                </a>
+              </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <div class="col-auto">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <!-- Desktop Menu -->
+                  <nav class="main-menu d-none d-lg-inline-block">
+                    <ul>
+                      <li><a routerLink="/">Home</a></li>
+                      <li class="menu-item-has-children">
+                        <a href="#">About</a>
+                        <ul class="sub-menu">
+                          <li><a routerLink="/about">About Us</a></li>
+                          <li><a routerLink="/founderprofile">Founder Profile</a></li>
+                        </ul>
+                      </li>
+                      <li class="menu-item-has-children">
+                        <a href="#">Services</a>
+                        <ul class="sub-menu">
+                          <li><a routerLink="/services/fund-raising">Fund Raising</a></li>
+                          <li><a routerLink="/services/investment-banking">Investment Banking</a></li>
+                          <li><a routerLink="/services/training-placement">Training Placement & Outsourcing</a></li>
+                          <li><a routerLink="/services/credit-rating">Credit Rating</a></li>
+                          <li><a routerLink="/services/tech-services">Tech Services</a></li>
+                          <li><a routerLink="/services/digital-marketing">Digital Marketing</a></li>
+                        </ul>
+                      </li>
+                      <li><a routerLink="/team">Team</a></li>
+                      <li><a routerLink="/partner">Become Partner</a></li>
+                      <li><a routerLink="/contact">Contact</a></li>
+                    </ul>
+                  </nav>
+
+                  <!-- Mobile Menu Button -->
+                  <button type="button" class="th-menu-toggle d-inline-block d-lg-none"
+                    [ngClass]="{'active': isMobileMenuOpen}" (click)="toggleMobileMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                  </button>
+                </div>
+
+                <!-- Header Buttons -->
+                <div class="col-auto d-none d-xl-block">
+                  <div class="header-button">
+                    <button type="button" class="simple-icon me-3 searchBoxToggler">
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <a routerLink="/contact" class="th-btn style2">
+                      Get A Quote <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="#" class="simple-icon style2 ms-3 sideMenuToggler">
+                      <i class="fa-solid fa-border-all"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" [ngClass]="{'active': isMobileMenuOpen}">
+          <ul>
+            <li><a routerLink="/" (click)="toggleMobileMenu()">Home</a></li>
+            <li><a routerLink="/about" (click)="toggleMobileMenu()">About Us</a></li>
+            <li><a routerLink="/founderprofile" (click)="toggleMobileMenu()">Founder Profile</a></li>
+            <li><a routerLink="/services/fund-raising" (click)="toggleMobileMenu()">Fund Raising</a></li>
+            <li><a routerLink="/services/investment-banking" (click)="toggleMobileMenu()">Investment Banking</a></li>
+            <li><a routerLink="/services/training-placement" (click)="toggleMobileMenu()">Training Placement</a></li>
+            <li><a routerLink="/services/credit-rating" (click)="toggleMobileMenu()">Credit Rating</a></li>
+            <li><a routerLink="/services/tech-services" (click)="toggleMobileMenu()">Tech Services</a></li>
+            <li><a routerLink="/services/digital-marketing" (click)="toggleMobileMenu()">Digital Marketing</a></li>
+            <li><a routerLink="/team" (click)="toggleMobileMenu()">Team</a></li>
+            <li><a routerLink="/partner" (click)="toggleMobileMenu()">Become Partner</a></li>
+            <li><a routerLink="/contact" (click)="toggleMobileMenu()">Contact</a></li>
+          </ul>
+        </div>
+        
+
+        <!-- Overlay -->
+        <div class="menu-overlay" [ngClass]="{'active': isMobileMenuOpen}" (click)="toggleMobileMenu()"></div>
+
+        <div class="logo-shape"></div>
+      </div>
+    </div>
+  </div>
+</header>
