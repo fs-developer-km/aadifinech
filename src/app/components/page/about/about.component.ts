@@ -11,5 +11,9 @@ import { RouterModule } from '@angular/router';
 export class AboutComponent {
 
 
+  ngOnInit(): void {
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // optional smooth scroll
+}
+
   
 }

@@ -1,69 +1,261 @@
-.circle {
-  position: relative;
-  width: 120px; /* Inner circle size */
-  height: 120px;
-  background-color: #00A8FF; /* Inner circle color */
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+:root {
+     --primary-color: #DD3333;
+     --white: #fff;
+   }
 
-.circle-num-wrapper {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px; /* Adjust size of the red circle around the number */
-  height: 50px;
-  border-radius: 50%;
-  background-color: red; /* Red circle */
-}
+   body {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     line-height: 1.6;
+     color: #333;
+   }
 
-.circle-num {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-}
-.shape-mockup {
-  position: absolute; /* Position the image absolutely */
-  right: 0; /* Align to the right */
-  bottom: 20px; /* 20px upar from the bottom */
-  z-index: 3; /* Ensure it stays above other elements */
-  transform: translateY(-20px); /* Adjust the image to go slightly up */
-}
+   .navbar {
+     background-color: var(--white) !important;
+     box-shadow: 0 2px 10px rgba(221, 51, 51, 0.1);
+   }
 
-@media (max-width: 992px) {
-  .shape-mockup {
-      right: 0;
-      bottom: 20px;
-      transform: translateY(-20px); /* For mobile, keeping it similar */
-  }
-}
+   .navbar-brand {
+     font-weight: bold;
+     font-size: 1.8rem;
+     color: #DD3333 !important;
+   }
 
+   .hero-section {
+     background: linear-gradient(135deg, #DD3333, #ff4444);
+     color: var(--white);
+     padding: 100px 0;
+     text-align: center;
+   }
 
+   .hero-section h1 {
+     font-size: 3.5rem;
+     font-weight: bold;
+     margin-bottom: 1.5rem;
+   }
 
+   .hero-section p {
+     font-size: 1.3rem;
+     margin-bottom: 2rem;
+     opacity: 0.9;
+   }
 
-/* Ensure the image and the testimonial are properly layered */
-.testimonial-sec3 {
-position: relative;
-}
+   .btn-primary-custom {
+     background-color: var(--white);
+     color: #DD3333;
+     border: 3px solid var(--white);
+     padding: 15px 40px;
+     font-size: 1.2rem;
+     font-weight: bold;
+     border-radius: 50px;
+     transition: all 0.3s ease;
+   }
 
-.testimonial-sec3 .thumb {
-z-index: 1;
-}
+   .btn-primary-custom:hover {
+     background-color: transparent;
+     color: var(--white);
+     border-color: var(--white);
+     transform: translateY(-2px);
+   }
 
-.testimonial-sec3 .th-carousel {
-z-index: 2; /* Ensure carousel appears above the image */
-}
+   .section-title {
+     color: #DD3333;
+     font-size: 2.8rem;
+     font-weight: bold;
+     text-align: center;
+     margin-bottom: 3rem;
+     position: relative;
+   }
 
-/* Ensure testimonial content is aligned properly */
-.testimonial-sec3 .testi-slider3 {
-position: relative;
-z-index: 2; /* Set a higher z-index to display testimonials over the image */
-}
+   .section-title::after {
+     content: '';
+     width: 80px;
+     height: 4px;
+     background-color: #DD3333;
+     position: absolute;
+     bottom: -10px;
+     left: 50%;
+     transform: translateX(-50%);
+   }
 
-/* Optional: Style the carousel to ensure it works properly */
-.testimonial-sec3 .testi-slider3 .slick-slide {
-transition: transform 0.3s ease-in-out;
-}
+   .why-partner-section {
+     background-color: #f8f9fa;
+     padding: 80px 0;
+   }
+
+   .services-section {
+     padding: 80px 0;
+   }
+
+   .service-card {
+     background: var(--white);
+     border-radius: 15px;
+     padding: 2rem;
+     box-shadow: 0 10px 30px rgba(221, 51, 51, 0.1);
+     transition: all 0.3s ease;
+     height: 100%;
+     border: 2px solid transparent;
+   }
+
+   .service-card:hover {
+     transform: translateY(-10px);
+     border-color: #DD3333;
+     box-shadow: 0 20px 40px rgba(221, 51, 51, 0.15);
+   }
+
+   .service-icon {
+     background: linear-gradient(135deg, #DD3333, #ff4444);
+     color: var(--white);
+     width: 80px;
+     height: 80px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 2rem;
+     margin: 0 auto 1.5rem;
+   }
+
+   .service-card h4 {
+     color: #DD3333;
+     font-weight: bold;
+     margin-bottom: 1rem;
+   }
+
+   .service-card ul {
+     list-style: none;
+     padding: 0;
+   }
+
+   .service-card li {
+     padding: 0.3rem 0;
+     position: relative;
+     padding-left: 1.5rem;
+   }
+
+   .service-card li::before {
+     content: '✓';
+     color: #DD3333;
+     font-weight: bold;
+     position: absolute;
+     left: 0;
+   }
+
+   .who-can-join {
+     background-color: #DD3333;
+     color: var(--white);
+     padding: 80px 0;
+   }
+
+   .who-can-join .section-title {
+     color: var(--white);
+   }
+
+   .who-can-join .section-title::after {
+     background-color: var(--white);
+   }
+
+   .partner-type {
+     background: rgba(255, 255, 255, 0.1);
+     padding: 1rem 1.5rem;
+     border-radius: 25px;
+     margin: 0.5rem;
+     display: inline-block;
+     backdrop-filter: blur(10px);
+     border: 1px solid rgba(255, 255, 255, 0.2);
+   }
+
+   .benefits-section {
+     background-color: #f8f9fa;
+     padding: 80px 0;
+   }
+
+   .benefit-item {
+     background: var(--white);
+     padding: 2rem;
+     border-radius: 15px;
+     margin-bottom: 2rem;
+     box-shadow: 0 5px 20px rgba(221, 51, 51, 0.1);
+     border-left: 5px solid #DD3333;
+     transition: all 0.3s ease;
+   }
+
+   .benefit-item:hover {
+     transform: translateX(10px);
+     box-shadow: 0 10px 30px rgba(221, 51, 51, 0.15);
+   }
+
+   .benefit-item h5 {
+     color: #DD3333;
+     font-weight: bold;
+     margin-bottom: 1rem;
+   }
+
+   .cta-section {
+     background: linear-gradient(135deg, #DD3333, #ff4444);
+     color: var(--white);
+     padding: 80px 0;
+     text-align: center;
+   }
+
+   .steps-section {
+     padding: 80px 0;
+   }
+
+   .step-item {
+     text-align: center;
+     padding: 2rem;
+   }
+
+   .step-number {
+     background: #DD3333;
+     color: var(--white);
+     width: 60px;
+     height: 60px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 1.5rem;
+     font-weight: bold;
+     margin: 0 auto 1.5rem;
+   }
+
+   .contact-section {
+     background-color: #f8f9fa;
+     padding: 60px 0;
+     text-align: center;
+   }
+
+   .contact-item {
+     background: var(--white);
+     padding: 2rem;
+     border-radius: 15px;
+     margin-bottom: 1rem;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+     transition: all 0.3s ease;
+   }
+
+   .contact-item:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 10px 25px rgba(221, 51, 51, 0.15);
+   }
+
+   .contact-icon {
+     color: #DD3333;
+     font-size: 2rem;
+     margin-bottom: 1rem;
+   }
+
+   @media (max-width: 768px) {
+     .hero-section h1 {
+       font-size: 2.5rem;
+     }
+
+     .section-title {
+       font-size: 2.2rem;
+     }
+
+     .hero-section {
+       padding: 60px 0;
+     }
+   }

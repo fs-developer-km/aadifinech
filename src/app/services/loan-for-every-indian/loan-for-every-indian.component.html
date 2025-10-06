@@ -1,0 +1,596 @@
+<div class="breadcumb-wrapper" data-bg-src="/img/breadcumb/breadcrumb-bg.png" data-overlay="black" data-opacity="8">
+  <div class="container">
+    <div class="breadcumb-content">
+      <h2 class="breadcumb-title" style="font-size: 40px;"> Loan For Every Indian</h2>
+      <ul class="breadcumb-menu">
+        <li><a href="index.html">Home</a></li>
+        <li>Loan For Every Indian </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="hero-title" style="font-size: 35px;">Loan For Every Indian</h1>
+        <p class="hero-subtitle"
+          style="font-size: 16px; line-height: 1.6; color: #fff; text-transform: none; max-width: 650px;">
+          At Aadifintech, we understand that every Indian has dreams and financial needs – whether it's to buy a car,
+          grow a business, plan a wedding, or fund an education. That’s why we bring a complete bouquet of loan products
+          designed for every Indian citizen and business, from every walk of life.
+        </p>
+        <!-- <div class="mt-4">
+          <a href="#apply" class="btn btn-light btn-lg me-3 px-4 py-3">Apply for Loan</a>
+         
+        </div> -->
+      </div>
+      <div class="col-lg-4 text-center">
+        <div class="hero-image">
+          <i class="fas fa-handshake" style="font-size: 200px; opacity: 0.3;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<!-- <section class="stats-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="stat-item">
+          <span class="stat-number">50+</span>
+          <div class="stat-label">Lending Partners</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-item">
+          <span class="stat-number">₹5Cr</span>
+          <div class="stat-label">Maximum Loan Amount</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-item">
+          <span class="stat-number">30</span>
+          <div class="stat-label">Years Max Tenure</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <div class="stat-label">Digital Process</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<!-- slide code beginn:: -->
+
+
+<!-- loan-slider.component.html -->
+<!-- loan-slider.component.html -->
+<section class="loan-slider-section">
+  <div class="loan-slider-container-fluid">
+    <h3 class="loan-slider-main-title">Loan Solutions For Every Indian</h3>
+
+    <div class="loan-cards-slider-wrapper">
+      <div class="loan-cards-slide-track">
+        <div class="loan-card-slide-item" *ngFor="let card of duplicatedCards; let i = index">
+          <div class="loan-slider-card">
+            <div class="loan-slider-icon">
+              <i [class]="card.icon"></i>
+            </div>
+            <h3 class="loan-slider-card-title">{{ card.title }}</h3>
+            <p class="loan-slider-card-description">{{ card.description }}</p>
+            <ul class="loan-slider-features-list">
+              <li class="loan-slider-features-item" *ngFor="let feature of card.features">
+                <i class="fas fa-check loan-slider-features-icon"></i>
+                <span>{{ feature }}</span>
+              </li>
+            </ul>
+            <a [href]="'https://wa.me/919953656810?text=Hello Aadifintech.com Team 👋,%0A I\'m interested in exploring your ' 
+           + card.title 
+           + ' for my financial needs. Kindly share the details.'" target="_blank">
+              Chat on WhatsApp
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- slider code end  -->
+
+<!-- Personal Loans Section -->
+<section id="personal-loans" class="py-5">
+  <div class="container">
+    <h2 class="section-title"> Loan Solutions</h2>
+    <div class="row g-4">
+
+      <!-- Personal Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3 class="loan-title text-center">Personal Loan</h3>
+          <p class="loan-description">Fast and easy personal loans for medical emergencies, weddings, travel, or home
+            renovation. Both salaried and self-employed can apply.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Loan Amount: ₹50,000 to ₹25 Lakhs</li>
+            <li><i class="fas fa-check"></i> Tenure: Up to 5 years</li>
+            <li><i class="fas fa-check"></i> Quick approval</li>
+            <li><i class="fas fa-check"></i> Minimal documentation</li>
+          </ul>
+          <!-- WhatsApp Button -->
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Personal%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Car Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-car"></i>
+          </div>
+          <h3 class="loan-title text-center">Car Loan</h3>
+          <p class="loan-description">Finance your dream car or buy a quality pre-owned vehicle with competitive
+            interest rates and flexible payment options.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Up to 100% financing</li>
+            <li><i class="fas fa-check"></i> New & Used car loans</li>
+            <li><i class="fas fa-check"></i> Quick processing</li>
+            <li><i class="fas fa-check"></i> Competitive rates</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Car%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Home Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <h3 class="loan-title text-center">Home Loan</h3>
+          <p class="loan-description">Turn your dream of owning a house into reality. Affordable EMIs, flexible tenure,
+            and doorstep assistance.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Amount: ₹5 Lakhs to ₹5 Crores</li>
+            <li><i class="fas fa-check"></i> Tenure: Up to 30 years</li>
+            <li><i class="fas fa-check"></i> Balance transfer available</li>
+            <li><i class="fas fa-check"></i> Top-up options</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Home%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Education Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3 class="loan-title text-center">Education Loan</h3>
+          <p class="loan-description">Support for higher education in India or abroad. Covers tuition, hostel, travel,
+            and living expenses.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Collateral & non-collateral options</li>
+            <li><i class="fas fa-check"></i> Study in India or abroad</li>
+            <li><i class="fas fa-check"></i> Complete expense coverage</li>
+            <li><i class="fas fa-check"></i> Flexible repayment</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Education%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Wedding Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-ring"></i>
+          </div>
+          <h3 class="loan-title text-center">Wedding Loan</h3>
+          <p class="loan-description">Make your big day special without budget worries. Quick disbursal and no
+            collateral needed for your dream wedding.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> No collateral required</li>
+            <li><i class="fas fa-check"></i> Quick disbursal</li>
+            <li><i class="fas fa-check"></i> Covers all wedding expenses</li>
+            <li><i class="fas fa-check"></i> Flexible EMIs</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Wedding%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Holiday Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-plane"></i>
+          </div>
+          <h3 class="loan-title text-center">Holiday Loan</h3>
+          <p class="loan-description">Take a break and travel the world! Fund your domestic or international vacation
+            stress-free.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Amount: ₹50,000 to ₹5 Lakhs</li>
+            <li><i class="fas fa-check"></i> Domestic & international travel</li>
+            <li><i class="fas fa-check"></i> Quick approval</li>
+            <li><i class="fas fa-check"></i> No collateral needed</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Holiday%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Secured Loans Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="section-title">Secured Loan Options</h2>
+    <div class="row g-4">
+
+      <!-- Loan Against Property -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <h3 class="loan-title text-center">Loan Against Property</h3>
+          <p class="loan-description">Unlock the value of your residential or commercial property to raise funds for any
+            purpose.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Tenure: Up to 15 years</li>
+            <li><i class="fas fa-check"></i> Self-occupied & rented properties</li>
+            <li><i class="fas fa-check"></i> Commercial properties accepted</li>
+            <li><i class="fas fa-check"></i> Competitive interest rates</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Loan%20Against%20Property%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Loan Against Securities -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="loan-title text-center">Loan Against Securities</h3>
+          <p class="loan-description">Get overdraft or term loan against mutual funds, shares, insurance policies, or
+            fixed deposits.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Against mutual funds & shares</li>
+            <li><i class="fas fa-check"></i> Insurance policies accepted</li>
+            <li><i class="fas fa-check"></i> Fixed deposits as collateral</li>
+            <li><i class="fas fa-check"></i> Overdraft facility available</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Loan%20Against%20Securities%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Gold Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-coins"></i>
+          </div>
+          <h3 class="loan-title text-center">Gold Loan</h3>
+          <p class="loan-description">Get instant cash against your gold jewellery at competitive interest rates with
+            quick processing.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Disbursal within 30 minutes</li>
+            <li><i class="fas fa-check"></i> LTV as per RBI guidelines</li>
+            <li><i class="fas fa-check"></i> Competitive interest rates</li>
+            <li><i class="fas fa-check"></i> Safe gold storage</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Gold%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Business Loans Section -->
+<section id="business-loans" class="py-5">
+  <div class="container">
+    <h2 class="section-title">Business Loan Services</h2>
+    <div class="row g-4">
+
+      <!-- Unsecured Business Loan -->
+      <div class="col-lg-6 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <h3 class="loan-title text-center">Unsecured Business Loan</h3>
+          <p class="loan-description">For SMEs, traders, service providers, professionals – no collateral required.
+            Quick funding for business growth.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Amount: ₹1 Lakh to ₹1 Crore</li>
+            <li><i class="fas fa-check"></i> No collateral required</li>
+            <li><i class="fas fa-check"></i> NBFCs & Private Banks</li>
+            <li><i class="fas fa-check"></i> Quick processing</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Unsecured%20Business%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Working Capital Loan -->
+      <div class="col-lg-6 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h3 class="loan-title text-center">Working Capital Loan</h3>
+          <p class="loan-description">Maintain daily cash flow and business operations with customized repayment plans
+            designed for SMEs.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Daily cash flow support</li>
+            <li><i class="fas fa-check"></i> Customized repayment</li>
+            <li><i class="fas fa-check"></i> SME focused solutions</li>
+            <li><i class="fas fa-check"></i> Flexible terms</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Working%20Capital%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Government Schemes Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="section-title">MSME Government Schemes</h2>
+    <div class="row g-4">
+
+      <!-- Mudra Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3 class="loan-title text-center">Mudra Loan</h3>
+          <p class="loan-description">For small businesses, traders, and micro entrepreneurs. Available in Shishu,
+            Kishor, and Tarun categories.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Amount: ₹50,000 to ₹10 Lakhs</li>
+            <li><i class="fas fa-check"></i> No collateral required</li>
+            <li><i class="fas fa-check"></i> Government backed scheme</li>
+            <li><i class="fas fa-check"></i> Low interest rates</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Mudra%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- CGTMSE Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="loan-title text-center">CGTMSE Loan</h3>
+          <p class="loan-description">Credit Guarantee Fund Trust for Micro and Small Enterprises – collateral-free
+            funding up to ₹2 Crores.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Up to ₹2 Crore funding</li>
+            <li><i class="fas fa-check"></i> Collateral-free</li>
+            <li><i class="fas fa-check"></i> Government guarantee</li>
+            <li><i class="fas fa-check"></i> For micro & small enterprises</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**CGTMSE%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+      <!-- Women Entrepreneur Loan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="loan-card p-4">
+          <div class="loan-icon">
+            <i class="fas fa-female"></i>
+          </div>
+          <h3 class="loan-title text-center">Women Entrepreneur Loan</h3>
+          <p class="loan-description">Special schemes for women-led enterprises with lower interest rates and priority
+            processing.</p>
+          <ul class="loan-features">
+            <li><i class="fas fa-check"></i> Lower interest rates</li>
+            <li><i class="fas fa-check"></i> Priority processing</li>
+            <li><i class="fas fa-check"></i> Women-led enterprises</li>
+            <li><i class="fas fa-check"></i> Government support</li>
+          </ul>
+          <a href="https://wa.me/919953656810?text=Hello%20Aadifintech.com%20Team%20👋,%0AI’m%20interested%20in%20exploring%20your%20**Women%20Entrepreneur%20Loan%20Solutions**%20for%20my%20financial%20needs.%0AKindly%20share%20the%20details%20about%20eligibility,%20documentation%20%26%20interest%20rates."
+            target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> More Info
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Why Choose Us Section -->
+<section id="about" class="py-5">
+  <div class="container">
+    <h2 class="section-title">Why Choose Aadi Fintech?</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="why-choose-item">
+          <div class="why-choose-icon">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <div>
+            <h4>50+ Lending Partners</h4>
+            <p>Access to banks, NBFCs, and government-recognized lenders for the best loan options.</p>
+          </div>
+        </div>
+        <div class="why-choose-item">
+          <div class="why-choose-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div>
+            <h4>Expert Guidance</h4>
+            <p>One-on-one expert guidance to help you choose the right loan product for your needs.</p>
+          </div>
+        </div>
+        <div class="why-choose-item">
+          <div class="why-choose-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div>
+            <h4>100% Digital Journey</h4>
+            <p>Complete digital process available for quick and hassle-free loan applications.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="why-choose-item">
+          <div class="why-choose-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <div>
+            <h4>Fast Approvals</h4>
+            <p>Transparent process with quick approvals to get you the funds when you need them.</p>
+          </div>
+        </div>
+        <div class="why-choose-item">
+          <div class="why-choose-icon">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <div>
+            <h4>PAN-India Service</h4>
+            <p>We serve across India including Tier 1, Tier 2, and Tier 3 cities and remote towns.</p>
+          </div>
+        </div>
+        <div class="why-choose-item">
+          <div class="why-choose-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div>
+            <h4>Tailor-made Solutions</h4>
+            <p>Customized loan options for every Indian – salaried, self-employed, MSME, or startup.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- whatsapp popup -->
+<!-- CTA Section -->
+<section id="apply" class="cta-section mt-4">
+  <div class="container text-center">
+    <h2 class="mb-4" style="color: #fff;">Ready to Apply for Your Loan?</h2>
+    <p class="lead mb-5 text-center" style="color: #fff;">Our team is just a call away to guide you toward the right funding
+      solution – be it for a
+      dream, a crisis, or growth.</p>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <a (click)="openForm()" class="btn btn-light btn-lg me-3 px-5 py-3">Get Started Now</a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-popup-form></app-popup-form>
+
+
+
+<!-- Service Coverage Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h3 class="primary-color mb-4">Service Coverage Areas</h3>
+        <p class="lead text-center">We provide loan services across India including major cities and remote towns:</p>
+        <div class="row mt-4">
+          <div class="col-md-3 col-6 mb-3">
+            <div class="bg-white-custom p-3 rounded shadow-sm">
+              <i class="fas fa-city primary-color mb-2" style="font-size: 2rem;"></i>
+              <h6>Tier 1 Cities</h6>
+              <p class="small mb-0">Delhi, Mumbai, Bangalore, Chennai, Kolkata, Hyderabad</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-3">
+            <div class="bg-white-custom p-3 rounded shadow-sm">
+              <i class="fas fa-building primary-color mb-2" style="font-size: 2rem;"></i>
+              <h6>Tier 2 Cities</h6>
+              <p class="small mb-0">Ahmedabad, Pune, Jaipur, Lucknow, Kanpur, Nagpur</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-3">
+            <div class="bg-white-custom p-3 rounded shadow-sm">
+              <i class="fas fa-home primary-color mb-2" style="font-size: 2rem;"></i>
+              <h6>Tier 3 Cities</h6>
+              <p class="small mb-0">Bhopal, Patna, Guwahati, Dehradun, Shimla, Ranchi</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-3">
+            <div class="bg-white-custom p-3 rounded shadow-sm">
+              <i class="fas fa-map-marked-alt primary-color mb-2" style="font-size: 2rem;"></i>
+              <h6>Remote Towns</h6>
+              <p class="small mb-0">Small towns and rural areas across all states</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

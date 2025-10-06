@@ -9,4 +9,7 @@ import { RouterModule } from '@angular/router';
 })
 export class TeamComponent {
 
+    ngOnInit(): void {
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // optional smooth scroll
+}
 }

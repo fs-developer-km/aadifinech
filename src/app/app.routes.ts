@@ -15,44 +15,69 @@ import { TrainingPlacementComponent } from './services/training-placement/traini
 import { CreditRatingComponent } from './services/credit-rating/credit-rating.component';
 import { TechServicesComponent } from './services/tech-services/tech-services.component';
 import { DigitalMarketingComponent } from './services/digital-marketing/digital-marketing.component';
+import { LoanForEveryIndianComponent } from './services/loan-for-every-indian/loan-for-every-indian.component';
+import { RealStateComponent } from './services/real-state/real-state.component';
+import { WealthMaanagementComponent } from './services/wealth-maanagement/wealth-maanagement.component';
+import { BillDiscountsComponent } from './services/bill-discounts/bill-discounts.component';
+import { ExportBillDiscountingComponent } from './services/export-bill-discounting/export-bill-discounting.component';
+import { CresitRatingComponent } from './services/cresit-rating/cresit-rating.component';
+import { OurInsuranceServicesComponent } from './services/our-insurance-services/our-insurance-services.component';
+import { OurEndToEndforeignServicesComponent } from './services/our-end-to-endforeign-services/our-end-to-endforeign-services.component';
+import { BankingDomainExpertConsultancyComponent } from './services/banking-domain-expert-consultancy/banking-domain-expert-consultancy.component';
+import { FinancialConsultancyforCorporatesComponent } from './services/financial-consultancyfor-corporates/financial-consultancyfor-corporates.component';
+import { OurMissionComponent } from './services/our-mission/our-mission.component';
 
 
 export const routes: Routes = [
     {
-        path: '', component:HomeComponent
+        path: '', component: HomeComponent
     },
     {
-        path: 'about', component:AboutComponent
+        path: 'about', component: AboutComponent
     },
     {
-        path: 'appointment', component:AppointmentComponent
+        path: 'appointment', component: AppointmentComponent
     },
     {
-        path: 'founderprofile', component:PricingPlanComponent
+        path: 'founderprofile', component: PricingPlanComponent
     },
     {
-        path: 'team', component:TeamComponent
+        path: 'team', component: TeamComponent
     },
     {
-        path: 'insurence', component:InsurencePageComponent
+        path: 'insurence', component: InsurencePageComponent
     },
     {
-        path: 'insurenceDetails', component:InsurenceDetailsComponent
+        path: 'insurenceDetails', component: InsurenceDetailsComponent
     },
     {
-        path: 'partner', component:BlogPageComponent
+        path: 'partner', component: BlogPageComponent
     },
     {
-        path: 'blogDetails', component:BlogDetailsComponent
+        path: 'blogDetails', component: BlogDetailsComponent
     },
     {
-        path: 'contact', component:ContactUsComponent
+        path: 'contact', component: ContactUsComponent
     },
-    { path: 'services/fund-raising', component: FundRaisingComponent },
+    { 
+        path: 'services/fund-raising', component: FundRaisingComponent 
+    },
+    { path: 'services/ourMission', component: OurMissionComponent},
     { path: 'services/investment-banking', component: InvestmentBankingComponent },
     { path: 'services/training-placement', component: TrainingPlacementComponent },
     { path: 'services/credit-rating', component: CreditRatingComponent },
     { path: 'services/tech-services', component: TechServicesComponent },
     { path: 'services/digital-marketing', component: DigitalMarketingComponent },
+    { path: 'services/loanForEveryIndian', component:  LoanForEveryIndianComponent},
+    { path: 'services/realState', component:  RealStateComponent},
+    { path: 'services/wealth', component:  WealthMaanagementComponent},
+    { path: 'services/billDiscounting', component:BillDiscountsComponent},
+    { path: 'services/exportbillDiscounting', component:ExportBillDiscountingComponent},
+    { path: 'services/creditRatingAdversory', component:CresitRatingComponent},
+    { path: 'services/ourInsuranceServices', component:OurInsuranceServicesComponent},
+    { path: 'services/ourEndToEndforeignServices', component:OurEndToEndforeignServicesComponent},
+    { path: 'services/bankingDomainExpertConsultency', component:BankingDomainExpertConsultancyComponent},
+    { path: 'services/FinancialConsultancyforCorporates', component:FinancialConsultancyforCorporatesComponent},
+    
 
 ];

@@ -1,0 +1,448 @@
+/* // =================================================================
+// popup-form.component.css
+// ================================================================= */
+
+/* Popup backdrop with smooth fade-in animation */
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out forwards;
+  backdrop-filter: blur(2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Popup content with scale animation */
+.popup-content {
+  background: #fff;
+  padding: 35px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  margin: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: scale(0.7) translateY(50px);
+  animation: scaleIn 0.3s ease-out 0.1s forwards;
+  position: relative;
+  overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.7) translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header styling */
+.popup-content h2 {
+  margin: 0 0 25px 0;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.popup-content h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #DD3333;
+  border-radius: 2px;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Label styling */
+label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Input and textarea styling */
+input[type="text"], 
+input[type="email"], 
+input[type="tel"],
+textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+  background: #fff;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="tel"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #DD3333;
+  box-shadow: 0 0 0 3px rgba(221, 51, 51, 0.1);
+  transform: translateY(-1px);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+  max-height: 150px;
+  font-family: inherit;
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Button styling */
+button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"] {
+  background: #DD3333;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(221, 51, 51, 0.3);
+}
+
+button[type="submit"]:hover {
+  background: #c42d2d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(221, 51, 51, 0.4);
+}
+
+button[type="button"] {
+  background: #fff;
+  color: #666;
+  border: 2px solid #e0e0e0;
+}
+
+button[type="button"]:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+  transform: translateY(-1px);
+}
+
+/* Button loading effect */
+button:active {
+  transform: translateY(0);
+}
+
+/* Close button (X) */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  flex: none;
+}
+
+.close-button:hover {
+  background: #f0f0f0;
+  color: #DD3333;
+  transform: rotate(90deg);
+}
+
+/* Form field container for better spacing */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Tablet Responsive */
+@media (min-width: 481px) and (max-width: 768px) {
+  .popup-content {
+    max-width: 500px;
+    padding: 32px;
+  }
+  
+  .popup-content h2 {
+    font-size: 22px;
+  }
+}
+
+/* Laptop/Desktop Responsive */
+@media (min-width: 769px) and (max-width: 1199px) {
+  .popup-content {
+    max-width: 580px;
+    padding: 40px;
+  }
+  
+  .popup-content h2 {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+  
+  form {
+    gap: 24px;
+  }
+  
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"],
+  textarea {
+    padding: 16px 20px;
+    font-size: 17px;
+  }
+  
+  button {
+    padding: 16px 24px;
+    font-size: 17px;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  .popup-content {
+    max-width: 650px;
+    padding: 45px;
+  }
+  
+  .popup-content h2 {
+    font-size: 28px;
+    margin-bottom: 35px;
+  }
+  
+  form {
+    gap: 28px;
+  }
+  
+  label {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"],
+  textarea {
+    padding: 18px 22px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+  
+  textarea {
+    min-height: 100px;
+  }
+  
+  button {
+    padding: 18px 28px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  
+  .button-container {
+    gap: 16px;
+    margin-top: 15px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .popup-backdrop {
+    padding: 10px;
+  }
+  
+  .popup-content {
+    margin: 0;
+    padding: 25px 20px;
+    max-width: none;
+    border-radius: 12px;
+  }
+
+  .popup-content h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    gap: 18px;
+  }
+
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"],
+  textarea {
+    padding: 12px 16px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+
+  label {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 15px;
+    padding: 14px 18px;
+  }
+  
+  textarea {
+    min-height: 80px;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+  .popup-content {
+    padding: 20px 15px;
+  }
+
+  .popup-content h2 {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  form {
+    gap: 15px;
+  }
+
+  .form-field {
+    gap: 4px;
+  }
+  
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"],
+  textarea {
+    padding: 11px 14px;
+    font-size: 15px;
+  }
+  
+  button {
+    padding: 13px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Subtle animation for form fields */
+.form-field {
+  opacity: 0;
+  animation: slideInUp 0.4s ease-out forwards;
+}
+
+.form-field:nth-child(2) { animation-delay: 0.2s; }
+.form-field:nth-child(3) { animation-delay: 0.3s; }
+.form-field:nth-child(4) { animation-delay: 0.4s; }
+.form-field:nth-child(5) { animation-delay: 0.5s; }
+.button-container { 
+  opacity: 0;
+  animation: slideInUp 0.4s ease-out 0.6s forwards; 
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar for popup content */
+.popup-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+  background: #DD3333;
+  border-radius: 3px;
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+  background: #c42d2d;
+}

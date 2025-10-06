@@ -8,4 +8,16 @@ import { Component } from '@angular/core';
 })
 export class PricingPlanComponent {
 
+  ngOnInit(): void {
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // optional smooth scroll
+}
+
+scrollToSection(sectionId: string) {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+
 }

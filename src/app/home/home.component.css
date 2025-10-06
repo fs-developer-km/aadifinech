@@ -8,7 +8,7 @@
   }
 
   .carousel {
-    height: 600px; /* Slider ki height ko kam kar diya */
+    height: 534; /* Slider ki height ko kam kar diya */
   }
 
   .project-card {
@@ -17,7 +17,9 @@
 
   .project-img img {
     height: 500px; /* Image ki height ko kam kar diya */
-    object-fit: cover; /* Image ko properly cover karega */
+    object-fit: cover;
+    
+    /* Image ko properly cover karega */
 
   }
 
@@ -48,7 +50,7 @@
     padding: 15px;  /* Increased padding for better spacing */
     border-radius: 10px;
     text-align: center;
-    width: 80%;    /* Reduced card width */
+    width: 95%;    /* Reduced card width */
     height: 220px; /* Reduced height */
     display: flex;
     flex-direction: column;
@@ -86,7 +88,8 @@
   }
 
   .slick-slide {
-    margin: 0 15px; /* Gapping between images */
+    margin: 0 10px;  /* Gapping between images
+    /* border: 1px solid grey; */
   }
 
   /* Remove next and prev arrows */
@@ -140,7 +143,7 @@
   transform: translateX(-50%);
   width: 40%;
   height: 2px;
-  background: #2b4eff;
+  background: #2b4e
 }
 
 /* Arrows Positioning */
@@ -148,6 +151,17 @@
   margin-top: 25px;
 }
 
+.service-box-wrap {
+  display: flex;
+  height: 100%;
+}
+
+.service-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
 
 
 
@@ -171,3 +185,156 @@
 .contact-sec-2 .contact-thumb2{
   z-index: auto;
 }
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.why-thumb7 .why-thumb-wrap .thumb img {
+    border-radius: 15px;
+}
+
+.avatar-initial {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  border: nones;
+}
+
+
+
+/* /* wealth managemtn  */
+
+
+
+
+/* slider card animation css */
+
+
+/* calculator add css all beginn:: */
+
+
+
+/* calculator css end:: */
+
+
+.custom-read-more-btn {
+  background-color: #fff;
+  color: #DD3333;
+  border: 2px solid #DD3333;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-read-more-btn:hover {
+  background-color: #fff;
+  color: #DD3333;
+  text-decoration: none;
+}
+
+
+
+/* arrow button */
+
+.slider-nav-buttons .icon-btn {
+  background-color: #fff;
+  border: 1px solid #DD3333;
+  color: #DD3333;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.slider-nav-buttons .icon-btn:hover {
+  background-color: #DD3333;
+  color: #fff;
+}
+
+.slider-nav-buttons .icon-btn i {
+  font-size: 16px;
+}
+
+
+
+/* add new css for height same card and responsive */
+
+
+/* add new css for button next pewvious for event */
+
+.slider-nav-buttonsss {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.slider-nav-buttonsss .icon-btns {
+  background-color: #fff;
+  border: 2px solid #DD3333;
+  color: #DD3333;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-nav-buttonsss .icon-btns:hover {
+  background-color: #DD3333;
+  color: #fff;
+}
+
+
+
+.achievements-heading {
+font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #222;
+    display: block;
+    margin: revert;
+    letter-spacing: 1px;                         /* Nice letter spacing */
+}
+
+/* Underline design */
+.achievements-heading::after {
+  content: "";
+  display: block;
+  width: 100px;                                /* Length of underline */
+  height: 4px;                                 /* Thickness of underline */
+  background-color: #DD3333;                   /* Custom color underline */
+  margin: 10px auto 0 auto;                     /* Centered under heading */
+  border-radius: 2px;                           /* Smooth edges */
+}
+
+
+
+
+
+
+
+/* fit to image on css */
+

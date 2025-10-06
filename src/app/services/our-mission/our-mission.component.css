@@ -1,0 +1,245 @@
+/* :root {
+    --primary-red: #DD3333;
+    --white: #fff;
+} */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.hero-section {
+    background: #DD3333;
+    color: #fff;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.section-padding {
+    padding: 60px 0;
+}
+
+.mission-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(221, 51, 51, 0.1);
+    border-top: 5px solid #DD3333;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(221, 51, 51, 0.15);
+}
+
+.user-types {
+    background: #f8f9fa;
+}
+
+.user-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-left: 4px solid #DD3333;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(221, 51, 51, 0.2);
+}
+
+.user-icon {
+    font-size: 3rem;
+    color: #DD3333;
+    margin-bottom: 15px;
+}
+
+.commitment-section {
+    background: #DD3333;
+    color: #fff;
+}
+
+.commitment-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.commitment-icon {
+    font-size: 2rem;
+    margin-right: 20px;
+    color: #fff;
+}
+
+.cost-section {
+    background: #f8f9fa;
+}
+
+.cost-highlight {
+    background: #fff;
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border: 3px solid #DD3333;
+}
+
+.cost-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #DD3333;
+    margin-bottom: 30px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.benefit-icon {
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+.check-icon {
+    color: #28a745;
+}
+
+.cross-icon {
+    color: #DD3333;
+}
+
+.footer-section {
+    background: #222;
+    color: #fff;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.company-name {
+    color: #DD3333;
+    font-weight: bold;
+}
+
+.emoji {
+    font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 50px 0;
+    }
+
+    .mission-card {
+        padding: 30px 20px;
+    }
+
+    .cost-highlight {
+        padding: 30px 20px;
+    }
+
+    .cost-title {
+        font-size: 2rem;
+    }
+
+    .user-icon {
+        font-size: 2rem;
+    }
+
+    .commitment-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .commitment-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+/* responsive line for all devices */
+
+
+h1.display-4 {
+    font-size: 40px;
+    color: #fff;
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    h1.display-4 {
+        font-size: 32px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    h1.display-4 {
+        font-size: 26px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .hero-content h1{
+        font-size: 22px;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* new code add orr res */
+
+.mission-text {
+  font-size: 16px;         /* 🔹 font size chhota aur clean */
+  line-height: 1.7;        /* 🔹 better readability */
+  text-align: justify;     /* 🔹 paragraph alignment sahi */
+  color: #444;             /* 🔹 halka dark grey for readability */
+}
+.mission-card {
+  background: #fff;        /* 🔹 safed card style */
+  border-radius: 10px;
+}

@@ -1,0 +1,21 @@
+<section class="partner-slider py-5 bg-light" style="padding-top: 60px; padding-bottom: 60px;">
+  <div class="container">
+    <h3 class="text-center mb-5" 
+        style="font-size: 28px; font-weight: 700; color: #DD3333; text-transform: uppercase; letter-spacing: 1px; position: relative;">
+      Our Channel Partners
+      <span style="display: block; width: 80px; height: 3px; background-color: #DD3333; margin: 10px auto 0;"></span>
+    </h3>
+    
+    <div class="partner-slider-wrapper" style="margin-top: 20px;">
+      <div class="partner-slide-track" [ngStyle]="{'animation-duration': scrollSpeed + 's'}">
+        <div class="partner-slide-item" *ngFor="let partner of partners" style="margin: 0 25px;">
+          <img [src]="partner.logo" [alt]="partner.name" class="partner-logo" >
+        </div>
+        <!-- Duplicate logos for infinite scroll -->
+        <div class="partner-slide-item" *ngFor="let partner of partners" style="margin: 0 25px;">
+          <img [src]="partner.logo" [alt]="partner.name" class="partner-logo" >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
