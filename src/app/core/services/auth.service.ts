@@ -96,7 +96,7 @@ export class AuthService {
 
   // get signup api
 
-   private apiUrls = 'http://localhost:5000/api/auth/getUser';
+   private apiUrls = 'https://aadifintech-backend.onrender.com/api/auth/getUser';
 
 
 
@@ -126,7 +126,7 @@ export class AuthService {
 
   // lead apis
 
-  private baseUrlss = 'http://localhost:5000/api/lead/list'; // ✅ your backend URL
+  private baseUrlss = 'https://aadifintech-backend.onrender.com/api/lead/list'; // ✅ your backend URL
 
   
   getLeads(): Observable<Lead[]> {
@@ -138,7 +138,7 @@ export class AuthService {
   }
 
 
-   private apiUrlcookies = 'http://localhost:5000/api/visitor/create';
+   private apiUrlcookies = 'https://aadifintech-backend.onrender.com/api/visitor/create';
 
    
   trackVisitor(page: string) {
@@ -152,13 +152,13 @@ export class AuthService {
     );
   }
 
-    private apiUrlget = 'http://localhost:5000/api/visitor'; // base URL
+    private apiUrlget = 'https://aadifintech-backend.onrender.com/api/visitor'; // base URL
 
 
     
   // ✅ Get all cookies
 getAllCookies() {
-  const url = 'http://localhost:5000/api/visitor/all';
+  const url = 'https://aadifintech-backend.onrender.com/api/visitor/all';
   return this.http.get<any>(url).pipe(
     map((res: any) => {
       console.log("✅ Cookies API Response:", res);

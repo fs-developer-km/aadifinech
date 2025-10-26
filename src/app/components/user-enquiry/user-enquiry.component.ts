@@ -30,7 +30,7 @@ export class UserEnquiryComponent {
     this.isLoading = true;
     this.message = '';
 
-    const apiUrl = 'http://localhost:5000/api/lead/create'; // 🔗 Backend API URL
+    const apiUrl = 'https://aadifintech-backend.onrender.com/api/lead/create'; // 🔗 Backend API URL
     const body = { leadName: this.leadName, leadPhone: this.leadPhone };
 
     this.http.post(apiUrl, body).subscribe({

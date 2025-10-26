@@ -47,7 +47,7 @@ export class UserLeadComponent implements OnInit {
   leadsData: LeadRecord[] = [];
   searchQuery: string = '';
   sortBy: string = 'date';
-  apiUrl = 'http://localhost:5000/api/lead/list';
+  apiUrl = 'https://aadifintech-backend.onrender.com/api/lead/list';
     refreshInterval = 5000; // auto-refresh every 5 seconds (you can adjust)
   private refreshSub?: Subscription;
 
@@ -68,7 +68,7 @@ export class UserLeadComponent implements OnInit {
     this.isLoading = true;
     this.message = '';
 
-    const apiUrl = 'http://localhost:5000/api/lead/create';
+    const apiUrl = 'https://aadifintech-backend.onrender.com/api/lead/create';
 
     this.http.post(apiUrl, this.newLeadForm).subscribe({
       next: (res: any) => {
