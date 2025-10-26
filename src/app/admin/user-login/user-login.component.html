@@ -1,0 +1,122 @@
+<div class="login-activity-wrapper">
+  <!-- Header Section -->
+  <div class="login-page-header">
+    <div class="header-content">
+      <h1 class="page-main-title">User Signup & Login Records</h1>
+      <p class="page-subtitle">View and manage all user signup and login activities</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-mini-box">
+        <i class="fas fa-users-check"></i>
+        <div class="stat-info">
+          <span class="stat-label">Total Users</span>
+          <span class="stat-number">{{ userLoginData.length }}</span>
+        </div>
+      </div>
+      <div class="stat-mini-box">
+        <i class="fas fa-user-check"></i>
+        <div class="stat-info">
+          <span class="stat-label">Active Users</span>
+          <span class="stat-number">{{ (userLoginData | slice:0:8).length }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls Section -->
+  <div class="controls-section">
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input
+        type="text"
+        class="search-input-field"
+        placeholder="Search by name, email, or phone..."
+        [(ngModel)]="searchQuery"
+      >
+    </div>
+
+    <div class="filter-controls">
+      <select class="sort-dropdown" [(ngModel)]="sortBy">
+        <option value="loginTime">Sort by Login Count</option>
+        <option value="userName">Sort by Name</option>
+        <option value="loginStatus">Sort by Status</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container-wrapper">
+    <table class="login-activity-table">
+      <thead class="table-header-section">
+        <tr class="header-row">
+          <!-- <th class="table-header-cell">User ID</th> -->
+          <th class="table-header-cell">User Name</th>
+          <th class="table-header-cell">Phone Number</th>
+          <!-- <th class="table-header-cell">Email Address</th> -->
+          <th class="table-header-cell">Signup Date</th>
+          <th class="table-header-cell">Last Login Date</th>
+          <th class="table-header-cell">Last Login Time</th>
+          <!-- <th class="table-header-cell">Total Logins</th> -->
+          <th class="table-header-cell">Status</th>
+          <!-- <th class="table-header-cell">Location</th> -->
+        </tr>
+      </thead>
+      <tbody class="table-body-section">
+        <tr class="data-row" *ngFor="let login of sortLoginData()">
+          <!-- <td class="table-data-cell">
+            <span class="cell-badge">{{ login.userId }}</span>
+          </td> -->
+          <td class="table-data-cell">
+            <div class="user-cell-info">
+              <div class="user-avatar-mini">
+                {{ login.userName.charAt(0).toUpperCase() }}
+              </div>
+              <span class="user-name-text">{{ login.userName }}</span>
+            </div>
+          </td>
+          <td class="table-data-cell">
+            <div class="phone-info" style="font-size: 15px; font-weight: 500px;">
+              <i class="fas fa-phone phone-icon"></i>&nbsp;
+              <span>{{ login.userPhone }}</span>
+            </div>
+          </td>
+          <!-- <td class="table-data-cell">
+            <span class="email-text">{{ login.userEmail }}</span>
+          </td> -->
+          <td class="table-data-cell">
+            <span class="date-text">{{ login.signupDate }}</span>
+          </td>
+          <td class="table-data-cell">
+            <span class="date-text">{{ login.lastLoginDate }}</span>
+          </td>
+          <td class="table-data-cell">
+            <span class="time-text">{{ login.lastLoginTime }}</span>
+          </td>
+          <!-- <td class="table-data-cell">
+            <span class="login-count-badge">{{ login.loginCount }}</span>
+          </td> -->
+          <td class="table-data-cell">
+            <span class="status-badge" [ngClass]="getStatusBadgeClass(login.accountStatus)">
+              <i [class]="getStatusIcon(login.accountStatus)"></i>
+              {{ login.accountStatus }}
+            </span>
+          </td>
+          <!-- <td class="table-data-cell">
+            <div class="location-info">
+              <i class="fas fa-map-marker-alt location-icon"></i>
+              <span>{{ login.location }}</span>
+            </div>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="sortLoginData().length === 0">
+    <i class="fas fa-inbox empty-icon"></i>
+    <h3 class="empty-title">No login records found</h3>
+    <p class="empty-message">Try adjusting your search or filter criteria</p>
+  </div>
+</div>
+

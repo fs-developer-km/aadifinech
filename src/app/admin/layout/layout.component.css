@@ -1,0 +1,252 @@
+/* ========================================
+   ADMIN LAYOUT CSS - Complete Working
+   ======================================== */
+
+.admin-layout {
+  /* display: flex; */
+  min-height: 100vh;
+  background: #f1f5f9;
+  }
+
+/* ========================================
+   SIDEBAR STYLES
+   ======================================== */
+app-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+}
+
+/* app-sidebar.collapsed {
+  width: 80px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+} */
+
+app-sidebar {
+  transition:
+    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease;
+}
+
+app-sidebar.collapsed {
+  transition:
+    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease;
+}
+
+.main-content {
+  transition:
+    margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.25s ease;
+}
+
+app-topbar {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* ========================================
+   MAIN CONTENT AREA
+   ======================================== */
+
+
+.main-content {
+  flex: 1;
+  background: #f6f8fa;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  min-height: 100vh;
+  overflow-x: hidden;  /* ✅ ADD THIS */
+}
+
+.main-content.collapsed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* ========================================
+   TOPBAR STYLES
+   ======================================== */
+app-topbar {
+  height: 60px;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  /* transition: all 0.3s ease; */
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+/* ========================================
+   CONTENT AREA (Dashboard Container)
+   ======================================== */
+/* .content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+} */
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE/TABLET
+   ======================================== */
+
+/* Tablet and Mobile (≤992px) */
+@media (max-width: 992px) {
+  app-sidebar {
+    position: fixed;
+    display: none;
+    left: -280px;
+    width: 280px;
+    z-index: 1001;
+    box-shadow: 4px 0 24px rgba(221, 51, 51, 0.3);
+  }
+
+  app-sidebar:not(.collapsed) {
+    left: 0;
+  }
+
+  app-sidebar.collapsed {
+    left: -280px;
+    width: 280px;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .main-content.collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .content-area {
+    padding: 0;
+  }
+
+  /* Backdrop overlay when sidebar open */
+  app-sidebar:not(.collapsed)::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 280px;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+}
+
+/* Mobile Landscape (≤768px) */
+@media (max-width: 768px) {
+  app-topbar {
+    height: 56px;
+  }
+
+  .content-area {
+    padding: 0;
+  }
+}
+
+/* Mobile Portrait (≤576px) */
+@media (max-width: 576px) {
+  app-sidebar {
+    width: 85%;
+    max-width: 300px;
+    left: -100%;
+  }
+
+  app-sidebar:not(.collapsed) {
+    left: 0;
+  }
+
+  app-sidebar.collapsed {
+    left: -100%;
+  }
+
+  app-sidebar:not(.collapsed)::after {
+    left: 85%;
+  }
+
+  app-topbar {
+    height: 52px;
+  }
+}
+
+/* Small Mobile (≤480px) */
+@media (max-width: 480px) {
+  app-sidebar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  app-sidebar:not(.collapsed)::after {
+    display: none;
+  }
+}
+
+/* Extra Small Devices (≤360px) */
+@media (max-width: 360px) {
+  app-topbar {
+    height: 50px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ========================================
+   TOPBAR TOGGLE FIX
+   ======================================== */
+
+/* Default state - Sidebar open */
+.main-content app-topbar .topnav {
+  left: 280px !important;
+  transition: left 0.3s ease;
+}
+
+/* Collapsed state - Sidebar closed */
+.main-content.collapsed app-topbar .topnav {
+  left: 80px !important;
+  transition: left 0.3s ease;
+}
+
+/* Mobile - Full width */
+@media (max-width: 992px) {
+  .main-content app-topbar .topnav,
+  .main-content.collapsed app-topbar .topnav {
+    left: 0 !important;
+    width: 100% !important;
+  }
+}

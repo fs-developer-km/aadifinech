@@ -20807,10 +20807,49 @@ p{
 
 
 
+/* Global Backdrop Fix */
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(3px) !important;
+}
+
+/* Custom Dialog Styling */
+.custom-dialog-container .mat-mdc-dialog-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
 
 
 
+/* .dashboard-main-content {
+  margin-left: 280px; 
+  transition: all 0.3s ease-in-out;
+  padding: 90px 25px 25px;
+  background: #f7f8fa;
+  min-height: calc(100vh - 70px);
+} */
 
+
+
+.main-content,
+.content-area,
+.dashboard-main-content,
+.page-wrapper {
+  transition: all 0.3s ease-in-out;
+}
+
+/* .collapsed .main-content {
+  margin-left: -180px !important;
+} */
+/* yha medoa query lga saktehyai bro */
+.collapsed .content-area {
+  padding-left: 0 !important;
+}
 
 
 
@@ -20857,45 +20896,5 @@ p{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

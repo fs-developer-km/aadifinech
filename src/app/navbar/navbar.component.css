@@ -257,3 +257,32 @@
 
 
 
+
+/* Login item styling */
+.login-item {
+  margin-top: 8px;
+}
+
+.login-item a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #dd3333; /* 🔴 red background */
+  color: #fff;               /* ⚪ white text and icon */
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.login-item a:hover {
+  background-color: #b82828; /* darker red on hover */
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: #fff;
+}
+
+.login-item i {
+  font-size: 16px;
+}

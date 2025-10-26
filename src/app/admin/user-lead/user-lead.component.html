@@ -1,0 +1,184 @@
+<div class="lead-management-wrapper">
+  <!-- Header Section -->
+  <div class="lead-page-header">
+    <div class="header-content">
+      <h1 class="page-main-title">Lead Management</h1>
+      <p class="page-subtitle">Manage and track all incoming leads from various sources</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-mini-box">
+        <i class="fas fa-list"></i>
+        <div class="stat-info">
+          <span class="stat-label">Total Leads</span>
+          <span class="stat-number">{{ getTotalLeads() }}</span>
+        </div>
+      </div>
+      <div class="stat-mini-box">
+        <i class="fas fa-star"></i>
+        <div class="stat-info">
+          <span class="stat-label">New Leads</span>
+          <span class="stat-number">{{ getNewLeads() }}</span>
+        </div>
+      </div>
+      <div class="stat-mini-box">
+        <i class="fas fa-trophy"></i>
+        <div class="stat-info">
+          <span class="stat-label">Converted</span>
+          <span class="stat-number">{{ getConvertedLeads() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Lead Form Section -->
+  <div class="add-lead-section">
+    <button class="add-lead-btn" (click)="toggleFormVisibility()">
+      <i class="fas fa-plus"></i> Add New Lead
+    </button>
+
+    <div class="lead-form-container" *ngIf="showForm">
+      <h3 class="form-title">Submit New Lead</h3>
+      <form class="lead-form" (ngSubmit)="submitLead()">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" class="form-input" placeholder="Enter lead name" [(ngModel)]="newLeadForm.leadName"
+            name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input type="tel" class="form-input" placeholder="Enter phone number (e.g., +91 98765 43210)"
+            [(ngModel)]="newLeadForm.leadPhone" name="leadPhone" maxlength="10" pattern="[0-9]{10}" required>
+        </div>
+
+        <!-- <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input
+            type="email"
+            class="form-input"
+            placeholder="Enter email address"
+            [(ngModel)]="newLeadForm.email"
+            name="email"
+            required
+          >
+        </div> -->
+
+        <div class="form-buttons">
+          <button type="submit" class="submit-btn" [disabled]="isLoading">
+            <i *ngIf="!isLoading" class="fas fa-paper-plane">
+
+            </i> Submit Lead
+          </button>
+          
+          <button type="button" class="cancel-btn" (click)="toggleFormVisibility()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+
+       <!-- ✅ Message after submit -->
+    <div *ngIf="message" class="message-box" [ngClass]="messageType">
+      {{ message }}
+    </div>
+    </div>
+  </div>
+
+  <!-- Controls Section -->
+  <div class="controls-section">
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input-field" placeholder="Search by name, email, or phone..."
+        [(ngModel)]="searchQuery">
+    </div>
+
+    <div class="filter-controls">
+      <select class="sort-dropdown" [(ngModel)]="sortBy">
+        <option value="date">Sort by Date</option>
+        <option value="name">Sort by Name</option>
+        <option value="status">Sort by Status</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container-wrapper">
+    <table class="lead-table">
+      <thead class="table-header-section">
+        <tr class="header-row">
+          <!-- <th class="table-header-cell">Lead ID</th> -->
+          <th class="table-header-cell">Lead Name</th>
+          <th class="table-header-cell">Phone Number</th>
+          <!-- <th class="table-header-cell">Email Address</th> -->
+          <th class="table-header-cell">Submitted Date</th>
+          <th class="table-header-cell">Submitted Time</th>
+          <!-- <th class="table-header-cell">Status</th> -->
+          <th class="table-header-cell">Notes</th>
+          <th class="table-header-cell">Lead Source</th>
+          <th class="table-header-cell">Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-body-section">
+        <tr class="data-row" *ngFor="let lead of sortLeadsData(); let i = index">
+          <!-- <td class="table-data-cell">
+            <span class="cell-badge">{{ lead.leadId }}</span>
+          </td> -->
+          <td class="table-data-cell">
+            <div class="lead-cell-info">
+              <div class="lead-avatar-mini">
+                {{ lead.leadName.charAt(0).toUpperCase() }}
+              </div>
+              <span class="lead-name-text">{{ lead.leadName }}</span>
+            </div>
+          </td>
+          <td class="table-data-cell">
+            <div class="phone-info">
+              <i class="fas fa-phone phone-icon"></i>
+              <span>{{ lead.leadPhone }}</span>
+            </div>
+          </td>
+          <!-- <td class="table-data-cell">
+            <span class="email-text">{{ lead.leadEmail }}</span>
+          </td> -->
+          <td class="table-data-cell">
+            <span class="date-text">{{ lead.submittedDate }}</span>
+          </td>
+          <td class="table-data-cell">
+            <span class="time-text">{{ lead.submittedTime }}</span>
+          </td>
+          <td class="table-data-cell">
+            <div class="source-badge">
+              <i [class]="getLeadSourceIcon(lead.leadSource)" class="source-icon"></i>
+              <span>{{ lead.leadSource }}</span>
+            </div>
+          </td>
+          <!-- <td class="table-data-cell">
+            <span class="status-badge" [ngClass]="getStatusBadgeClass(lead.leadStatus)">
+              <i [class]="getStatusIcon(lead.leadStatus)"></i>
+              {{ lead.leadStatus }}
+            </span>
+          </td> -->
+          <td class="table-data-cell">
+            <span class="notes-text" title="{{ lead.notes }}">{{ lead.notes }}</span>
+          </td>
+          <td class="table-data-cell">
+            <div class="action-buttons">
+              <!-- <button class="action-btn edit-btn" title="Edit lead">
+                <i class="fas fa-edit"></i>
+              </button> -->
+              <button class="action-btn delete-btn" (click)="deleteLead(i)" title="Delete lead">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="sortLeadsData().length === 0">
+    <i class="fas fa-inbox empty-icon"></i>
+    <h3 class="empty-title">No leads found</h3>
+    <p class="empty-message">Try adjusting your search or add a new lead</p>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<!-- // sidebar.component.html -->
+<!-- <div class="sidenav" [class.collapsed]="!isSidebarOpen"> -->
+<div class="sidenav" [class.closed]="!isSidebarOpen">
+
+  <button class="toggle-btn" (click)="toggleSidebar()">
+    <span class="hamburger" [class.active]="isSidebarOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+
+  <div class="logo">
+    <div class="logo-icon">AF</div>
+    <h2 *ngIf="isSidebarOpen">AadiFintech</h2>
+  </div>
+
+  <nav class="menu">
+    <!-- Dashboard -->
+    <div class="menu-item-wrapper">
+      <a routerLink="/admin/dashboard" class="menu-item"
+        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
+        <!-- <span class="icon">📊</span> -->
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+
+        <span class="label" *ngIf="isSidebarOpen">Dashboard</span>
+      </a>
+    </div>
+
+    <!-- User Table with Submenu -->
+
+    <div class="menu-item-wrapper mt-4">
+      <a routerLink="/admin/userlogin" class="menu-item"
+        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
+        <!-- <span class="icon">📊</span> -->
+        <span class="icon"><i class="fas fa-users-cog"></i></span>
+
+        <span class="label" *ngIf="isSidebarOpen">User Table</span>
+      </a>
+    </div>
+
+    <!-- user lead component  -->
+
+    <div class="menu-item-wrapper mt-4">
+      <a routerLink="/admin/userlead" class="menu-item"
+        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
+        <!-- <span class="icon">📊</span> -->
+        <span class="icon"><i class="fas fa-address-card"></i></span>
+
+        <span class="label" *ngIf="isSidebarOpen">User Lead</span>
+      </a>
+    </div>
+
+    <!-- for cookies -->
+
+    <div class="menu-item-wrapper mt-4">
+      <a routerLink="/admin/cookies" class="menu-item"
+        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
+        <!-- <span class="icon">📊</span> -->
+        <span class="icon"><i class="fas fa-cookie-bite"></i></span>
+
+        <span class="label" *ngIf="isSidebarOpen">Cookies</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- <button (click)="toggleSidebar()">☰</button> -->
+
+  <div class="sidebar-footer" *ngIf="isSidebarOpen">
+    <div class="user-profile">
+      <div class="avatar">👤</div>
+      <div class="user-info">
+        <div class="user-name">Admin User</div>
+        <div class="user-role">Administrator</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -77,3 +77,13 @@
     bottom: 70px;
   }
 }
+
+::ng-deep .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(2px);
+}
+
+::ng-deep .custom-dialog-container .mat-mdc-dialog-container {
+  background: white;
+  border-radius: 12px;
+}

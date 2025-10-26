@@ -1,0 +1,166 @@
+<!-- Navigation Sidebar -->
+<!-- <div class="navigation-sidebar" [class.sidebar-active]="sidebarOpen">
+  <div class="brand-logo">
+    <i class="fas fa-chart-line"></i> Dashboard
+  </div>
+  <ul class="navigation-menu">
+    <li class="menu-item-active">
+      <a href="#" class="menu-link"><i class="fas fa-home"></i> Dashboard</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-users"></i> Users</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-box"></i> Products</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-cog"></i> Settings</a>
+    </li>
+  </ul>
+</div> -->
+
+<!-- Main Dashboard Content -->
+<div class="dashboard-main-content" style="margin-top: 40px;">
+  <!-- <button class="sidebar-toggle-btn" (click)="toggleNavigationSidebar()">
+    <i class="fas fa-bars"></i> Menu
+  </button> -->
+
+  <div class="dashboard-header">
+    <h2 class="header-title">Welcome Back, {{userProfile.name}}</h2>
+    <div class="header-user-info">
+      <div class="user-profile-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="user-details">
+        <strong class="user-name">{{ userProfile.name }}</strong>
+        <p class="user-role-text">{{ userProfile.email }}</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Additional Small Cards -->
+  <div class="dashboard-grid grid-margin-top">
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">Cookies Data</h5>
+          <p class="mini-card-value">{{totalVisitors}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">User Login</h5>
+          <p class="mini-card-value">{{totalUsers}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">user Lead</h5>
+          <p class="mini-card-value">{{totalLeads}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-cloud-download-alt"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">Grand Total</h5>
+          <p class="mini-card-value"> {{ grandTotal }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Projects Progress Cards -->
+  <div class="dashboard-grid grid-margin-top">
+    <div class="grid-column-2">
+      <div class="progress-section-card">
+        <h4 class="section-card-title"><i class="fas fa-tasks"></i> Active Projects</h4>
+        <div class="project-item" *ngFor="let project of activeProjects">
+          <div class="project-info-header">
+            <span class="project-label">{{ project.projectName }}</span>
+            <strong class="project-percentage">{{ project.projectProgress }}%</strong>
+          </div>
+          <div class="project-progress-container">
+            <div class="project-progress-bar" [style.width.%]="project.projectProgress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Activity Section HTML - Simple Line by Line -->
+    <div class="grid-column-2">
+      <div class="progress-section-card">
+        <h4 class="section-card-title">
+          <i class="fas fa-bell"></i> Recent Activities
+        </h4>
+
+        <div class="activity-item" *ngFor="let activity of recentActivities">
+          <div class="activity-icon-box">
+            <i [class]="activity.activityIcon"></i>
+          </div>
+
+          <div class="activity-details">
+            <h5 class="activity-heading">
+              {{ activity.leadName || activity.userName || 'Unknown' }}
+            </h5>
+
+            <p class="activity-text">
+              <!-- Lead Info -->
+              <ng-container *ngIf="activity.isLead">
+                <strong>Phone:</strong> {{ activity.leadPhone }}<br>
+                <strong>Source:</strong> {{ activity.leadSource }}<br>
+                <strong>Notes:</strong> {{ activity.notes }}<br>
+                <strong>Submitted:</strong> {{ activity.submittedDate }} {{ activity.submittedTime }}<br>
+                <strong>Created At:</strong> {{ activity.createdAt }}<br>
+                <strong>Updated At:</strong> {{ activity.updatedAt }}
+              </ng-container>
+
+              <!-- Login Info -->
+              <ng-container *ngIf="activity.isLogin">
+                <strong>Email:</strong> {{ activity.userEmail }}<br>
+                <strong>Phone:</strong> {{ activity.userPhone }}<br>
+                <strong>Status:</strong> {{ activity.accountStatus }}<br>
+                <strong>Signup Date:</strong> {{ activity.signupDate }}<br>
+                <strong>Last Login:</strong> {{ activity.lastLoginDate }} {{ activity.lastLoginTime }}<br>
+                <strong>Location:</strong> {{ activity.location }}<br>
+                <strong>Login Count:</strong> {{ activity.loginCount }}
+              </ng-container>
+            </p>
+
+            <span class="activity-timestamp">{{ activity.activityTime }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>

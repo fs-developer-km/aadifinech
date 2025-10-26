@@ -1,33 +1,61 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { LoginComponent } from '../auth/login/login.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatButtonModule, MatDialogModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  
+
 })
 export class NavbarComponent {
 
+  showLoginPopup = false;
 
-  constructor(private router: Router) {}
-
- dropdownOpen = false;
- // In your component .ts file
-email: string = 'customer.care@aadifintech.com';
+  toggleLoginPopup() {
+    this.showLoginPopup = !this.showLoginPopup;
+  }
 
 
-   ngOnInit(): void {
-    // Jab bhi route change ho (routerLink pe click hone ke baad)
+  constructor(private router: Router, private dialog: MatDialog) { }
+
+  dropdownOpen = false;
+  email: string = 'customer.care@aadifintech.com';
+
+
+  ngOnInit(): void {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.dropdownOpen = false;
       }
     });
   }
+
+
+  //  openLogin() {
+  //   this.dialog.open(LoginComponent, {
+  //     width: '400px',
+  //     disableClose: false
+  //   });
+  // }
+
+  openLogin() {
+    this.dialog.open(LoginComponent, {
+      width: '400px',
+      disableClose: false, // user can close by clicking outside
+    panelClass: 'custom-dialog-container',
+      data: { mode: 'login' } // optional
+    });
+  }
+
+
+
+
 
   openDropdown() {
     this.dropdownOpen = true;
@@ -68,22 +96,22 @@ email: string = 'customer.care@aadifintech.com';
 
 
   // Add this in your component
-// mobileSubMenu: string | null = null;
+  // mobileSubMenu: string | null = null;
 
-// toggleMobileSubMenu(menu: string): void {
-//   if (this.mobileSubMenu === menu) {
-//     this.mobileSubMenu = null;
-//   } else {
-//     this.mobileSubMenu = menu;
-//   }
-// }
+  // toggleMobileSubMenu(menu: string): void {
+  //   if (this.mobileSubMenu === menu) {
+  //     this.mobileSubMenu = null;
+  //   } else {
+  //     this.mobileSubMenu = menu;
+  //   }
+  // }
 
-  
-mobileSubMenu: string | null = null;
 
-toggleMobileSubMenu(menu: string): void {
-  this.mobileSubMenu = this.mobileSubMenu === menu ? null : menu;
-}
+  mobileSubMenu: string | null = null;
+
+  toggleMobileSubMenu(menu: string): void {
+    this.mobileSubMenu = this.mobileSubMenu === menu ? null : menu;
+  }
 
 
 }

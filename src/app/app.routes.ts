@@ -59,25 +59,39 @@ export const routes: Routes = [
     {
         path: 'contact', component: ContactUsComponent
     },
-    { 
-        path: 'services/fund-raising', component: FundRaisingComponent 
+    {
+        path: 'services/fund-raising', component: FundRaisingComponent
     },
-    { path: 'services/ourMission', component: OurMissionComponent},
+    { path: 'services/ourMission', component: OurMissionComponent },
     { path: 'services/investment-banking', component: InvestmentBankingComponent },
     { path: 'services/training-placement', component: TrainingPlacementComponent },
     { path: 'services/credit-rating', component: CreditRatingComponent },
     { path: 'services/tech-services', component: TechServicesComponent },
     { path: 'services/digital-marketing', component: DigitalMarketingComponent },
-    { path: 'services/loanForEveryIndian', component:  LoanForEveryIndianComponent},
-    { path: 'services/realState', component:  RealStateComponent},
-    { path: 'services/wealth', component:  WealthMaanagementComponent},
-    { path: 'services/billDiscounting', component:BillDiscountsComponent},
-    { path: 'services/exportbillDiscounting', component:ExportBillDiscountingComponent},
-    { path: 'services/creditRatingAdversory', component:CresitRatingComponent},
-    { path: 'services/ourInsuranceServices', component:OurInsuranceServicesComponent},
-    { path: 'services/ourEndToEndforeignServices', component:OurEndToEndforeignServicesComponent},
-    { path: 'services/bankingDomainExpertConsultency', component:BankingDomainExpertConsultancyComponent},
-    { path: 'services/FinancialConsultancyforCorporates', component:FinancialConsultancyforCorporatesComponent},
+    { path: 'services/loanForEveryIndian', component: LoanForEveryIndianComponent },
+    { path: 'services/realState', component: RealStateComponent },
+    { path: 'services/wealth', component: WealthMaanagementComponent },
+    { path: 'services/billDiscounting', component: BillDiscountsComponent },
+    { path: 'services/exportbillDiscounting', component: ExportBillDiscountingComponent },
+    { path: 'services/creditRatingAdversory', component: CresitRatingComponent },
+    { path: 'services/ourInsuranceServices', component: OurInsuranceServicesComponent },
+    { path: 'services/ourEndToEndforeignServices', component: OurEndToEndforeignServicesComponent },
+    { path: 'services/bankingDomainExpertConsultency', component: BankingDomainExpertConsultancyComponent },
+    { path: 'services/FinancialConsultancyforCorporates', component: FinancialConsultancyforCorporatesComponent },
+
+    // add auth module with lazy loading 
+
+    {
+        path: 'auth',
+        loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+    },
+
+     {
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+    },
     
+    
+
 
 ];

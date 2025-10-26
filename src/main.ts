@@ -18,3 +18,5 @@ import { appConfig } from './app/app.config';  // Ye jisme animation + router do
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
 
+
+

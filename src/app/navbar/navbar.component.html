@@ -185,8 +185,8 @@
                     <!-- <button type="button" class="simple-icon me-3 searchBoxToggler">
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button> -->
-                    <a routerLink="/contact" class="th-btn style2">
-                      Get A Quote <i class="fa-solid fa-arrow-right ms-2"></i>
+                    <a (click)="openLogin()" class="th-btn style2" style="cursor:pointer">
+                      Login <i class="fa-solid fa-arrow-right ms-2"></i>
                     </a>
                     <!-- <a href="#" class="simple-icon style2 ms-3 sideMenuToggler">
                       <i class="fa-solid fa-border-all"></i>
@@ -197,6 +197,8 @@
             </div>
           </div>
         </div>
+
+
 
         <!-- Mobile Menu -->
         <!-- Mobile Menu -->
@@ -261,6 +263,8 @@
                     <i class="fas fa-bullhorn me-2"></i>Financial Consultancy for Corporates</a>
                 </li>
               </ul>
+
+
             </li>
 
             <li><a routerLink="/team" (click)="toggleMobileMenu()"><i class="fas fa-users me-2"></i> Team</a></li>
@@ -268,7 +272,21 @@
                 Partner</a></li>
             <li><a routerLink="/contact" (click)="toggleMobileMenu()"><i class="fas fa-envelope me-2"></i> Contact</a>
             </li>
+
+            <li class="login-item" style="border:2px solid #DD3333 !important;">
+              <a (click)="openLogin()">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span class="ms-2">Login</span>
+              </a>
+            </li>
+
+
+
           </ul>
+
+
+
+
         </div>
 
 
