@@ -1,3 +1,4 @@
+
 <div class="popup-backdrop" *ngIf="isVisible">
   <div class="enquiry-popup" (click)="$event.stopPropagation()">
 
@@ -6,50 +7,84 @@
       <span>&times;</span>
     </button>
 
-    <!-- Header Section -->
-    <div class="popup-header">
-      <h2>AadiFintech</h2>
-      <p class="tagline text-center">Loan & Finance Solutions</p>
-      <p class="info-text">
-        💼 Get instant loan approval | 📞 Our team will contact you within 24 hours
-      </p>
-    </div>
-
-    <!-- Form Section -->
-    <form class="enquiry-form" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">
-          <span class="icon">👤</span>
-          Your Name
-        </label>
-        <input type="text" id="name" [(ngModel)]="leadName" name="leadName" placeholder="Enter your full name"
-          required />
+    <!-- Two Column Layout -->
+    <div class="popup-content-wrapper">
+      
+      <!-- Left Side - Welcome Image & Text -->
+      <div class="welcome-side">
+        <div class="welcome-image-section">
+          <img src="https://static.vecteezy.com/system/resources/thumbnails/024/359/868/small/central-banks-regulate-the-supply-of-money-in-an-economy-vector.jpg" 
+               alt="Professional Finance Consultant" class="professional-img" />
+          <div class="welcome-badge">
+            <!-- <div class="badge-content">
+              <h3>FOR WOMEN</h3>
+              <p>WHO DREAM BIG!</p>
+            </div> -->
+          </div>
+        </div>
+        
+        <div class="welcome-text-overlay">
+          <h2 class="main-welcome-title">Welcome to <span>AadiFintech</span></h2>
+          <p class="welcome-description">
+            We're delighted to have you here. To assist you better and keep you updated with relevant information, 
+            we would appreciate if you could share your contact details with us.
+          </p>
+          <div class="privacy-note-box">
+            <span class="lock-icon">🔒</span>
+            <p>Your privacy matters — you can continue browsing even if you choose not to share your details.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="mobile">
-          <span class="icon">📞</span>
-          Mobile Number
-        </label>
-        <input type="tel" id="mobile" [(ngModel)]="leadPhone" name="leadPhone"
-          placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[0-9]{10}" required />
+      <!-- Right Side - Form -->
+      <div class="form-side">
+        <div class="form-header">
+          <h2 class="form-title">Get Started Today</h2>
+          <p class="form-subtitle">Loan & Finance Solutions</p>
+          <div class="info-banner">
+            <p>💼 Instant approval | 📞 Contact within 24 hours</p>
+          </div>
+        </div>
+
+        <!-- Form Section -->
+        <form class="enquiry-form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="name">
+              <span class="icon">👤</span>
+              Your Name
+            </label>
+            <input type="text" id="name" [(ngModel)]="leadName" name="leadName" 
+                   placeholder="Enter your full name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="mobile">
+              <span class="icon">📞</span>
+              Mobile Number
+            </label>
+            <input type="tel" id="mobile" [(ngModel)]="leadPhone" name="leadPhone"
+                   placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[0-9]{10}" required />
+          </div>
+
+          <!-- Submit Button with Loader -->
+          <button type="submit" class="submit-btn" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="loader"></span>
+            <span *ngIf="!isLoading">Submit Enquiry</span>
+          </button>
+        </form>
+
+        <!-- ✅ Message Section -->
+        <div *ngIf="message" class="message-box" [ngClass]="messageType">
+          {{ message }}
+        </div>
+
+        <!-- Footer Info -->
+        <div class="footer-info">
+          <p>🔒 Your information is safe with us</p>
+          <p class="thank-you-text">Thank you for visiting <strong>Aadi Fintech</strong>. We look forward to serving you!</p>
+        </div>
       </div>
 
-      <!-- Submit Button with Loader -->
-      <button type="submit" class="submit-btn" [disabled]="isLoading">
-        <span *ngIf="isLoading" class="loader"></span>
-        <span *ngIf="!isLoading">Submit Enquiry</span>
-      </button>
-    </form>
-
-    <!-- ✅ Message Section -->
-    <div *ngIf="message" class="message-box" [ngClass]="messageType">
-      {{ message }}
-    </div>
-
-    <!-- Footer Info -->
-    <div class="footer-info">
-      <p>🔒 Your information is safe with us</p>
     </div>
   </div>
 </div>
@@ -57,9 +92,7 @@
 <!-- ✅ Success Modal -->
 <div class="success-modal-backdrop" *ngIf="showSuccessModal">
   <div class="success-modal">
-
-    <!-- lead-success-modal.component.html -->
-    <div class="lead-modal-overlay" >
+    <div class="lead-modal-overlay">
       <div class="lead-modal-container" (click)="$event.stopPropagation()">
         <button class="lead-close-button" (click)="closeSuccessModal()">×</button>
 
@@ -99,6 +132,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
