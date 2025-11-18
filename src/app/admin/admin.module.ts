@@ -7,33 +7,48 @@ import { UserdashComponent } from './userdash/userdash.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserLeadComponent } from './user-lead/user-lead.component';
 import { CookiesComponent } from './cookies/cookies.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { adminGuard } from '../core/guards/admin.guard';
 
-
-
-
-// ✅ Admin ke routes yahi define karte hain
 const routes: Routes = [
-   {
+  {
     path: '',
     component: LayoutComponent,
+    canActivateChild: [adminGuard],  // only one guard
+
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'userdash', component: UserdashComponent},
-      { path: 'userlogin',component: UserLoginComponent},
-      { path: 'userlead', component: UserLeadComponent},
-      { path: 'cookies', component: CookiesComponent}
-    ],
-  },
+      { path: 'cookies', component: CookiesComponent },
+      { path: 'userlogin', component: UserLoginComponent },
+      { path: 'userlead', component: UserLeadComponent },
+      { path: 'usermgmt', component: UserManagementComponent },
+
+      // Role specific modules inside admin
+      { 
+        path: 'employee',
+        loadChildren: () =>
+          import('../modules/employee/employee.module').then(m => m.EmployeeModule)
+      },
+
+      { 
+        path: 'partner',
+        loadChildren: () =>
+          import('../modules/partner/partner.module').then(m => m.PartnerModule)
+      },
+
+      { 
+        path: 'user',
+        loadChildren: () =>
+          import('../modules/user/user.module').then(m => m.UserModule)
+      },
+
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
+  }
 ];
 
 
-
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes) // yahi auth ke routes connect karega
-    
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class AdminModule { }
+export class AdminModule {}

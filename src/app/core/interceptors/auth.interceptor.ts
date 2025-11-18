@@ -10,7 +10,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = authService.getToken();
 
-  // Clone request and add Authorization header if token exists
+  // ==================================================
+  // 🔥 Add Bearer Token to ALL API requests
+  // ==================================================
   const clonedReq = token
     ? req.clone({
         setHeaders: {
@@ -19,13 +21,43 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       })
     : req;
 
+  // ==================================================
+  // 🔥 Handle All Response Errors
+  // ==================================================
   return next(clonedReq).pipe(
     catchError((error) => {
-      if (error.status === 401 || error.status === 403) {
-        // Unauthorized or Forbidden
+      console.error("🔴 Interceptor Error:", error);
+
+      // ===============================
+      // 🔥 Token Expired or Invalid
+      // ===============================
+      if (error.status === 401) {
+        console.warn("⚠ Token expired or invalid");
+
         authService.logout();
-        router.navigate(['/login']);
+
+        // Redirect to login page
+        router.navigate(['/login'], {
+          queryParams: { sessionExpired: true }
+        });
       }
+
+      // ===============================
+      // 🔥 User Not Allowed (403)
+      // ===============================
+      else if (error.status === 403) {
+        console.warn("⛔ Access Forbidden (403)");
+
+        const role = authService.getRole();
+
+        // Block access & send user back to their correct dashboard
+        if (role === 'admin') router.navigate(['/admin']);
+        else if (role === 'employee') router.navigate(['/employee']);
+        else if (role === 'partner') router.navigate(['/partner']);
+        else router.navigate(['/user']);
+      }
+
+      // Pass error forward
       return throwError(() => error);
     })
   );

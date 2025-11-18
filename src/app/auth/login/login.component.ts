@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private dialogRef: MatDialogRef<LoginComponent>
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -38,11 +38,13 @@ export class LoginComponent implements OnInit {
       mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
     this.updateValidators();
   }
 
   updateValidators(): void {
     const nameControl = this.loginForm.get('name');
+
     if (this.mode === 'login') {
       nameControl?.clearValidators();
       nameControl?.disable();
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
       nameControl?.setValidators([Validators.required, Validators.minLength(3)]);
       nameControl?.enable();
     }
+
     nameControl?.updateValueAndValidity();
   }
 
@@ -60,14 +63,17 @@ export class LoginComponent implements OnInit {
     if (field.errors['required']) return `${fieldName} is required`;
     if (field.errors['minlength']) return `${fieldName} must be at least ${field.errors['minlength'].requiredLength} characters`;
     if (field.errors['pattern'] && fieldName === 'mobile') return 'Mobile must be 10 digits';
+
     return 'Invalid input';
   }
 
   switchMode(): void {
     this.mode = this.mode === 'login' ? 'signup' : 'login';
+
     this.loginForm.reset();
     this.errorMessage = '';
     this.successMessage = '';
+
     this.updateValidators();
   }
 
@@ -80,55 +86,75 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
     this.successMessage = '';
+
     const formData = this.loginForm.getRawValue();
 
-if (this.mode === 'login') {
-  this.authService.login({ mobile: formData.mobile, password: formData.password }).subscribe({
-    next: (res) => {
-      this.loading = false;
-      this.successMessage = '✅ Login successful!';
+    // ======================
+    //      LOGIN MODE
+    // ======================
+    if (this.mode === 'login') {
+      this.authService.login({ mobile: formData.mobile, password: formData.password }).subscribe({
+        next: (res) => {
+          this.loading = false;
+          this.successMessage = '✅ Login successful!';
 
-         // 🔹 Save token
-      this.authService.saveToken(res.token);
+          // Save token & user
+          this.authService.saveToken(res.token);
+          this.authService.setUser(res.user);
 
-      // 🔹 Save user details
-      this.authService.setUser(res.user);
+          setTimeout(() => {
+            this.dialogRef.close();
 
-      setTimeout(() => {
-        this.dialogRef.close();
+            // ROLE BASED REDIRECT
+        switch (res.user?.role) {
 
-        // 🔹 Role based navigation
-        if (res.user?.role === 'admin') {
-          this.router.navigate(['admin/dashboard']);
-        } else if (res.user?.role === 'user') {
-          this.router.navigate(['admin/userdash']);
-        } else {
-          // fallback route (in case role not found)
-          this.router.navigate(['/']);
-        }
-      }, 1500);
-    },
-    error: (err) => {
-      this.loading = false;
-      this.errorMessage = err.error?.msg || '❌ Invalid credentials!';
-    }
-  });
+  case 'admin':
+    this.router.navigate(['/admin/dashboard']);
+    break;
+
+  case 'employee':
+    this.router.navigate(['admin/employee/dashboard']);
+    break;
+
+  case 'partner':
+    this.router.navigate(['admin/partner/dashboard']);
+    break;
+
+  case 'user':
+    this.router.navigate(['admin/user/dashboard']);
+    break;
+
+  default:
+    this.router.navigate(['/auth/login']);
 }
- else {
+
+
+
+          }, 1200);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorMessage = err.error?.msg || '❌ Invalid credentials!';
+        }
+      });
+    }
+
+    // ======================
+    //      SIGNUP MODE
+    // ======================
+    else {
       this.authService.signup(formData).subscribe({
         next: (res) => {
           this.loading = false;
           this.successMessage = '🎉 Signup successful!';
 
-             // 🔹 Save token
-      this.authService.saveToken(res.token);
+          this.authService.saveToken(res.token);
+          this.authService.setUser(res.user);
 
-      // 🔹 Save user details
-      this.authService.setUser(res.user);
           setTimeout(() => {
             this.dialogRef.close();
             this.router.navigate(['admin/userdash']);
-          }, 1500);
+          }, 1200);
         },
         error: (err) => {
           this.loading = false;

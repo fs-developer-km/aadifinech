@@ -1,78 +1,142 @@
-<!-- // sidebar.component.html -->
-<!-- <div class="sidenav" [class.collapsed]="!isSidebarOpen"> -->
 <div class="sidenav" [class.closed]="!isSidebarOpen">
 
+  <!-- Toggle Button -->
   <button class="toggle-btn" (click)="toggleSidebar()">
     <span class="hamburger" [class.active]="isSidebarOpen">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </span>
   </button>
 
+  <!-- Logo Section -->
   <div class="logo">
     <div class="logo-icon">AF</div>
     <h2 *ngIf="isSidebarOpen">AadiFintech</h2>
   </div>
 
   <nav class="menu">
-    <!-- Dashboard -->
-    <div class="menu-item-wrapper">
-      <a routerLink="/admin/dashboard" class="menu-item"
-        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
-        <!-- <span class="icon">📊</span> -->
-        <span class="icon"><i class="fas fa-chart-line"></i></span>
 
-        <span class="label" *ngIf="isSidebarOpen">Dashboard</span>
-      </a>
-    </div>
+    <!-- ADMIN MENU -->
+    <ng-container *ngIf="userRole === 'admin'">
 
-    <!-- User Table with Submenu -->
+      <div class="menu-item-wrapper">
+        <a routerLink="/admin/dashboard" class="menu-item">
+          <span class="icon"><i class="fas fa-chart-line"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Dashboard</span>
+        </a>
+      </div>
 
-    <div class="menu-item-wrapper mt-4">
-      <a routerLink="/admin/userlogin" class="menu-item"
-        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
-        <!-- <span class="icon">📊</span> -->
-        <span class="icon"><i class="fas fa-users-cog"></i></span>
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/admin/cookies" class="menu-item">
+          <span class="icon"><i class="fas fa-cookie-bite"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Cookies</span>
+        </a>
+      </div>
 
-        <span class="label" *ngIf="isSidebarOpen">User Table</span>
-      </a>
-    </div>
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/admin/userlogin" class="menu-item">
+          <span class="icon"><i class="fas fa-users-cog"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">User Table</span>
+        </a>
+      </div>
 
-    <!-- user lead component  -->
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/admin/userlead" class="menu-item">
+          <span class="icon"><i class="fas fa-address-card"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">User Lead</span>
+        </a>
+      </div>
 
-    <div class="menu-item-wrapper mt-4">
-      <a routerLink="/admin/userlead" class="menu-item"
-        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
-        <!-- <span class="icon">📊</span> -->
-        <span class="icon"><i class="fas fa-address-card"></i></span>
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/admin/usermgmt" class="menu-item">
+          <span class="icon"><i class="fas fa-user-tie"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Employee Mgmt</span>
+        </a>
+      </div>
 
-        <span class="label" *ngIf="isSidebarOpen">User Lead</span>
-      </a>
-    </div>
+    </ng-container>
 
-    <!-- for cookies -->
+    <!-- EMPLOYEE MENU -->
+    <ng-container *ngIf="userRole === 'employee'">
 
-    <div class="menu-item-wrapper mt-4">
-      <a routerLink="/admin/cookies" class="menu-item"
-        style="color: #fff; background-color: rgba(255, 255, 255, 0.15);">
-        <!-- <span class="icon">📊</span> -->
-        <span class="icon"><i class="fas fa-cookie-bite"></i></span>
+      <div class="menu-item-wrapper">
+        <a routerLink="/admin/employee/dashboard" class="menu-item">
+          <span class="icon"><i class="fas fa-user-cog"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Employee Dashboard</span>
+        </a>
+      </div>
 
-        <span class="label" *ngIf="isSidebarOpen">Cookies</span>
-      </a>
-    </div>
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/admin/employee/employeeassignlead" class="menu-item">
+          <span class="icon"><i class="fas fa-tasks"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Employee Assigned Leads</span>
+        </a>
+      </div>
+
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/employee/attendance" class="menu-item">
+          <span class="icon"><i class="fas fa-fingerprint"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Attendance</span>
+        </a>
+      </div>
+
+    </ng-container>
+
+    <!-- PARTNER MENU -->
+    <ng-container *ngIf="userRole === 'partner'">
+
+      <div class="menu-item-wrapper">
+        <a routerLink="/admin/partner/dashboard" class="menu-item">
+          <span class="icon"><i class="fas fa-handshake"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Partner Dashboard</span>
+        </a>
+      </div>
+
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/admin/partner/partnerTable" class="menu-item">
+          <span class="icon"><i class="fas fa-file-alt"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Partner Lead Status</span>
+        </a>
+      </div>
+
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/partner/earnings" class="menu-item">
+          <span class="icon"><i class="fas fa-coins"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Earnings</span>
+        </a>
+      </div>
+
+    </ng-container>
+
+    <!-- USER MENU -->
+    <ng-container *ngIf="userRole === 'user'">
+
+      <div class="menu-item-wrapper">
+        <a routerLink="/user/dashboard" class="menu-item">
+          <span class="icon"><i class="fas fa-user"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">User Dashboard</span>
+        </a>
+      </div>
+
+      <div class="menu-item-wrapper mt-4">
+        <a routerLink="/user/profile" class="menu-item">
+          <span class="icon"><i class="fas fa-id-card"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Profile</span>
+        </a>
+      </div>
+
+    </ng-container>
+
   </nav>
 
-  <!-- <button (click)="toggleSidebar()">☰</button> -->
-
+  <!-- Footer Section -->
   <div class="sidebar-footer" *ngIf="isSidebarOpen">
     <div class="user-profile">
       <div class="avatar">👤</div>
       <div class="user-info">
-        <div class="user-name">Admin User</div>
-        <div class="user-role">Administrator</div>
+        <div class="user-name">{{ authService.getUser()?.name }}</div>
+        <div class="user-role">{{ userRole | titlecase }}</div>
       </div>
     </div>
   </div>
+
 </div>

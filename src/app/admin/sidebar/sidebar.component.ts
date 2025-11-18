@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, HostListener
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';  // ⭐ ADD THIS
 
 interface MenuItem {
   label: string;
   icon: string;
-  submenu?: MenuItem[];
   routerLink?: string;
+  submenu?: MenuItem[];
   expanded?: boolean;
 }
 
@@ -19,109 +20,130 @@ interface MenuItem {
   styleUrls: ['./sidebar.component.css'],
   animations: [
     trigger('slideDown', [
-      state('collapsed', style({
-        height: '0',
-        overflow: 'hidden',
-        opacity: 0
-      })),
-      state('expanded', style({
-        height: '*',
-        overflow: 'visible',
-        opacity: 1
-      })),
-      transition('collapsed => expanded', [
-        animate('400ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ]),
-      transition('expanded => collapsed', [
-        animate('300ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ])
+      state('collapsed', style({ height: '0', overflow: 'hidden', opacity: 0 })),
+      state('expanded', style({ height: '*', overflow: 'visible', opacity: 1 })),
+      transition('collapsed => expanded', [animate('350ms ease')]),
+      transition('expanded => collapsed', [animate('250ms ease')]),
     ]),
     trigger('rotate', [
-      state('collapsed', style({
-        transform: 'rotate(0deg)'
-      })),
-      state('expanded', style({
-        transform: 'rotate(180deg)'
-      })),
-      transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-10px)' }),
-        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
+      state('collapsed', style({ transform: 'rotate(0deg)' })),
+      state('expanded', style({ transform: 'rotate(180deg)' })),
+      transition('collapsed <=> expanded', animate('300ms ease'))
     ])
   ]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+
   @Input() isSidebarOpen: boolean = true;
   @Output() isSidebarOpenChange = new EventEmitter<boolean>();
 
   private readonly MOBILE_BREAKPOINT = 992;
   private resizeTimeout: any;
 
-  menuItems: MenuItem[] = [
-    { label: 'Dashboard', icon: '📊', routerLink: '/', expanded: false },
-    {
-      label: 'User Table',
-      icon: '👥',
-      submenu: [{ label: 'User Login', icon: '🔑', routerLink: '/admin/userlogin' }],
-      expanded: false
-    }
-  ];
+  userRole: string = '';
+  menuItems: MenuItem[] = [];
+
+  constructor(public authService: AuthService) {}
 
   ngOnInit() {
-    this.checkScreenSize();
+      this.userRole = this.authService.getUser()?.role;
+
+    const user = this.authService.getUser();
+    this.userRole = user?.role || '';
+
+    this.menuItems = this.getMenuForRole();  // ⭐ Load menu dynamically
+    this.checkScreenSize();                 // ⭐ Sidebar open/close logic
   }
 
   ngOnDestroy() {
     if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
   }
 
-  // ✅ Listen to window resize events
+  // --------------------------------------------------------
+  // ⭐ ROLE BASED MENU GENERATOR (MAIN LOGIC)
+  // --------------------------------------------------------
+  getMenuForRole(): MenuItem[] {
+    switch (this.userRole) {
+
+      case 'admin':
+        return [
+          { label: 'Dashboard', icon: '📊', routerLink: '/admin/dashboard' },
+          { label: 'Cookies', icon: '🍪', routerLink: '/admin/cookies' },
+          { label: 'User Table', icon: '👥', routerLink: '/admin/userlogin' },
+          { label: 'User Lead', icon: '📑', routerLink: '/admin/userlead' },
+          { label: 'Employee Management', icon: '🧑‍💼', routerLink: '/admin/usermgmt' }
+        ];
+
+      case 'employee':
+        return [
+          { label: 'Dashboard', icon: '🧑‍💻', routerLink: '/employee/dashboard' },
+          { label: 'Assigned Leads', icon: '📝', routerLink: '/employee/assigned-leads' },
+          { label: 'Attendance', icon: '⏱️', routerLink: '/employee/attendance' }
+        ];
+
+      case 'partner':
+        return [
+          { label: 'Dashboard', icon: '🤝', routerLink: '/partner/dashboard' },
+          { label: 'Lead Status', icon: '📋', routerLink: '/partner/lead-status' },
+          { label: 'Earnings', icon: '💰', routerLink: '/partner/earnings' }
+        ];
+
+      case 'user':
+        return [
+          { label: 'Dashboard', icon: '🏠', routerLink: '/user/dashboard' },
+          { label: 'Profile', icon: '🪪', routerLink: '/user/profile' }
+        ];
+
+      default:
+        return [];
+    }
+  }
+
+  // --------------------------------------------------------
+  // ⭐ Responsive behavior
+  // --------------------------------------------------------
   @HostListener('window:resize')
   onResize() {
     if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
     this.resizeTimeout = setTimeout(() => this.checkScreenSize(), 150);
   }
 
-  // ✅ Ensure sidebar closes on mobile, opens on desktop
- private checkScreenSize() {
-  const isMobile = window.innerWidth <= this.MOBILE_BREAKPOINT;
+  private checkScreenSize() {
+    const isMobile = window.innerWidth <= this.MOBILE_BREAKPOINT;
 
-  if (isMobile) {
-    this.isSidebarOpen = false; // ✅ closed by default on mobile
-    document.body.classList.add('collapsed');
-  } else {
-    this.isSidebarOpen = true; // ✅ open on desktop
-    document.body.classList.remove('collapsed');
+    this.isSidebarOpen = !isMobile;
+    document.body.classList.toggle('collapsed', !this.isSidebarOpen);
+
+    this.isSidebarOpenChange.emit(this.isSidebarOpen);
   }
 
-  this.isSidebarOpenChange.emit(this.isSidebarOpen);
-}
-
-
+  // --------------------------------------------------------
+  // ⭐ Toggle Sidebar
+  // --------------------------------------------------------
   toggleSidebar() {
-  this.isSidebarOpen = !this.isSidebarOpen;
-  this.isSidebarOpenChange.emit(this.isSidebarOpen);
-  document.body.classList.toggle('collapsed', !this.isSidebarOpen);
-}
+    this.isSidebarOpen = !this.isSidebarOpen;
+    document.body.classList.toggle('collapsed', !this.isSidebarOpen);
 
+    this.isSidebarOpenChange.emit(this.isSidebarOpen);
+  }
 
-  // ✅ Handle submenu toggle
+  // --------------------------------------------------------
+  // ⭐ Submenu toggle
+  // --------------------------------------------------------
   toggleMenu(item: MenuItem) {
     item.expanded = !item.expanded;
   }
 
-  // ✅ Auto-close sidebar on menu click (mobile only)
+  // --------------------------------------------------------
+  // ⭐ Auto close sidebar on mobile
+  // --------------------------------------------------------
   onClickMenu(item: MenuItem) {
-    console.log('Clicked menu:', item.label, 'RouterLink:', item.routerLink);
     if (window.innerWidth <= this.MOBILE_BREAKPOINT && item.routerLink) {
       setTimeout(() => {
         this.isSidebarOpen = false;
-        this.isSidebarOpenChange.emit(this.isSidebarOpen);
         document.body.classList.add('collapsed');
-      }, 300);
+        this.isSidebarOpenChange.emit(this.isSidebarOpen);
+      }, 200);
     }
   }
 }

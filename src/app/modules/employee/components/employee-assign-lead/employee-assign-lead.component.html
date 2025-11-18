@@ -1,0 +1,351 @@
+<div class="container">
+  <!-- Enhanced Header Section -->
+  <div class=" content-wrapper" style="margin-top: 50px;">
+    <div class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <div class="logo-section">
+            <!-- <div class="logo-icon">🏦</div> -->
+            <div class="header-text">
+              <h1>Banking Lead Management System</h1>
+              <p class="subtitle">Employee Dashboard - Manage Your Assigned Loan Applications</p>
+            </div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="user-info">
+            <span class="user-name">👤 Employee Portal</span>
+            <span class="date-time">{{ leads[0].assignedDate | date: 'dd MMM yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compact Statistics Cards -->
+  <div class="content-wrapper">
+    <div class="stats-container">
+      <div class="stat-card stat-total">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <h3>{{ leads.length }}</h3>
+          <p>Total Applications</p>
+        </div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+          <h3>{{ getPendingCount() }}</h3>
+          <p>Pending Review</p>
+        </div>
+      </div>
+      <div class="stat-card stat-accepted">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <h3>{{ getAcceptedCount() }}</h3>
+          <p>Approved</p>
+        </div>
+      </div>
+      <div class="stat-card stat-value">
+        <div class="stat-icon">💰</div>
+        <div class="stat-info">
+          <h3>₹{{ (getTotalValue() / 10000000).toFixed(2) }}Cr</h3>
+          <p>Approved Amount</p>
+        </div>
+      </div>
+    </div>
+
+  <!-- Filters and Search -->
+  <div class="filters-section">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        placeholder="Search by customer name, loan type, branch..."
+        class="search-input"
+      />
+    </div>
+    
+    <div class="filter-group">
+      <label>Status:</label>
+      <select [(ngModel)]="filterStatus" class="filter-select">
+        <option value="All">All Applications</option>
+        <option value="Pending">Pending</option>
+        <option value="Accepted">Accepted</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </div>
+
+    <button class="export-btn" (click)="exportToCSV()">
+      📥 Export CSV
+    </button>
+  </div>
+
+  <!-- Professional Leads Table -->
+  <div class="table-container">
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th>Lead ID</th>
+          <th>Customer Details</th>
+          <th>Loan Information</th>
+          <th>Financial Profile</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Branch</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lead of getPaginatedLeads()" [class.highlight-pending]="lead.status === 'Pending'">
+          <td data-label="Lead ID">
+            <span class="lead-id">{{ lead.id }}</span>
+          </td>
+          <td data-label="Customer Details">
+            <div class="customer-details">
+              <strong class="customer-name">{{ lead.customerName }}</strong>
+              <span class="customer-email">📧 {{ lead.email }}</span>
+              <span class="customer-phone">📱 {{ lead.phone }}</span>
+            </div>
+          </td>
+          <td data-label="Loan Information">
+            <div class="loan-info">
+              <span class="loan-type">{{ lead.loanType }}</span>
+              <strong class="loan-amount">₹{{ lead.loanAmount | number }}</strong>
+              <span class="loan-tenure">Tenure: {{ lead.tenure }}</span>
+            </div>
+          </td>
+          <td data-label="Financial Profile">
+            <div class="financial-info">
+              <span class="credit-score" [class.score-excellent]="lead.creditScore >= 750" 
+                    [class.score-good]="lead.creditScore >= 700 && lead.creditScore < 750"
+                    [class.score-fair]="lead.creditScore < 700">
+                Credit: {{ lead.creditScore }}
+              </span>
+              <span class="employment">{{ lead.employmentType }}</span>
+              <span class="income">₹{{ lead.monthlyIncome | number }}/mo</span>
+            </div>
+          </td>
+          <td data-label="Priority">
+            <span [class]="getPriorityClass(lead.priority)" class="badge badge-priority">
+              {{ lead.priority }}
+            </span>
+          </td>
+          <td data-label="Status">
+            <span [class]="getStatusClass(lead.status)" class="badge badge-status">
+              {{ lead.status }}
+            </span>
+          </td>
+          <td data-label="Branch">
+            <span class="branch-name">📍 {{ lead.branch }}</span>
+          </td>
+          <td data-label="Actions">
+            <div class="action-buttons">
+              <button 
+                class="btn btn-view" 
+                (click)="viewDetails(lead)"
+                title="View Full Details">
+                <span>👁️</span>
+              </button>
+              <button 
+                *ngIf="lead.status === 'Pending'"
+                class="btn btn-accept" 
+                (click)="acceptLead(lead)"
+                title="Accept Application">
+                ✓
+              </button>
+              <button 
+                *ngIf="lead.status === 'Pending'"
+                class="btn btn-reject" 
+                (click)="rejectLead(lead)"
+                title="Reject Application">
+                ✗
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div *ngIf="getPaginatedLeads().length === 0" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h3>No loan applications found</h3>
+      <p>Try adjusting your filters or search criteria</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="getTotalPages() > 1">
+    <button 
+      class="page-btn" 
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1">
+      ‹ Previous
+    </button>
+    
+    <button 
+      *ngFor="let page of getPageNumbers()"
+      class="page-number"
+      [class.active]="page === currentPage"
+      [class.ellipsis]="page === -1"
+      (click)="page !== -1 && goToPage(page)"
+      [disabled]="page === -1">
+      {{ page === -1 ? '...' : page }}
+    </button>
+    
+    <button 
+      class="page-btn" 
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === getTotalPages()">
+      Next ›
+    </button>
+  </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div *ngIf="showConfirmModal" class="modal-overlay" (click)="closeConfirmModal()">
+    <div class="confirm-modal" (click)="$event.stopPropagation()">
+      <div class="confirm-icon" [class.confirm-accept]="confirmAction === 'accept'" 
+           [class.confirm-reject]="confirmAction === 'reject'">
+        <span *ngIf="confirmAction === 'accept'">✓</span>
+        <span *ngIf="confirmAction === 'reject'">✗</span>
+      </div>
+      <h3>{{ confirmAction === 'accept' ? 'Accept Loan Application?' : 'Reject Loan Application?' }}</h3>
+      <p *ngIf="selectedLead">
+        <strong>{{ selectedLead.customerName }}</strong><br>
+        {{ selectedLead.loanType }} - ₹{{ selectedLead.loanAmount | number }}
+      </p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" (click)="closeConfirmModal()">Cancel</button>
+        <button 
+          [class.btn-confirm-accept]="confirmAction === 'accept'"
+          [class.btn-confirm-reject]="confirmAction === 'reject'"
+          (click)="confirmActionExecute()">
+          {{ confirmAction === 'accept' ? 'Yes, Accept' : 'Yes, Reject' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details Modal -->
+  <div *ngIf="showDetailsModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h2>Loan Application Details</h2>
+          <span class="modal-subtitle">Complete customer & loan information</span>
+        </div>
+        <button class="close-btn" (click)="closeModal()">✕</button>
+      </div>
+      
+      <div class="modal-body" *ngIf="selectedLead">
+        <div class="detail-section">
+          <h4>📋 Application Information</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Lead ID</span>
+              <span class="detail-value">#{{ selectedLead.id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Assigned Date</span>
+              <span class="detail-value">{{ selectedLead.assignedDate | date: 'dd MMM yyyy' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Branch</span>
+              <span class="detail-value">{{ selectedLead.branch }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Current Status</span>
+              <span [class]="getStatusClass(selectedLead.status)" class="badge">
+                {{ selectedLead.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4>👤 Customer Information</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Full Name</span>
+              <span class="detail-value">{{ selectedLead.customerName }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Email Address</span>
+              <span class="detail-value">{{ selectedLead.email }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Phone Number</span>
+              <span class="detail-value">{{ selectedLead.phone }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Employment Type</span>
+              <span class="detail-value">{{ selectedLead.employmentType }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4>💰 Loan Details</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Loan Type</span>
+              <span class="detail-value">{{ selectedLead.loanType }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Loan Amount</span>
+              <span class="detail-value amount-highlight">₹{{ selectedLead.loanAmount | number }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Tenure</span>
+              <span class="detail-value">{{ selectedLead.tenure }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Purpose</span>
+              <span class="detail-value">{{ selectedLead.purpose }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4>📊 Financial Profile</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Credit Score</span>
+              <span class="detail-value" 
+                    [class.score-excellent]="selectedLead.creditScore >= 750"
+                    [class.score-good]="selectedLead.creditScore >= 700 && selectedLead.creditScore < 750"
+                    [class.score-fair]="selectedLead.creditScore < 700">
+                {{ selectedLead.creditScore }} 
+                <small *ngIf="selectedLead.creditScore >= 750">(Excellent)</small>
+                <small *ngIf="selectedLead.creditScore >= 700 && selectedLead.creditScore < 750">(Good)</small>
+                <small *ngIf="selectedLead.creditScore < 700">(Fair)</small>
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Monthly Income</span>
+              <span class="detail-value">₹{{ selectedLead.monthlyIncome | number }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Priority Level</span>
+              <span [class]="getPriorityClass(selectedLead.priority)" class="badge">
+                {{ selectedLead.priority }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions" *ngIf="selectedLead.status === 'Pending'">
+          <button class="btn btn-accept-large" (click)="acceptLead(selectedLead)">
+            ✓ Accept Application
+          </button>
+          <button class="btn btn-reject-large" (click)="rejectLead(selectedLead)">
+            ✗ Reject Application
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

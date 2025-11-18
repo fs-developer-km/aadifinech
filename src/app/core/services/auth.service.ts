@@ -8,7 +8,7 @@ export interface User {
   id: string;
   name: string;
   mobile: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'employee' | 'partner';
 }
 
 interface Lead {
@@ -44,63 +44,97 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private userKey = 'loggedInUser';
 
+  private userKey = 'loggedInUser';
   private apiUrl = `${environment.apiBaseUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
-  // Signup API call
+  // ================================================================
+  // 🔵 SIGNUP
+  // ================================================================
   signup(data: { name: string; mobile: string; password: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/signup`, data);
   }
 
-  // Login API call
+  // ================================================================
+  // 🔵 LOGIN
+  // ================================================================
   login(data: { mobile: string; password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
+      map((res) => {
+        if (res.success) {
+          this.saveToken(res.token);
+          this.saveRole(res.user.role);       // 🔥 store role
+          this.setUser(res.user);             // 🔥 store user
+        }
+        return res;
+      })
+    );
   }
 
-  // Save JWT token to localStorage
+  // ================================================================
+  // 🔥 TOKEN FUNCTIONS
+  // ================================================================
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }
 
-  // Get token
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  // Logout user
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem(this.userKey);
   }
 
-  // Check if user is logged in
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  // Optional: Get user role from token
-  getUserRole(): 'user' | 'admin' | null {
-    const token = this.getToken();
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role;
-    } catch (e) {
-      return null;
-    }
+  // ================================================================
+  // 🔥 ROLE HANDLING — (NEW ADDED)
+  // ================================================================
+  saveRole(role: string) {
+    localStorage.setItem('role', role);
   }
 
+  getRole(): string | null {
+    return localStorage.getItem('role');
+  }
 
+  hasRole(role: string): boolean {
+    return this.getRole() === role;
+  }
 
-  // get signup api
+  // ================================================================
+  // 🔥 USER STORAGE
+  // ================================================================
+  setUser(user: any) {
+    localStorage.setItem(this.userKey, JSON.stringify(user));
+  }
 
-   private apiUrls = 'https://aadifintech-backend.onrender.com/api/auth/getUser';
+  getUser() {
+    const user = localStorage.getItem(this.userKey);
+    return user ? JSON.parse(user) : null;
+  }
 
+  clearUser() {
+    localStorage.removeItem(this.userKey);
+  }
 
+  isLoggedInn(): boolean {
+    return !!localStorage.getItem(this.userKey);
+  }
 
-   getUserLoginRecords(): Observable<UserLoginRecord[]> {
+  // ================================================================
+  // 🔥 GET ALL USERS LIST (already in your code)
+  // ================================================================
+  private apiUrls = 'https://aadifintech-backend.onrender.com/api/auth/getUser';
+
+  getUserLoginRecords(): Observable<UserLoginRecord[]> {
     return this.http.get<any>(this.apiUrls).pipe(
       map((res) => {
         if (res.success && res.users) {
@@ -122,13 +156,11 @@ export class AuthService {
     );
   }
 
+  // ================================================================
+  // 🔥 LEAD APIs
+  // ================================================================
+  private baseUrlss = 'https://aadifintech-backend.onrender.com/api/lead/list';
 
-
-  // lead apis
-
-  private baseUrlss = 'https://aadifintech-backend.onrender.com/api/lead/list'; // ✅ your backend URL
-
-  
   getLeads(): Observable<Lead[]> {
     return this.http.get<Lead[]>(this.baseUrlss);
   }
@@ -137,13 +169,14 @@ export class AuthService {
     return this.http.post(this.baseUrlss, data);
   }
 
+  // ================================================================
+  // 🔥 VISITOR TRACKING
+  // ================================================================
+  private apiUrlcookies = 'https://aadifintech-backend.onrender.com/api/visitor/create';
+  private apiUrlget = 'https://aadifintech-backend.onrender.com/api/visitor';
 
-   private apiUrlcookies = 'https://aadifintech-backend.onrender.com/api/visitor/create';
-
-   
   trackVisitor(page: string) {
     const body = { pageVisited: page };
-
     return this.http.post(this.apiUrlcookies, body).pipe(
       catchError((err) => {
         console.error('Visitor tracking failed:', err);
@@ -152,27 +185,20 @@ export class AuthService {
     );
   }
 
-    private apiUrlget = 'https://aadifintech-backend.onrender.com/api/visitor'; // base URL
+  getAllCookies() {
+    const url = 'https://aadifintech-backend.onrender.com/api/visitor/all';
+    return this.http.get<any>(url).pipe(
+      map((res: any) => {
+        console.log("Cookies API Response:", res);
+        return res;
+      }),
+      catchError(err => {
+        console.error('Error fetching cookies:', err);
+        return of({ success: false, cookies: [] });
+      })
+    );
+  }
 
-
-    
-  // ✅ Get all cookies
-getAllCookies() {
-  const url = 'https://aadifintech-backend.onrender.com/api/visitor/all';
-  return this.http.get<any>(url).pipe(
-    map((res: any) => {
-      console.log("✅ Cookies API Response:", res);
-      return res;
-    }),
-    catchError(err => {
-      console.error('❌ Error fetching cookies:', err);
-      return of({ success: false, cookies: [] });
-    })
-  );
-}
-
-
-  // ✅ Delete single cookie
   deleteCookie(cookieId: string) {
     return this.http.delete(`${this.apiUrlget}/${cookieId}`).pipe(
       catchError(err => {
@@ -182,7 +208,6 @@ getAllCookies() {
     );
   }
 
-  // ✅ Clear all cookies
   clearAllCookies() {
     return this.http.delete(`${this.apiUrlget}/clear`).pipe(
       catchError(err => {
@@ -192,25 +217,7 @@ getAllCookies() {
     );
   }
 
-
-  // AUTH user for profile setup
-
-   setUser(user: any) {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
-  }
-
-  getUser() {
-    const user = localStorage.getItem(this.userKey);
-    return user ? JSON.parse(user) : null;
-  }
-
-  clearUser() {
-    localStorage.removeItem(this.userKey);
-  }
-
-  isLoggedInn(): boolean {
-    return !!localStorage.getItem(this.userKey);
-  }
-
-
+  // ================================================================
+  // END OF SERVICE
+  // ================================================================
 }

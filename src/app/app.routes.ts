@@ -27,71 +27,87 @@ import { BankingDomainExpertConsultancyComponent } from './services/banking-doma
 import { FinancialConsultancyforCorporatesComponent } from './services/financial-consultancyfor-corporates/financial-consultancyfor-corporates.component';
 import { OurMissionComponent } from './services/our-mission/our-mission.component';
 
-
 export const routes: Routes = [
-    {
-        path: '', component: HomeComponent
-    },
-    {
-        path: 'about', component: AboutComponent
-    },
-    {
-        path: 'appointment', component: AppointmentComponent
-    },
-    {
-        path: 'founderprofile', component: PricingPlanComponent
-    },
-    {
-        path: 'team', component: TeamComponent
-    },
-    {
-        path: 'insurence', component: InsurencePageComponent
-    },
-    {
-        path: 'insurenceDetails', component: InsurenceDetailsComponent
-    },
-    {
-        path: 'partner', component: BlogPageComponent
-    },
-    {
-        path: 'blogDetails', component: BlogDetailsComponent
-    },
-    {
-        path: 'contact', component: ContactUsComponent
-    },
-    {
-        path: 'services/fund-raising', component: FundRaisingComponent
-    },
-    { path: 'services/ourMission', component: OurMissionComponent },
-    { path: 'services/investment-banking', component: InvestmentBankingComponent },
-    { path: 'services/training-placement', component: TrainingPlacementComponent },
-    { path: 'services/credit-rating', component: CreditRatingComponent },
-    { path: 'services/tech-services', component: TechServicesComponent },
-    { path: 'services/digital-marketing', component: DigitalMarketingComponent },
-    { path: 'services/loanForEveryIndian', component: LoanForEveryIndianComponent },
-    { path: 'services/realState', component: RealStateComponent },
-    { path: 'services/wealth', component: WealthMaanagementComponent },
-    { path: 'services/billDiscounting', component: BillDiscountsComponent },
-    { path: 'services/exportbillDiscounting', component: ExportBillDiscountingComponent },
-    { path: 'services/creditRatingAdversory', component: CresitRatingComponent },
-    { path: 'services/ourInsuranceServices', component: OurInsuranceServicesComponent },
-    { path: 'services/ourEndToEndforeignServices', component: OurEndToEndforeignServicesComponent },
-    { path: 'services/bankingDomainExpertConsultency', component: BankingDomainExpertConsultancyComponent },
-    { path: 'services/FinancialConsultancyforCorporates', component: FinancialConsultancyforCorporatesComponent },
 
-    // add auth module with lazy loading 
+  // =============================
+  // 🟦 PUBLIC WEBSITE ROUTES
+  // =============================
+  { path: '', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'appointment', component: AppointmentComponent },
+  { path: 'founderprofile', component: PricingPlanComponent },
+  { path: 'team', component: TeamComponent },
+  { path: 'insurence', component: InsurencePageComponent },
+  { path: 'insurenceDetails', component: InsurenceDetailsComponent },
 
-    {
-        path: 'auth',
-        loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
-    },
+  // PUBLIC PARTNER PAGE (Blog)
+  { path: 'partner-page', component: BlogPageComponent },
+  { path: 'blogDetails', component: BlogDetailsComponent },
 
-     {
-        path: 'admin',
-        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
-    },
-    
-    
+  { path: 'contact', component: ContactUsComponent },
 
+  // SERVICE PAGES...
+  { path: 'services/fund-raising', component: FundRaisingComponent },
+  { path: 'services/ourMission', component: OurMissionComponent },
+  { path: 'services/investment-banking', component: InvestmentBankingComponent },
+  { path: 'services/training-placement', component: TrainingPlacementComponent },
+  { path: 'services/credit-rating', component: CreditRatingComponent },
+  { path: 'services/tech-services', component: TechServicesComponent },
+  { path: 'services/digital-marketing', component: DigitalMarketingComponent },
+  { path: 'services/loanForEveryIndian', component: LoanForEveryIndianComponent },
+  { path: 'services/realState', component: RealStateComponent },
+  { path: 'services/wealth', component: WealthMaanagementComponent },
+  { path: 'services/billDiscounting', component: BillDiscountsComponent },
+  { path: 'services/exportbillDiscounting', component: ExportBillDiscountingComponent },
+  { path: 'services/creditRatingAdversory', component: CresitRatingComponent },
+  { path: 'services/ourInsuranceServices', component: OurInsuranceServicesComponent },
+  { path: 'services/ourEndToEndforeignServices', component: OurEndToEndforeignServicesComponent },
+  { path: 'services/bankingDomainExpertConsultency', component: BankingDomainExpertConsultancyComponent },
+  { path: 'services/FinancialConsultancyforCorporates', component: FinancialConsultancyforCorporatesComponent },
+
+  // =============================
+  // 🟧 AUTH
+  // =============================
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+
+  // =============================
+  // 🟥 ADMIN DASHBOARD
+  // =============================
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+
+  // =============================
+  // 🟩 EMPLOYEE DASHBOARD
+  // =============================
+  {
+    path: 'employee',
+    loadChildren: () => import('./modules/employee/employee.module').then(m => m.EmployeeModule)
+  },
+
+  // =============================
+  // 🟪 PARTNER DASHBOARD
+  // =============================
+  {
+    path: 'partner',
+    loadChildren: () => import('./modules/partner/partner.module').then(m => m.PartnerModule)
+  },
+
+  // =============================
+  // 🟦 USER DASHBOARD
+  // =============================
+  {
+    path: 'user',
+    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)
+  },
+
+  // =============================
+  // 🚫 Wildcard
+  // =============================
+  { path: '**', redirectTo: '' }
 
 ];
