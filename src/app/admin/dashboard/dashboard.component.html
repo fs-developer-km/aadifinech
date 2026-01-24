@@ -1,0 +1,394 @@
+<!-- Navigation Sidebar -->
+<!-- <div class="navigation-sidebar" [class.sidebar-active]="sidebarOpen">
+  <div class="brand-logo">
+    <i class="fas fa-chart-line"></i> Dashboard
+  </div>
+  <ul class="navigation-menu">
+    <li class="menu-item-active">
+      <a href="#" class="menu-link"><i class="fas fa-home"></i> Dashboard</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-users"></i> Users</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-box"></i> Products</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link"><i class="fas fa-cog"></i> Settings</a>
+    </li>
+  </ul>
+</div> -->
+
+<!-- Main Dashboard Content -->
+<!-- Main Dashboard Content -->
+<!-- Main Dashboard Content -->
+<div class="dashboard-main-content" style="margin-top: 40px;">
+  <div class="dashboard-header">
+    <h2 class="header-title">Welcome Back, {{userProfile.name}}</h2>
+    <div class="header-user-info">
+      <div class="user-profile-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="user-details">
+        <strong class="user-name">{{ userProfile.name }}</strong>
+        <p class="user-role-text">{{ userProfile.email }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Info Cards -->
+  <div class="dashboard-grid grid-margin-top">
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">Cookies Data</h5>
+          <p class="mini-card-value">{{totalVisitors}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">User Login</h5>
+          <p class="mini-card-value">{{totalUsers}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">User Lead</h5>
+          <p class="mini-card-value">{{totalLeads}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-column-4">
+      <div class="mini-info-card">
+        <div class="mini-card-icon">
+          <i class="fas fa-cloud-download-alt"></i>
+        </div>
+        <div class="mini-card-content">
+          <h5 class="mini-card-label">Grand Total</h5>
+          <p class="mini-card-value">{{ grandTotal }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Leads Section -->
+  <div class="full-width-section grid-margin-top">
+    <div class="section-header">
+      <h4 class="section-main-title">
+        <i class="fas fa-user-plus"></i> Recent Leads
+      </h4>
+    </div>
+
+    <!-- Loader -->
+    <div class="section-loader" *ngIf="loadingLeads">
+      <div class="spinner"></div>
+      <p>Loading leads...</p>
+    </div>
+
+    <!-- Leads Cards Grid -->
+    <div class="leads-cards-grid" *ngIf="!loadingLeads">
+      <div class="lead-card" *ngFor="let lead of recentLeads">
+        <div class="lead-card-header">
+          <div class="lead-avatar">
+            <span>{{ getInitials(lead.leadName) }}</span>
+          </div>
+          <div class="lead-header-info">
+            <h5 class="lead-name">{{ lead.leadName }}</h5>
+            <p class="lead-email">{{ lead.leadPhone }}</p>
+          </div>
+          <span class="lead-status-badge pending">Recent</span>
+        </div>
+
+        <div class="lead-card-body">
+          <div class="lead-info-row">
+            <i class="fas fa-phone"></i>
+            <span>{{ lead.leadPhone }}</span>
+          </div>
+          <div class="lead-info-row">
+            <i class="fas fa-building"></i>
+            <span>{{ lead.leadSource }}</span>
+          </div>
+          <div class="lead-info-row">
+            <i class="fas fa-calendar"></i>
+            <span>{{ lead.submittedDate }}</span>
+          </div>
+        </div>
+
+        <div class="lead-card-footer">
+          <button class="lead-btn-primary" (click)="openLeadDetails(lead)">
+            <i class="fas fa-eye"></i> View Details
+          </button>
+          <!-- <button class="lead-btn-danger" (click)="deleteLead(lead)">
+            <i class="fas fa-trash"></i> Delete
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Logins Section -->
+  <div class="full-width-section grid-margin-top">
+    <div class="section-header">
+      <h4 class="section-main-title">
+        <i class="fas fa-sign-in-alt"></i> Recent User Logins
+      </h4>
+    </div>
+
+    <!-- Loader -->
+    <div class="section-loader" *ngIf="loadingLogins">
+      <div class="spinner"></div>
+      <p>Loading user logins...</p>
+    </div>
+
+    <!-- Logins Cards Grid -->
+    <div class="leads-cards-grid" *ngIf="!loadingLogins">
+      <div class="lead-card" *ngFor="let login of recentLogins">
+        <div class="lead-card-header">
+          <div class="lead-avatar">
+            <span>{{ getInitials(login.userName) }}</span>
+          </div>
+          <div class="lead-header-info">
+            <h5 class="lead-name">{{ login.userName }}</h5>
+            <p class="lead-email">{{ login.userEmail }}</p>
+          </div>
+          <span class="lead-status-badge pending">Recent</span>
+          <!-- <span class="lead-status-badge pending">{{ login.accountStatus }}</span> -->
+        </div>
+
+        <div class="lead-card-body">
+          <div class="lead-info-row">
+            <i class="fas fa-phone"></i>
+            <span>{{ login.userPhone }}</span>
+          </div>
+          <div class="lead-info-row">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ login.location }}</span>
+          </div>
+          <div class="lead-info-row">
+            <i class="fas fa-clock"></i>
+            <span>Login Count: {{ login.loginCount }}</span>
+          </div>
+        </div>
+
+        <div class="lead-card-footer">
+          <button class="lead-btn-primary" (click)="openLoginDetails(login)">
+            <i class="fas fa-eye"></i> View Details
+          </button>
+          <!-- <button class="lead-btn-danger" (click)="deleteLogin(login)">
+            <i class="fas fa-trash"></i> Delete
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Projects Section - MOVED TO BOTTOM -->
+  <div class="full-width-section grid-margin-top">
+    <div class="section-header">
+      <h4 class="section-main-title">
+        <i class="fas fa-tasks"></i> Active Projects
+      </h4>
+    </div>
+
+    <!-- Loader -->
+    <div class="section-loader" *ngIf="loadingProjects">
+      <div class="spinner"></div>
+      <p>Loading projects...</p>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid" *ngIf="!loadingProjects">
+      <div class="project-card" *ngFor="let project of activeProjects">
+        <div class="project-card-header">
+          <div class="project-icon">
+            <i class="fas fa-folder-open"></i>
+          </div>
+          <h5 class="project-card-title">{{ project.projectName }}</h5>
+        </div>
+
+        <div class="project-card-body">
+          <div class="progress-info">
+            <span class="progress-label">Progress</span>
+            <span class="progress-percentage">{{ project.projectProgress }}%</span>
+          </div>
+          <div class="project-progress-wrapper">
+            <div class="project-progress-fill" [style.width.%]="project.projectProgress"></div>
+          </div>
+        </div>
+
+        <div class="project-card-footer">
+          <button class="project-details-btn" (click)="openProjectDetails(project)">
+            <i class="fas fa-info-circle"></i> Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Lead Details Popup -->
+<div class="popup-overlay" *ngIf="showLeadPopup" (click)="closeLeadPopup()">
+  <div class="popup-container" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <h3>
+        <i class="fas fa-user-plus"></i> Lead Details
+      </h3>
+      <button class="popup-close" (click)="closeLeadPopup()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="popup-body" *ngIf="selectedLead">
+      <div class="popup-section">
+        <h4 class="popup-section-title">Basic Information</h4>
+        <div class="popup-info-grid">
+          <div class="popup-info-item">
+            <strong>Name:</strong>
+            <span>{{ selectedLead.leadName }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Phone:</strong>
+            <span>{{ selectedLead.leadPhone }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Source:</strong>
+            <span>{{ selectedLead.leadSource }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Notes:</strong>
+            <span>{{ selectedLead.notes }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Submitted Date:</strong>
+            <span>{{ selectedLead.submittedDate }} {{ selectedLead.submittedTime }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Created At:</strong>
+            <span>{{ selectedLead.createdAt }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Updated At:</strong>
+            <span>{{ selectedLead.updatedAt }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-footer">
+      <button class="popup-btn-secondary" (click)="closeLeadPopup()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Login Details Popup -->
+<div class="popup-overlay" *ngIf="showLoginPopup" (click)="closeLoginPopup()">
+  <div class="popup-container" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <h3>
+        <i class="fas fa-sign-in-alt"></i> Login Details
+      </h3>
+      <button class="popup-close" (click)="closeLoginPopup()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="popup-body" *ngIf="selectedLogin">
+      <div class="popup-section">
+        <h4 class="popup-section-title">User Information</h4>
+        <div class="popup-info-grid">
+          <div class="popup-info-item">
+            <strong>Name:</strong>
+            <span>{{ selectedLogin.userName }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Email:</strong>
+            <span>{{ selectedLogin.userEmail }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Phone:</strong>
+            <span>{{ selectedLogin.userPhone }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Status:</strong>
+            <span>{{ selectedLogin.accountStatus }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Signup Date:</strong>
+            <span>{{ selectedLogin.signupDate }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Last Login:</strong>
+            <span>{{ selectedLogin.lastLoginDate }} {{ selectedLogin.lastLoginTime }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Location:</strong>
+            <span>{{ selectedLogin.location }}</span>
+          </div>
+          <div class="popup-info-item">
+            <strong>Login Count:</strong>
+            <span>{{ selectedLogin.loginCount }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-footer">
+      <button class="popup-btn-secondary" (click)="closeLoginPopup()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Project Details Popup - Coming Soon -->
+<div class="popup-overlay" *ngIf="showProjectPopup" (click)="closeProjectPopup()">
+  <div class="popup-container popup-coming-soon" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <h3>
+        <i class="fas fa-folder-open"></i> Project Details
+      </h3>
+      <button class="popup-close" (click)="closeProjectPopup()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="popup-body-coming-soon">
+      <div class="coming-soon-content">
+        <i class="fas fa-rocket"></i>
+        <h2>Coming Soon!</h2>
+        <p>Detailed project view is under development</p>
+      </div>
+    </div>
+
+    <div class="popup-footer">
+      <button class="popup-btn-secondary" (click)="closeProjectPopup()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

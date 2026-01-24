@@ -1,0 +1,36 @@
+<div class="popup-backdrop" #popupBackdrop *ngIf="showPopup">
+  <div class="popup-content">
+    <button class="close-button" (click)="close()" type="button">&times;</button>
+    <h2>{{ serviceName }} Inquiry</h2>
+    <form (ngSubmit)="submit()">
+      <div class="form-field">
+        <label>Full Name:</label>
+        <input type="text" [(ngModel)]="name" name="name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="form-field">
+        <label>Email Address:</label>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email address" required>
+      </div>
+
+      <div class="form-field">
+        <label>Mobile Number:</label>
+        <input type="tel" [(ngModel)]="mobile" name="mobile" 
+               placeholder="Enter 10-digit mobile number" 
+               (input)="onMobileInput($event)"
+               maxlength="10" required>
+      </div>
+
+      <div class="form-field">
+        <label>Message (Optional):</label>
+        <textarea [(ngModel)]="message" name="message" 
+                  placeholder="Tell us about your requirements or any specific details..."></textarea>
+      </div>
+
+      <div class="button-container">
+        <button type="submit">Send via WhatsApp</button>
+        <button type="button" (click)="close()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,792 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==================== HEADER SECTION ==================== */
+.dashboard-header {
+  background: linear-gradient(135deg, #dd3333 0%, #b92828 100%);
+  color: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(221, 51, 51, 0.25);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.employee-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  background: white;
+  color: #dd3333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.employee-info .info h1 {
+  font-size: 18px;
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.employee-info .info p {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.date-info .current-date {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* ==================== STATS GRID ==================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.stat-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card.stat-primary { border-left-color: #dd3333; }
+.stat-card.stat-success { border-left-color: #28a745; }
+.stat-card.stat-warning { border-left-color: #ffc107; }
+.stat-card.stat-danger { border-left-color: #dc3545; }
+
+.stat-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  flex-shrink: 0;
+}
+
+.stat-content h3 {
+  font-size: 24px;
+  color: #dd3333;
+  margin-bottom: 3px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-content p {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* ==================== CONTENT GRID ==================== */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.section-card {
+  background: white;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section-header h2 {
+  font-size: 17px;
+  color: #333;
+  font-weight: 600;
+}
+
+.rate-badge,
+.attendance-rate .rate-badge {
+  background: linear-gradient(135deg, #dd3333 0%, #b92828 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(221, 51, 51, 0.2);
+  white-space: nowrap;
+}
+
+/* ==================== MONTH/YEAR SELECTOR ==================== */
+.month-year-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.month-dropdown,
+.year-dropdown {
+  padding: 6px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  flex: 1;
+  min-width: 100px;
+}
+
+.month-dropdown:hover,
+.year-dropdown:hover {
+  border-color: #dd3333;
+}
+
+.month-dropdown:focus,
+.year-dropdown:focus {
+  outline: none;
+  border-color: #dd3333;
+  box-shadow: 0 0 0 3px rgba(221, 51, 51, 0.1);
+}
+
+.refresh-button {
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #dd3333 0%, #b92828 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.refresh-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(221, 51, 51, 0.3);
+}
+
+/* ==================== ATTENDANCE STATS ==================== */
+.attendance-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.attendance-stat {
+  text-align: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.stat-value.present { color: #28a745; }
+.stat-value.absent { color: #dc3545; }
+.stat-value.halfday { color: #ffc107; }
+.stat-value.late-text { color: #ffc107; }
+.stat-value.avg-hours { color: #17a2b8; }
+
+/* ==================== TABLE STYLES (DESKTOP) ==================== */
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+
+.data-table thead {
+  background: linear-gradient(135deg, #dd3333 0%, #b92828 100%);
+  color: white;
+}
+
+.data-table th {
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.data-table td {
+  padding: 12px 10px;
+  font-size: 13px;
+  color: #555;
+  vertical-align: middle;
+}
+
+.customer-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 13px;
+}
+
+.value-amount {
+  font-weight: 600;
+  color: #dd3333;
+  font-size: 13px;
+}
+
+.time {
+  font-weight: 500;
+  color: #666;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.time.late-time {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.time.early-time {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.late-indicator,
+.early-indicator {
+  margin-left: 4px;
+  font-size: 11px;
+}
+
+.duration-text {
+  font-weight: 600;
+  color: #17a2b8;
+  font-size: 13px;
+}
+
+/* ==================== STATUS BADGES ==================== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-failed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ==================== NOTES CELL ==================== */
+.notes-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.note-late { color: #dc3545; font-weight: 600; }
+.note-early { color: #ffc107; font-weight: 600; }
+.note-ontime { color: #28a745; font-weight: 600; }
+
+/* ==================== LOADING & ERROR STATES ==================== */
+.loading-wrapper {
+  text-align: center;
+  padding: 30px 15px;
+}
+
+.loading-spinner {
+  width: 35px;
+  height: 35px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #dd3333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-wrapper p {
+  color: #666;
+  font-size: 13px;
+}
+
+.error-wrapper {
+  text-align: center;
+  padding: 25px 15px;
+  background: #fff3cd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.error-wrapper p {
+  color: #856404;
+  margin-bottom: 12px;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.retry-button {
+  padding: 6px 16px;
+  background: #dd3333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.retry-button:hover {
+  background: #b92828;
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-row {
+  text-align: center;
+  padding: 30px 15px !important;
+  color: #999;
+}
+
+.empty-row p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ==================== PAGINATION ==================== */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.page-button {
+  padding: 6px 14px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.page-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dd3333 0%, #b92828 100%);
+  color: white;
+  border-color: #dd3333;
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+.page-info {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* ==================== TABLET (768px - 992px) ==================== */
+@media (max-width: 992px) {
+  .dashboard-container {
+    padding: 12px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+  
+  .attendance-stats {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+}
+
+/* ==================== MOBILE VIEW (< 768px) - CARD LAYOUT ==================== */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+  
+  .dashboard-header {
+    padding: 15px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .employee-info .info h1 {
+    font-size: 16px;
+  }
+  
+  .employee-info .info p {
+    font-size: 12px;
+  }
+  
+  .date-info .current-date {
+    font-size: 13px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .stat-icon {
+    font-size: 28px;
+  }
+  
+  .stat-content h3 {
+    font-size: 20px;
+  }
+  
+  .stat-content p {
+    font-size: 11px;
+  }
+  
+  .section-card {
+    padding: 15px;
+  }
+  
+  .section-header h2 {
+    font-size: 15px;
+  }
+  
+  .rate-badge {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+  
+  .attendance-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .attendance-stat {
+    padding: 10px;
+  }
+  
+  .stat-label {
+    font-size: 10px;
+  }
+  
+  .stat-value {
+    font-size: 18px;
+  }
+
+  /* ============ MOBILE CARD LAYOUT ============ */
+  .table-container {
+    overflow: visible;
+  }
+  
+  .data-table {
+    min-width: 100%;
+    display: block;
+    overflow: visible;
+  }
+  
+  .data-table thead {
+    display: none; /* Hide table header on mobile */
+  }
+  
+  .data-table tbody {
+    display: block;
+  }
+  
+  .data-table tbody tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-left: 4px solid #dd3333;
+  }
+  
+  .data-table tbody tr:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #fafafa;
+  }
+  
+  .data-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+  }
+  
+  .data-table td:last-child {
+    border-bottom: none;
+  }
+  
+  /* Add labels before each cell */
+  .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #333;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 100px;
+  }
+  
+  .customer-name,
+  .value-amount,
+  .time,
+  .duration-text,
+  .status-badge,
+  .notes-cell {
+    text-align: right;
+    flex: 1;
+  }
+  
+  .notes-cell {
+    align-items: flex-end;
+  }
+}
+
+/* ==================== SMALL MOBILE (320px - 480px) ==================== */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 8px;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+  
+  .employee-info {
+    width: 100%;
+  }
+  
+  .avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+  
+  .employee-info .info h1 {
+    font-size: 15px;
+  }
+  
+  .date-info {
+    width: 100%;
+    text-align: left;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .stat-card {
+    padding: 12px 15px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .section-header h2 {
+    font-size: 14px;
+  }
+  
+  .rate-badge {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+  
+  .month-year-selector {
+    width: 100%;
+  }
+  
+  .month-dropdown,
+  .year-dropdown {
+    flex: 1;
+    min-width: 90px;
+    font-size: 12px;
+  }
+  
+  .refresh-button {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .attendance-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .attendance-stat {
+    padding: 8px;
+  }
+  
+  .stat-label {
+    font-size: 10px;
+  }
+  
+  .stat-value {
+    font-size: 16px;
+  }
+  
+  /* Mobile Card Labels Smaller */
+  .data-table td::before {
+    min-width: 90px;
+    font-size: 10px;
+  }
+  
+  .data-table td {
+    font-size: 12px;
+    padding: 6px 0;
+  }
+  
+  .pagination-wrapper {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .page-button {
+    width: 100%;
+    padding: 8px;
+  }
+}
+
+/* ==================== EXTRA SMALL (< 375px) ==================== */
+@media (max-width: 374px) {
+  .dashboard-container {
+    padding: 6px;
+  }
+  
+  .dashboard-header {
+    padding: 10px;
+  }
+  
+  .section-card {
+    padding: 12px;
+  }
+  
+  .stat-icon {
+    font-size: 24px;
+  }
+  
+  .stat-content h3 {
+    font-size: 18px;
+  }
+  
+  .attendance-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .data-table tbody tr {
+    padding: 10px;
+  }
+  
+  .data-table td::before {
+    min-width: 80px;
+    font-size: 9px;
+  }
+}

@@ -1,0 +1,69 @@
+<div class="dashboard-wrapper">
+  <!-- Back Button -->
+  <button class="back-button" (click)="goToHome()">
+    <i class="fas fa-arrow-left"></i>
+    <span>Back to Home</span>
+  </button>
+
+  <div class="dashboard-container">
+    <!-- Left Side - User Info -->
+    <div class="user-info-card">
+      <div class="user-avatar">{{ userInitials }}</div>
+      <h2 class="user-name">{{ userName }}</h2>
+      <div class="user-phone">
+        <i class="fas fa-phone-alt"></i>
+        <span>{{ userPhone }}</span>
+      </div>
+      <div class="user-badge">
+        <i class="fas fa-check-circle"></i>
+        <span>Verified Account</span>
+      </div>
+    </div>
+
+    <!-- Right Side - Welcome Section -->
+    <div class="welcome-section">
+      <div class="company-header">
+        <div class="company-logo">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="company-info">
+          <h1 class="company-name">AadiFintech</h1>
+          <p class="company-tagline">Your Trusted Partner in Loans & Finance</p>
+        </div>
+      </div>
+
+      <div class="welcome-message">
+        <p>
+          Welcome to <strong>AadiFintech</strong> - India's premier financial
+          solutions provider. We specialize in personal loans, business loans,
+          and home loans with competitive interest rates. Our expert team will
+          contact you shortly with customized loan options tailored to your
+          financial needs. Experience hassle-free financing with complete
+          transparency and trust!
+        </p>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <span><strong>Phone:</strong> {{ companyPhone }}</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span><strong>Email:</strong> support&#64;aadifintech.com</span>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="contact-btn btn-call" (click)="callNow()">
+          <i class="fas fa-phone-alt"></i>
+          <span>Call Now</span>
+        </button>
+        <button class="contact-btn btn-whatsapp" (click)="openWhatsApp()">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

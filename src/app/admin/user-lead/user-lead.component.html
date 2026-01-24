@@ -1,0 +1,267 @@
+<div class="lead-management-wrapper">
+
+  <!-- Success Popup -->
+  <div class="success-popup" *ngIf="showSuccessPopup">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+
+  <!-- Header Section -->
+  <div class="lead-page-header">
+    <div class="header-content">
+      <h1 class="page-main-title">Lead Management</h1>
+      <p class="page-subtitle">Manage and track all incoming leads from various sources</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-mini-box">
+        <i class="fas fa-list"></i>
+        <div class="stat-info">
+          <span class="stat-label">Total Leads</span>
+          <span class="stat-number">{{ getTotalLeads() }}</span>
+        </div>
+      </div>
+
+      <!-- <div class="stat-mini-box">
+        <i class="fas fa-calendar-day"></i>
+        <div class="stat-info">
+          <span class="stat-label">Today Leads</span>
+          <span class="stat-number">{{ getTodayLeads() }}</span>
+        </div>
+      </div> -->
+      <!-- <div class="stat-mini-box">
+        <i class="fas fa-star"></i>
+        <div class="stat-info">
+          <span class="stat-label">New Leads</span>
+          <span class="stat-number">{{ getNewLeads() }}</span>
+        </div>
+      </div> -->
+      <!-- <div class="stat-mini-box">
+        <i class="fas fa-trophy"></i>
+        <div class="stat-info">
+          <span class="stat-label">Converted</span>
+          <span class="stat-number">{{ getConvertedLeads() }}</span>
+        </div>
+      </div> -->
+
+      <!-- Export PDF Section -->
+      <button class="export-excel-btn" (click)="exportToExcel()">
+        <i class="fas fa-file-excel"></i>
+        Export to Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Export PDF Section -->
+  <!-- <div class="export-section">
+    <button class="export-pdf-btn" (click)="exportToPDF()">
+      <i class="fas fa-file-pdf"></i>
+      Export to PDF
+    </button>
+  </div> -->
+
+  <!-- Add Lead Form Section -->
+  <div class="add-lead-section">
+    <button class="add-lead-btn" (click)="toggleFormVisibility()">
+      <i class="fas fa-plus"></i> Add New Lead
+    </button>
+
+    <div class="lead-form-container" *ngIf="showForm">
+      <h3 class="form-title">Submit New Lead</h3>
+      <form class="lead-form" (ngSubmit)="submitLead()">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" class="form-input" placeholder="Enter lead name" [(ngModel)]="newLeadForm.leadName"
+            name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input type="tel" class="form-input" placeholder="Enter phone number (e.g., +91 98765 43210)"
+            [(ngModel)]="newLeadForm.leadPhone" name="leadPhone" maxlength="10" pattern="[0-9]{10}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message </label>
+          <input type="tel" class="form-input" placeholder="Enter Message" [(ngModel)]="newLeadForm.notes" name="notes">
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="submit-btn" [disabled]="isLoading">
+            <i *ngIf="!isLoading" class="fas fa-paper-plane"></i>
+            <span *ngIf="isLoading">Processing...</span>
+            <span *ngIf="!isLoading">Submit Lead</span>
+          </button>
+
+          <button type="button" class="cancel-btn" (click)="toggleFormVisibility()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="message" class="message-box" [ngClass]="messageType">
+        {{ message }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls Section -->
+  <div class="controls-section">
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input-field" placeholder="Search by name, email, or phone..."
+        [(ngModel)]="searchQuery">
+    </div>
+
+    <div class="filter-controls">
+      <select class="sort-dropdown" [(ngModel)]="sortBy">
+        <option value="date">Sort by Date</option>
+        <option value="name">Sort by Name</option>
+        <option value="status">Sort by Status</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container-wrapper">
+    <div class="table-scroll">
+    <table class="lead-table" id="leads-table-print">
+      <thead class="table-header-section">
+        <tr class="header-row">
+          <th class="table-header-cell">Lead Details</th>
+          <th class="table-header-cell">Date </th>
+          <th class="table-header-cell">Source</th>
+          <th class="table-header-cell">Notes</th>
+          <th class="table-header-cell">Assignment</th>
+          <th class="table-header-cell">Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-body-section">
+        <tr class="data-row" *ngFor="let lead of getPaginatedLeads()" [class.assigned-row]="lead.assignTo">
+          <td class="table-data-cell">
+            <div class="lead-cell-info">
+              <div class="lead-name-section">
+                <div class="lead-avatar-mini">
+                  {{ lead.leadName.charAt(0).toUpperCase() }}
+                </div>
+                <span class="lead-name-text">{{ lead.leadName }}</span>
+              </div>
+              <div class="contact-info">
+                <div class="phone-info">
+                  <i class="fas fa-phone phone-icon"></i>
+                  <span>{{ lead.leadPhone }}</span>
+                </div>
+                <div class="email-info" *ngIf="lead.leadEmail">
+                  <i class="fas fa-envelope email-icon"></i>
+                  <span>{{ lead.leadEmail }}</span>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="table-data-cell">
+            <div class="datetime-wrapper">
+              <span class="date-text">{{ lead.submittedDate }}</span>
+              <!-- <span class="time-text">{{ lead.submittedTime }}</span> -->
+            </div>
+          </td>
+          <td class="table-data-cell">
+            <div class="source-badge">
+              <i [class]="getLeadSourceIcon(lead.leadSource)" class="source-icon"></i>
+              <span>{{ lead.leadSource }}</span>
+            </div>
+          </td>
+          <td class="table-data-cell">
+            <span class="notes-text" [title]="lead.notes">{{ lead.notes }}</span>
+          </td>
+          <td class="table-data-cell">
+            <div class="assignment-section">
+              <div class="assign-container">
+                <div class="loader-circle" *ngIf="assigningLeadId === lead._id">
+                  <i class="fas fa-spinner"></i>
+                </div>
+
+                <select *ngIf="assigningLeadId !== lead._id" class="assign-dropdown"
+                  (change)="assignLead(lead._id!, $any($event.target).value)" [value]="lead.assignTo?._id || ''">
+                  <option value="" disabled>👤 Assign / Reassign Employee</option>
+                  <option *ngFor="let emp of employees" [value]="emp._id">
+                    {{ emp.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="assigned-info" *ngIf="lead.assignTo">
+                <span class="assigned-label">Assigned To</span>
+                <div class="assigned-name">
+                  <i class="fas fa-user-check"></i>
+                  <span>{{ lead.assignTo.name }}</span>
+                </div>
+                <span class="assigned-date" *ngIf="lead.assignedDate">
+                  <i class="fas fa-calendar-alt"></i> {{ lead.assignedDate }}
+                </span>
+              </div>
+            </div>
+          </td>
+
+          <td class="table-data-cell">
+            <div class="action-buttons">
+              <button class="action-btn delete-btn" (click)="openDeleteConfirm(lead._id!)" title="Delete lead">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="delete-modal-overlay" *ngIf="showDeleteConfirm" (click)="closeDeleteConfirm()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <div class="modal-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="modal-title">Delete Lead?</h3>
+      <p class="modal-message">Are you sure you want to delete this lead? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="modal-btn cancel-modal-btn" (click)="closeDeleteConfirm()">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+        <button class="modal-btn delete-modal-btn" (click)="confirmDelete()">
+          <i class="fas fa-trash"></i>
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="getPaginatedLeads().length === 0">
+    <i class="fas fa-inbox empty-icon"></i>
+    <h3 class="empty-title">No leads found</h3>
+    <p class="empty-message">Try adjusting your search or add a new lead</p>
+  </div>
+
+  <!-- Pagination Section -->
+  <div class="pagination-container" *ngIf="getTotalPages() > 1">
+    <button class="pagination-btn" (click)="previousPage()" [disabled]="currentPage === 1"
+      [class.disabled]="currentPage === 1">
+      <i class="fas fa-chevron-left"></i>
+      Previous
+    </button>
+
+    <div class="page-numbers">
+      <button *ngFor="let page of getPageNumbers()" class="page-number-btn" [class.active]="currentPage === page"
+        (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </div>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === getTotalPages()"
+      [class.disabled]="currentPage === getTotalPages()">
+      Next
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+</div>

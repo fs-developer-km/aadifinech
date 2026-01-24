@@ -1,0 +1,372 @@
+<div class="user-management-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <i class="fas fa-users-cog"></i>
+        Employee & Partner Management
+      </h1>
+      <p class="header-description">
+        Create and manage employee and partner accounts with automated credential generation
+      </p>
+    </div>
+  </div>
+
+  <!-- Tab Buttons -->
+  <div class="tab-header">
+    <button class="tab-btn" [class.active]="activeTab === 'employee'" (click)="switchTab('employee')">
+      <span class="tab-icon">
+        <i class="fas fa-user-tie"></i>
+      </span>
+      <span class="tab-label">Create Employee</span>
+    </button>
+
+    <button class="tab-btn" [class.active]="activeTab === 'partner'" (click)="switchTab('partner')">
+      <span class="tab-icon">
+        <i class="fas fa-handshake"></i>
+      </span>
+      <span class="tab-label">Create Partner</span>
+    </button>
+  </div>
+
+  <!-- ==================== EMPLOYEE FORM ==================== -->
+  <div class="form-container" *ngIf="activeTab === 'employee'" @fadeSlideIn>
+    <div class="form-header">
+      <h2>
+        <i class="fas fa-user-plus"></i>
+        Create New Employee
+      </h2>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="fas fa-check-circle"></i>
+      {{ successMessage }}
+    </div>
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="spinner-circle"></div>
+      <p>Creating account...</p>
+    </div>
+
+    <form (ngSubmit)="submitEmployeeForm()" #employeeFormRef="ngForm">
+      <div class="form-grid">
+        <!-- Name (Required) -->
+        <div class="form-group">
+          <label for="emp-name">
+            Full Name <span class="required">*</span>
+          </label>
+          <input type="text" id="emp-name" name="name" [(ngModel)]="employeeForm.name" placeholder="Enter employee name"
+            required minlength="2" class="form-input">
+        </div>
+
+        <!-- Mobile (Required) -->
+        <div class="form-group">
+          <label for="emp-mobile">
+            Mobile Number <span class="required">*</span>
+          </label>
+          <input type="tel" id="emp-mobile" name="mobile" [(ngModel)]="employeeForm.mobile"
+            placeholder="Enter 10-15 digit mobile number" required pattern="^\+?\d{10,15}$" class="form-input">
+        </div>
+
+        <!-- Password (Required) -->
+        <div class="form-group">
+          <label for="emp-password">
+            Password <span class="required">*</span>
+          </label>
+          <input type="password" id="emp-password" name="password" [(ngModel)]="employeeForm.password"
+            placeholder="Enter password" required class="form-input">
+        </div>
+
+        <!-- Role (Auto-filled, Non-editable) -->
+        <div class="form-group">
+          <label for="emp-role">
+            Role
+          </label>
+          <input type="text" id="emp-role" name="role" [(ngModel)]="employeeForm.role" value="employee" readonly
+            class="form-input readonly-input">
+          <small class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            Role is automatically set to Employee
+          </small>
+        </div>
+
+        <!-- Employee Code (Optional) -->
+        <div class="form-group">
+          <label for="emp-code">
+            Employee Code
+          </label>
+          <input type="text" id="emp-code" name="employeeCode" [(ngModel)]="employeeForm.employeeCode"
+            placeholder="e.g., EMP001" class="form-input">
+        </div>
+
+        <!-- Department (Optional Dropdown) -->
+        <div class="form-group">
+          <label for="emp-department">
+            Department
+          </label>
+          <select id="emp-department" name="department" [(ngModel)]="employeeForm.department" class="form-input">
+            <option value="">Select Department</option>
+            <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+          </select>
+        </div>
+
+        <!-- Designation (Optional Dropdown) -->
+        <div class="form-group">
+          <label for="emp-designation">
+            Designation
+          </label>
+          <select id="emp-designation" name="designation" [(ngModel)]="employeeForm.designation" class="form-input">
+            <option value="">Select Designation</option>
+            <option *ngFor="let desig of designations" [value]="desig">{{ desig }}</option>
+          </select>
+        </div>
+
+        <!-- Reporting To (Optional) -->
+        <div class="form-group">
+          <label for="emp-reporting">
+            Reporting To
+          </label>
+          <input type="text" id="emp-reporting" name="reportingTo" [(ngModel)]="employeeForm.reportingTo"
+            placeholder="Manager/Admin ID (optional)" class="form-input">
+        </div>
+
+
+
+        <!-- Account Status (Default: Active) -->
+        <div class="form-group">
+          <label for="emp-status">
+            Account Status
+          </label>
+          <select id="emp-status" name="accountStatus" [(ngModel)]="employeeForm.accountStatus" class="form-input">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Suspended">Suspended</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancelForm()" [disabled]="isLoading">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+        <button type="submit" class="btn-submit" [disabled]="!employeeFormRef.valid || isLoading">
+          <i class="fas fa-check"></i>
+          Create Employee
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ==================== PARTNER FORM ==================== -->
+  <div class="form-container" *ngIf="activeTab === 'partner'" @fadeSlideIn>
+    <div class="form-header">
+      <h2>
+        <i class="fas fa-user-plus"></i>
+        Create New Partner
+      </h2>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="fas fa-check-circle"></i>
+      {{ successMessage }}
+    </div>
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="spinner-circle"></div>
+      <p>Creating account...</p>
+    </div>
+
+    <form (ngSubmit)="submitPartnerForm()" #partnerFormRef="ngForm">
+      <div class="form-grid">
+        <!-- Name (Required) -->
+        <div class="form-group">
+          <label for="partner-name">
+            Full Name <span class="required">*</span>
+          </label>
+          <input type="text" id="partner-name" name="name" [(ngModel)]="partnerForm.name"
+            placeholder="Enter partner name" required minlength="2" class="form-input">
+        </div>
+
+        <!-- Mobile (Required) -->
+        <div class="form-group">
+          <label for="partner-mobile">
+            Mobile Number <span class="required">*</span>
+          </label>
+          <input type="tel" id="partner-mobile" name="mobile" [(ngModel)]="partnerForm.mobile"
+            placeholder="Enter 10-15 digit mobile number" required pattern="^\+?\d{10,15}$" class="form-input">
+        </div>
+
+        <!-- Password (Required) -->
+        <div class="form-group">
+          <label for="partner-password">
+            Password <span class="required">*</span>
+          </label>
+          <input type="password" id="partner-password" name="password" [(ngModel)]="partnerForm.password"
+            placeholder="Enter password" required class="form-input">
+        </div>
+
+        <!-- Role (Auto-filled, Non-editable) -->
+        <div class="form-group">
+          <label for="partner-role">
+            Role
+          </label>
+          <input type="text" id="partner-role" name="role" [(ngModel)]="partnerForm.role" value="partner" readonly
+            class="form-input readonly-input">
+          <small class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            Role is automatically set to Partner
+          </small>
+        </div>
+
+        <!-- Company Name (Optional) -->
+        <div class="form-group">
+          <label for="partner-company">
+            Company Name
+          </label>
+          <input type="text" id="partner-company" name="companyName" [(ngModel)]="partnerForm.companyName"
+            placeholder="Enter company name" class="form-input">
+        </div>
+
+        <!-- Business Type (Optional Dropdown) -->
+        <div class="form-group">
+          <label for="partner-business">
+            Business Type
+          </label>
+          <select id="partner-business" name="businessType" [(ngModel)]="partnerForm.businessType" class="form-input">
+            <option value="">Select Business Type</option>
+            <option *ngFor="let type of businessTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+
+        <!-- Commission Type (Optional) -->
+        <div class="form-group">
+          <label for="partner-commission-type">
+            Commission Type
+          </label>
+          <select id="partner-commission-type" name="commissionType" [(ngModel)]="partnerForm.commissionType"
+            class="form-input">
+            <option *ngFor="let type of commissionTypes" [value]="type.value">
+              {{ type.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Commission Value (Optional) -->
+        <div class="form-group">
+          <label for="partner-commission-value">
+            Commission Value
+          </label>
+          <input type="number" id="partner-commission-value" name="commissionValue"
+            [(ngModel)]="partnerForm.commissionValue"
+            [placeholder]="partnerForm.commissionType === 'percent' ? 'Enter percentage (e.g., 10)' : 'Enter fixed amount'"
+            class="form-input">
+        </div>
+
+        <!-- GST Number (Optional) -->
+        <div class="form-group">
+          <label for="partner-gst">
+            GST Number
+          </label>
+          <input type="text" id="partner-gst" name="gstNumber" [(ngModel)]="partnerForm.gstNumber"
+            placeholder="Enter GST number" class="form-input">
+        </div>
+
+        <!-- Address (Optional, Full Width) -->
+        <div class="form-group full-width">
+          <label for="partner-address">
+            Address
+          </label>
+          <textarea id="partner-address" name="address" [(ngModel)]="partnerForm.address"
+            placeholder="Enter full address" rows="3" class="form-input"></textarea>
+        </div>
+
+        <!-- ✅ ADD: Assigned Employee Dropdown -->
+        <div class="form-group">
+          <label for="partner-employee">
+            Assigned Employee
+          </label>
+          <select id="partner-employee" name="assignedEmployee" [(ngModel)]="selectedEmployee" class="form-input">
+            <option value="">Select Employee</option>
+            <option *ngFor="let emp of employees" [value]="emp._id">
+              {{ emp.name }}
+              <span *ngIf="emp.employeeCode">({{ emp.employeeCode }})</span>
+              <span *ngIf="emp.department"> - {{ emp.department }}</span>
+            </option>
+          </select>
+          <small class="input-hint">
+            <i class="fas fa-user-tag"></i>
+            Select employee to manage this partner
+          </small>
+        </div>
+
+        <!-- ✅ ADD: Assigned Manager Dropdown -->
+        <div class="form-group">
+          <label for="partner-manager">
+            Assigned Manager
+          </label>
+          <select id="partner-manager" name="assignedManager" [(ngModel)]="selectedManager" class="form-input">
+            <option value="">Select Manager</option>
+            <option *ngFor="let emp of employees" [value]="emp._id">
+              {{ emp.name }}
+              <span *ngIf="emp.employeeCode">({{ emp.employeeCode }})</span>
+              <span *ngIf="emp.designation"> - {{ emp.designation }}</span>
+            </option>
+          </select>
+          <small class="input-hint">
+            <i class="fas fa-user-shield"></i>
+            Select manager/senior for this partner
+          </small>
+        </div>
+
+        <!-- Account Status (Default: Active) -->
+        <div class="form-group">
+          <label for="partner-status">
+            Account Status
+          </label>
+          <select id="partner-status" name="accountStatus" [(ngModel)]="partnerForm.accountStatus" class="form-input">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Suspended">Suspended</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancelForm()" [disabled]="isLoading">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+        <button type="submit" class="btn-submit" [disabled]="!partnerFormRef.valid || isLoading">
+          <i class="fas fa-check"></i>
+          Create Partner
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Success Popup Modal -->
+  <div class="success-popup" *ngIf="showSuccessPopup" @fadeSlideIn>
+    <div class="popup-content">
+      <div class="success-icon-circle">
+        <i class="fas fa-check"></i>
+      </div>
+      <h3>Account Created Successfully!</h3>
+      <p>{{ activeTab === 'employee' ? 'Employee' : 'Partner' }} has been added to the system</p>
+    </div>
+  </div>
+</div>

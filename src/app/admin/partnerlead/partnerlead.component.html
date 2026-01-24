@@ -1,0 +1,294 @@
+<div class="partner-lead-container">
+  <!-- Beautiful Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-handshake"></i>
+      </div>
+      <div class="header-text">
+        <h1 class="main-title">Partner Management</h1>
+        <p class="subtitle">Manage your channel partners efficiently</p>
+      </div>
+    </div>
+
+    <div class="header-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ totalPartners }}</span>
+          <span class="stat-label">Total Partners</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search by name or mobile..." [(ngModel)]="searchQuery" (input)="onSearch()"
+        class="search-input">
+    </div>
+    <button class="refresh-btn" (click)="fetchPartners()">
+      <i class="fas fa-sync-alt"></i>
+      <span>Refresh</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loader"></div>
+    <p>Loading partners data...</p>
+  </div>
+
+  <!-- Partners Cards Grid -->
+  <div *ngIf="!isLoading" class="partners-grid">
+    <div *ngFor="let partner of paginatedPartners" class="partner-card">
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="user-info-header">
+          <div class="user-avatar">{{ getInitials(partner.name) }}</div>
+          <div class="user-details">
+            <h3 class="partner-name">{{ partner.name }}</h3>
+            <p class="partner-mobile">
+              <i class="fas fa-phone-alt"></i>
+              {{ partner.mobile }}
+            </p>
+          </div>
+        </div>
+        <span [class]="'status-badge ' + getStatusClass(partner.status)">
+          <i class="fas fa-circle"></i>
+          {{ partner.status }}
+        </span>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <!-- <span>{{ partner.registeredAt  }}</span> -->
+            <!-- <h1>{{partner.registeredAt}}</h1> -->
+            <!-- <span>{{ partner.registeredAt | date:'dd MMM yyyy, hh:mm a':'IST' }}</span> -->
+            <!-- <h1>{{ partner.registeredAt }}</h1> -->
+            <span>{{ getDate(partner.createdAt) }}</span>
+
+
+
+
+          </div>
+          <div class="info-item">
+            <i class="fas fa-clock"></i>
+            <span>{{ getTime(partner.createdAt) }}</span>
+            <!-- <span>{{ partner.registeredAt }}</span> -->
+            <!-- <span>{{ partner.registeredAt | date:'dd MMM yyyy, hh:mm a' }}</span> -->
+
+          </div>
+          <!-- <div class="info-item">
+            <i class="fas fa-id-badge"></i>
+            <span>{{ partner._id }}</span>
+          </div> -->
+          <div class="info-item" [ngClass]="partner.isVerified ? 'verified' : 'not-verified'">
+
+            <i class="fas" [ngClass]="partner.isVerified 
+                ? 'fa-check-circle' 
+                : 'fa-times-circle'">
+            </i>
+
+            <span>
+              {{ partner.isVerified ? 'Verified' : 'Not Verified' }}
+            </span>
+          </div>
+
+
+          <!-- Admin Remarks Section -->
+          <div *ngIf="partner.adminRemarks" class="remarks-section">
+            <div class="remarks-label">
+              <i class="fas fa-comment-alt"></i>
+              <span>Admin Remarks:</span>
+            </div>
+            <p class="remarks-text">{{ partner.adminRemarks }}</p>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer">
+          <button class="card-btn-icon view-btn" (click)="viewDetails(partner)" title="View Details">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="card-btn-icon update-btn" (click)="openUpdateStatusModal(partner)" title="Update Status">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="card-btn-icon delete-btn" (click)="confirmDelete(partner)" title="Delete Partner">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data -->
+    <div *ngIf="!isLoading && paginatedPartners.length === 0" class="no-data">
+      <i class="fas fa-inbox"></i>
+      <p>No partners found</p>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="!isLoading && totalPages > 1" class="pagination">
+      <button class="page-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <div class="page-numbers">
+        <button *ngFor="let page of pages.slice(0, 5)" class="page-number" [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+        <span *ngIf="totalPages > 5">...</span>
+      </div>
+
+      <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+    </div>
+  </div>
+
+  <!-- View Details Modal -->
+  <div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeDetailsModal()">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-avatar">{{ getInitials(selectedPartner?.name || '') }}</div>
+        <h2>Partner Details</h2>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedPartner">
+        <div class="detail-section">
+          <h3>Personal Information</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Full Name</label>
+              <span>{{ selectedPartner.name }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Mobile</label>
+              <span>{{ selectedPartner.mobile }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Partner ID</label>
+              <span>{{ selectedPartner._id }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Verification Status</label>
+              <span [class]="selectedPartner.isVerified ? 'verified-badge' : 'not-verified-badge'">
+                <i [class]="selectedPartner.isVerified ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
+                {{ selectedPartner.isVerified ? 'Verified' : 'Not Verified' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Registration Details</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Registration Date</label>
+              <!-- <span>{{ formatDate(selectedPartner.registeredAt) }}</span> -->
+              <span>{{ getDate(selectedPartner.createdAt) }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Registration Time</label>
+              <!-- <span>{{ formatTime(selectedPartner.registeredAt) }}</span> -->
+              <span>{{ getTime(selectedPartner.createdAt) }}</span>
+
+            </div>
+            <div class="detail-item">
+              <label>Status</label>
+              <span [class]="'status-badge ' + getStatusClass(selectedPartner.status)">
+                <i class="fas fa-circle"></i>
+                {{ selectedPartner.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedPartner.adminRemarks">
+          <h3>Admin Remarks</h3>
+          <p class="admin-remarks">{{ selectedPartner.adminRemarks }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Status Modal -->
+  <div class="modal-overlay" *ngIf="showUpdateStatusModal" (click)="closeUpdateStatusModal()">
+    <div class="update-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeUpdateStatusModal()">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="update-icon">
+        <i class="fas fa-edit"></i>
+      </div>
+
+      <h2>Update Partner Status</h2>
+      <p class="partner-name-update">{{ partnerToUpdate?.name }}</p>
+
+      <div class="update-form">
+        <div class="form-group">
+          <label>Select Status</label>
+          <select [(ngModel)]="newStatus" class="status-select">
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Admin Remarks (Optional)</label>
+          <textarea [(ngModel)]="adminRemarks" class="remarks-textarea" placeholder="Add any remarks or notes..."
+            rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="update-actions">
+        <button class="cancel-btn" (click)="closeUpdateStatusModal()">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+        <button class="confirm-update-btn" (click)="confirmUpdateStatus()">
+          <i class="fas fa-check"></i>
+          Update Status
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h2>Confirm Delete</h2>
+      <p>Are you sure you want to delete <strong>{{ partnerToDelete?.name }}</strong>?</p>
+      <p class="warning-text">This action cannot be undone.</p>
+
+      <div class="delete-actions">
+        <button class="cancel-btn" (click)="closeDeleteModal()">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+        <button class="confirm-delete-btn" (click)="confirmDeleteAction()">
+          <i class="fas fa-trash"></i>
+          Delete Partner
+        </button>
+      </div>
+    </div>
+  </div>

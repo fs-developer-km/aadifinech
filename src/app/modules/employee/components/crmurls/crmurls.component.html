@@ -1,0 +1,169 @@
+<!-- quick-links.component.html -->
+
+<section class="quick-links-section">
+  <div class="container">
+    
+    <div class="section-header">
+      <h2 class="section-title">Quick Access Links</h2>
+      <p class="section-subtitle">Access all your important portals in one place</p>
+    </div>
+
+    <div class="links-grid">
+      
+      <!-- Refrens Card -->
+      <div class="link-card" (click)="openLink(quickLinks[0].url)">
+        <div class="card-header">
+          <div class="icon-wrapper invoice-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+              <line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="8" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[0].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[0].title }}</h3>
+        <p class="card-description">{{ quickLinks[0].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- InvestWell Card -->
+      <div class="link-card" (click)="openLink(quickLinks[1].url)">
+        <div class="card-header">
+          <div class="icon-wrapper investment-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17L9 11L13 15L21 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 7H21V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[1].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[1].title }}</h3>
+        <p class="card-description">{{ quickLinks[1].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- IIFL Capital Card -->
+      <div class="link-card" (click)="openLink(quickLinks[2].url)">
+        <div class="card-header">
+          <div class="icon-wrapper trading-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+              <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+              <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+              <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[2].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[2].title }}</h3>
+        <p class="card-description">{{ quickLinks[2].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- IIFL Demat Card -->
+      <div class="link-card" (click)="openLink(quickLinks[3].url)">
+        <div class="card-header">
+          <div class="icon-wrapper demat-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="15" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[3].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[3].title }}</h3>
+        <p class="card-description">{{ quickLinks[3].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- GST Portal Card -->
+      <div class="link-card" (click)="openLink(quickLinks[4].url)">
+        <div class="card-header">
+          <div class="icon-wrapper gst-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[4].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[4].title }}</h3>
+        <p class="card-description">{{ quickLinks[4].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ITR Portal Card -->
+      <div class="link-card" (click)="openLink(quickLinks[5].url)">
+        <div class="card-header">
+          <div class="icon-wrapper itr-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 4H18C18.5304 4 19.0391 4.21071 19.4142 4.58579C19.7893 4.96086 20 5.46957 20 6V20C20 20.5304 19.7893 21.0391 19.4142 21.4142C19.0391 21.7893 18.5304 22 18 22H6C5.46957 22 4.96086 21.7893 4.58579 21.4142C4.21071 21.0391 4 20.5304 4 20V6C4 5.46957 4.21071 4.96086 4.58579 4.58579C4.96086 4.21071 5.46957 4 6 4H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15 2H9C8.44772 2 8 2.44772 8 3V5C8 5.55228 8.44772 6 9 6H15C15.5523 6 16 5.55228 16 5V3C16 2.44772 15.5523 2 15 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="9" y1="16" x2="15" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[5].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[5].title }}</h3>
+        <p class="card-description">{{ quickLinks[5].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- GST Trend Line Card -->
+      <div class="link-card" (click)="openLink(quickLinks[6].url)">
+        <div class="card-header">
+          <div class="icon-wrapper analytics-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 21H4.6C4.03995 21 3.75992 21 3.54601 20.891C3.35785 20.7951 3.20487 20.6422 3.10899 20.454C3 20.2401 3 19.9601 3 19.4V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 14L11 10L15 14L21 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="category-badge">{{ quickLinks[6].category }}</span>
+        </div>
+        <h3 class="card-title">{{ quickLinks[6].title }}</h3>
+        <p class="card-description">{{ quickLinks[6].description }}</p>
+        <div class="card-footer">
+          <span class="link-text">Access Portal</span>
+          <svg class="arrow-icon" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10 L15 10 M11 6 L15 10 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

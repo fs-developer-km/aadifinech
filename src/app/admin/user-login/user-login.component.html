@@ -1,0 +1,233 @@
+<div class="login-activity-wrapper">
+
+  <!-- Success/Error Popup -->
+  <div class="toast-popup" *ngIf="showToast" [ngClass]="toastType">
+    <i [class]="toastType === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
+    <span>{{ toastMessage }}</span>
+  </div>
+
+  <!-- Header Section -->
+  <div class="login-page-header">
+    <div class="header-content">
+      <h1 class="page-main-title">User Management System</h1>
+      <p class="page-subtitle">Manage and monitor all user accounts & activities</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-mini-box">
+        <i class="fas fa-users"></i>
+        <div class="stat-info">
+          <span class="stat-label">Total Users</span>
+          <span class="stat-number">{{ userLoginData.length }}</span>
+        </div>
+      </div>
+      <div class="stat-mini-box">
+        <i class="fas fa-user-check"></i>
+        <div class="stat-info">
+          <span class="stat-label">Active Today</span>
+          <span class="stat-number">{{ getActiveUsers() }}</span>
+        </div>
+      </div>
+      <div class="stat-mini-box">
+        <i class="fas fa-shield-alt"></i>
+        <div class="stat-info">
+          <span class="stat-label">Admins</span>
+          <span class="stat-number">{{ getRoleCount('admin') }}</span>
+        </div>
+      </div>
+
+      <!-- ✅ Refresh Button -->
+      
+    </div>
+  </div>
+
+  <!-- Role Filter Section -->
+  <div class="role-filter-section">
+    <div class="role-buttons">
+      <button class="role-btn" [class.active]="selectedRole === 'all'" (click)="filterByRole('all')">
+        <i class="fas fa-users-cog"></i>
+        All Users
+        <span class="role-count">{{ userLoginData.length }}</span>
+      </button>
+      <button class="role-btn role-admin" [class.active]="selectedRole === 'admin'" (click)="filterByRole('admin')">
+        <i class="fas fa-user-shield"></i>
+        Admins
+        <span class="role-count">{{ getRoleCount('admin') }}</span>
+      </button>
+      <button class="role-btn role-employee" [class.active]="selectedRole === 'employee'"
+        (click)="filterByRole('employee')">
+        <i class="fas fa-user-tie"></i>
+        Employees
+        <span class="role-count">{{ getRoleCount('employee') }}</span>
+      </button>
+      <button class="role-btn role-partner" [class.active]="selectedRole === 'partner'"
+        (click)="filterByRole('partner')">
+        <i class="fas fa-handshake"></i>
+        Partners
+        <span class="role-count">{{ getRoleCount('partner') }}</span>
+      </button>
+      <button class="role-btn role-user" [class.active]="selectedRole === 'user'" (click)="filterByRole('user')">
+        <i class="fas fa-user"></i>
+        Users
+        <span class="role-count">{{ getRoleCount('user') }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="controls-section">
+  <div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" class="search-input-field" placeholder="Search by name, email, or phone..."
+      [(ngModel)]="searchQuery">
+  </div>
+  
+  <!-- ✅ Refresh Button -->
+  <button class="refresh-btn" (click)="manualRefresh()" [disabled]="loading">
+    <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+    {{ loading ? 'Refreshing...' : 'Refresh' }}
+  </button>
+</div>
+
+  <!-- Table Container -->
+  <div class="table-container-wrapper">
+    <div class="table-scroll">
+      <table class="login-activity-table">
+        <thead class="table-header-section">
+          <tr class="header-row">
+            <th class="table-header-cell">User Info</th>
+            <th class="table-header-cell">Contact</th>
+            <th class="table-header-cell">Role</th>
+            <th class="table-header-cell">Signup Date</th>
+            <th class="table-header-cell">Last Login</th>
+            <th class="table-header-cell">Status</th>
+            <th class="table-header-cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-body-section">
+          <tr class="data-row" *ngFor="let user of getPaginatedUsers()" [attr.data-role]="user.role">
+
+            <!-- User Info -->
+            <td class="table-data-cell">
+              <div class="user-cell-info">
+                <div class="user-avatar-mini" [attr.data-role]="user.role">
+                  {{ user.userName.charAt(0).toUpperCase() }}
+                </div>
+                <div class="user-details">
+                  <span class="user-name-text">{{ user.userName }}</span>
+                  <span class="user-id">{{ user.userId }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Contact -->
+            <td class="table-data-cell">
+              <div class="contact-cell">
+                <div class="phone-info">
+                  <i class="fas fa-phone"></i>
+                  <span>{{ user.userPhone }}</span>
+                </div>
+                <div class="email-info" *ngIf="user.userEmail">
+                  <i class="fas fa-envelope"></i>
+                  <span>{{ user.userEmail }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Role Badge -->
+            <td class="table-data-cell">
+              <span class="role-badge" [ngClass]="getRoleBadgeClass(user.role)">
+                <i [class]="getRoleIcon(user.role)"></i>
+                {{ user.role }}
+              </span>
+            </td>
+
+            <!-- Signup Date -->
+            <td class="table-data-cell">
+              <div class="date-cell">
+                <i class="fas fa-calendar-plus"></i>
+                <span class="date-text">{{ user.signupDate }}</span>
+              </div>
+            </td>
+
+            <!-- Last Login -->
+            <td class="table-data-cell">
+              <div class="login-cell">
+                <span class="date-text">{{ user.lastLoginDate }}</span>
+                <span class="time-text">{{ user.lastLoginTime }}</span>
+              </div>
+            </td>
+
+            <!-- Status -->
+            <td class="table-data-cell">
+              <span class="status-badge" [ngClass]="getStatusBadgeClass(user.accountStatus)">
+                <i [class]="getStatusIcon(user.accountStatus)"></i>
+                {{ user.accountStatus }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="table-data-cell">
+              <button class="delete-btn" (click)="openDeleteModal(user.userId, user.userName)"
+                [disabled]="deletingUserId === user.userId" title="Delete User">
+                <i *ngIf="deletingUserId !== user.userId" class="fas fa-trash-alt"></i>
+                <i *ngIf="deletingUserId === user.userId" class="fas fa-spinner fa-spin"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="delete-modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <div class="modal-icon-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="modal-title">Delete User Account?</h3>
+      <p class="modal-message">
+        Are you sure you want to permanently delete <strong>{{ userToDelete?.name }}</strong>?
+        <br>This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button class="modal-btn cancel-btn" (click)="closeDeleteModal()">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+        <button class="modal-btn delete-confirm-btn" (click)="confirmDelete()">
+          <i class="fas fa-trash-alt"></i>
+          Delete Permanently
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="getPaginatedUsers().length === 0">
+    <i class="fas fa-user-slash empty-icon"></i>
+    <h3 class="empty-title">No users found</h3>
+    <p class="empty-message">Try adjusting your search or filter</p>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container" *ngIf="getTotalPages() > 1">
+    <button class="pagination-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+      <i class="fas fa-chevron-left"></i>
+      Previous
+    </button>
+
+    <div class="page-numbers">
+      <button *ngFor="let page of getPageNumbers()" class="page-number-btn" [class.active]="currentPage === page"
+        (click)="changePage(page)">
+        {{ page }}
+      </button>
+    </div>
+
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === getTotalPages()">
+      Next
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+</div>

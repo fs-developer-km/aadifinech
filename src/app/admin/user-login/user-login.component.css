@@ -1,0 +1,1098 @@
+:host {
+    display: block;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 30px 20px;
+}
+
+.login-activity-wrapper {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 30px;
+    transition: margin-left 0.3s ease;
+}
+
+/* ==================== Toast Popup ==================== */
+.toast-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    animation: slideInRight 0.3s ease;
+    color: #fff;
+}
+
+.toast-popup.success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.toast-popup.error {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.toast-popup i {
+    font-size: 20px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== Header Section ==================== */
+.login-page-header {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(221, 51, 51, 0.1);
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.page-main-title {
+    color: #1a1a1a;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+    color: #666;
+    font-size: 15px;
+    margin: 0;
+}
+
+.header-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.stat-mini-box {
+    background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+}
+
+.stat-mini-box i {
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-number {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ==================== Role Filter Section ==================== */
+.role-filter-section {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(221, 51, 51, 0.1);
+    margin-bottom: 25px;
+}
+
+.role-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.role-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 12px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.role-btn i {
+    font-size: 16px;
+}
+
+.role-count {
+    background: #f3f4f6;
+    color: #6b7280;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.role-btn:hover {
+    border-color: #dd3333;
+    background: rgba(221, 51, 51, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(221, 51, 51, 0.15);
+}
+
+.role-btn.active {
+    background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
+    color: #fff;
+    border-color: #dd3333;
+    box-shadow: 0 6px 20px rgba(221, 51, 51, 0.3);
+}
+
+.role-btn.active .role-count {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* ==================== Search Section ==================== */
+.controls-section {
+    background: #fff;
+    padding: 18px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(221, 51, 51, 0.1);
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-container {
+    position: relative;
+    width: 85%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #dd3333;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+.search-input-field {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.search-input-field:focus {
+    border-color: #dd3333;
+    box-shadow: 0 0 0 3px rgba(221, 51, 51, 0.1);
+}
+
+/* ==================== Table Container ==================== */
+.table-container-wrapper {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(221, 51, 51, 0.1);
+    overflow: hidden;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    user-select: none;
+}
+
+.table-scroll:active {
+    cursor: grabbing;
+}
+
+.table-scroll::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
+    border-radius: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #cc2222 0%, #ee3333 100%);
+}
+
+.login-activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+}
+
+.table-header-section {
+    background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-row {
+    display: table-row;
+}
+
+.table-header-cell {
+    padding: 16px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+}
+
+.table-body-section {
+    display: table-row-group;
+}
+
+.data-row {
+    display: table-row;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.data-row:hover {
+    background: linear-gradient(90deg, rgba(221, 51, 51, 0.04) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.table-data-cell {
+    padding: 16px 14px;
+    color: #333;
+    font-size: 13px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/* ==================== User Cell ==================== */
+.user-cell-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar-mini {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.user-avatar-mini[data-role="admin"] {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+}
+
+.user-avatar-mini[data-role="employee"] {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+}
+
+.user-avatar-mini[data-role="partner"] {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.user-avatar-mini[data-role="user"] {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.user-name-text {
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-id {
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* ==================== Contact Cell ==================== */
+.contact-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.phone-info,
+.email-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #4b5563;
+    font-size: 13px;
+}
+
+.phone-info i,
+.email-info i {
+    color: #dd3333;
+    font-size: 12px;
+    width: 14px;
+}
+
+/* ==================== Role Badge ==================== */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.role-badge-admin {
+    background: rgba(220, 38, 38, 0.15);
+    color: #991b1b;
+}
+
+.role-badge-employee {
+    background: rgba(37, 99, 235, 0.15);
+    color: #1e40af;
+}
+
+.role-badge-partner {
+    background: rgba(5, 150, 105, 0.15);
+    color: #047857;
+}
+
+.role-badge-user {
+    background: rgba(124, 58, 237, 0.15);
+    color: #6d28d9;
+}
+
+.role-badge i {
+    font-size: 13px;
+}
+
+/* ==================== Date Cell ==================== */
+.date-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-cell i {
+    color: #dd3333;
+    font-size: 13px;
+}
+
+.date-text {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* ==================== Login Cell ==================== */
+.login-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.time-text {
+    color: #6b7280;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* ==================== Status Badge ==================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.badge-active {
+    background: rgba(16, 185, 129, 0.15);
+    color: #047857;
+}
+
+.badge-inactive {
+    background: rgba(107, 114, 128, 0.15);
+    color: #4b5563;
+}
+
+.badge-suspended {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+.status-badge i {
+    font-size: 13px;
+}
+
+/* ==================== Delete Button ==================== */
+.delete-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.delete-btn:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.delete-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.delete-btn .fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ==================== Delete Modal ==================== */
+.delete-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.delete-modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    text-align: center;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-icon-danger {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.25) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-icon-danger i {
+    font-size: 36px;
+    color: #ef4444;
+}
+
+.modal-title {
+    color: #1a1a1a;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+}
+
+.modal-message {
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 28px 0;
+}
+
+.modal-message strong {
+    color: #dd3333;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cancel-btn {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.cancel-btn:hover {
+    background: #e5e7eb;
+    transform: translateY(-2px);
+}
+
+.delete-confirm-btn {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.delete-confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* ==================== Empty State ==================== */
+.empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    color: #9ca3af;
+}
+
+.empty-icon {
+    font-size: 60px;
+    color: #d1d5db;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.empty-title {
+    color: #6b7280;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+}
+
+.empty-message {
+    color: #9ca3af;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ==================== Pagination ==================== */
+.pagination-container {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(221, 51, 51, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.pagination-btn {
+    background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(221, 51, 51, 0.3);
+}
+
+.pagination-btn:disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.page-number-btn {
+    min-width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+    color: #4b5563;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.page-number-btn:hover {
+    border-color: #dd3333;
+    color: #dd3333;
+}
+
+.page-number-btn.active {
+    background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
+    color: #fff;
+    border-color: #dd3333;
+}
+
+/* ==================== Responsive Design ==================== */
+
+/* Tablet devices (1200px and below) */
+@media (max-width: 1200px) {
+    .login-page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-stats {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .role-buttons {
+        justify-content: center;
+    }
+
+    .role-btn {
+        min-width: 130px;
+    }
+}
+
+/* Medium tablets (992px and below) */
+@media (max-width: 992px) {
+    .login-activity-wrapper {
+        padding: 20px;
+    }
+
+    .stat-mini-box {
+        flex: 1;
+        min-width: 140px;
+    }
+
+    .login-activity-table {
+        min-width: 1000px;
+    }
+
+    .table-header-cell,
+    .table-data-cell {
+        padding: 14px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Small tablets and large phones (768px and below) */
+@media (max-width: 768px) {
+    :host {
+        padding: 15px 10px;
+    }
+
+    .login-activity-wrapper {
+        padding: 15px;
+    }
+
+    .login-page-header {
+        padding: 20px;
+    }
+
+    .page-main-title {
+        font-size: 24px;
+    }
+
+    .page-subtitle {
+        font-size: 14px;
+    }
+
+    .header-stats {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .stat-mini-box {
+        width: 100%;
+    }
+
+    .role-buttons {
+        flex-direction: column;
+    }
+
+    .role-btn {
+        width: 100%;
+    }
+
+    .controls-section {
+        padding: 15px;
+    }
+
+    .search-input-field {
+        font-size: 14px;
+        padding: 10px 12px 10px 40px;
+    }
+
+    .table-scroll {
+        margin: 0 -15px;
+        padding: 0 15px;
+    }
+
+    .login-activity-table {
+        min-width: 900px;
+    }
+
+    .table-header-cell,
+    .table-data-cell {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+
+    .user-avatar-mini {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+    }
+
+    .pagination-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Mobile devices (576px and below) */
+@media (max-width: 576px) {
+    :host {
+        padding: 10px 5px;
+    }
+
+    .login-activity-wrapper {
+        padding: 10px;
+    }
+
+    .login-page-header {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .page-main-title {
+        font-size: 20px;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+    }
+
+    .stat-mini-box {
+        padding: 12px 15px;
+    }
+
+    .stat-mini-box i {
+        font-size: 20px;
+    }
+
+    .stat-number {
+        font-size: 20px;
+    }
+
+    .controls-section {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+
+    .table-scroll {
+        margin: 0 -10px;
+        padding: 0 10px;
+    }
+
+    .login-activity-table {
+        min-width: 800px;
+    }
+
+    .table-header-cell,
+    .table-data-cell {
+        padding: 10px 8px;
+        font-size: 11px;
+    }
+
+    .user-avatar-mini {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+
+    .user-name-text {
+        font-size: 12px;
+    }
+
+    .phone-info,
+    .email-info {
+        font-size: 12px !important;
+    }
+
+    .date-text,
+    .time-text {
+        font-size: 12px;
+    }
+
+    .status-badge,
+    .role-badge {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .page-numbers {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* Extra small devices (480px and below) */
+@media (max-width: 480px) {
+    .login-activity-wrapper {
+        padding: 8px;
+    }
+
+    .page-main-title {
+        font-size: 18px;
+    }
+
+    .page-subtitle {
+        font-size: 12px;
+    }
+
+    .stat-mini-box {
+        padding: 10px 12px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+
+    .stat-number {
+        font-size: 18px;
+    }
+
+    .controls-section {
+        padding: 10px;
+    }
+
+    .search-input-field {
+        padding: 10px 10px 10px 38px;
+        font-size: 13px;
+    }
+
+    .search-icon {
+        left: 12px;
+        font-size: 14px;
+    }
+
+    .login-activity-table {
+        min-width: 750px;
+    }
+
+    .table-header-cell,
+    .table-data-cell {
+        padding: 8px 6px;
+        font-size: 10px;
+    }
+
+    .user-avatar-mini {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .user-name-text {
+        font-size: 11px;
+    }
+
+    .phone-info,
+    .email-info {
+        font-size: 11px !important;
+    }
+
+    .date-text,
+    .time-text {
+        font-size: 11px;
+    }
+
+    .status-badge,
+    .role-badge {
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+
+    .delete-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+/* Very small devices (360px and below) */
+@media (max-width: 360px) {
+    .login-activity-table {
+        min-width: 700px;
+    }
+
+    .page-main-title {
+        font-size: 16px;
+    }
+
+    .table-header-cell,
+    .table-data-cell {
+        padding: 8px 5px;
+        font-size: 10px;
+    }
+
+    .user-avatar-mini {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
+}
+
+
+/* refresh button */
+
+.refresh-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.refresh-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.refresh-btn .fa-spin {
+    animation: spin 1s linear infinite;
+}
+

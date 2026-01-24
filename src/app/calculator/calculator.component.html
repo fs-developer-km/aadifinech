@@ -1,0 +1,209 @@
+<div class="calculator-container">
+  <div class="calculator-wrapper">
+    <!-- Left Side - Image/Icon -->
+    <div class="image-section">
+      <!-- <div class="calculator-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #fff;">
+          <rect x="4" y="2" width="16" height="20" rx="2" ry="2" stroke="#DD3333" stroke-width="2" />
+          <line x1="8" y1="6" x2="16" y2="6" stroke="#DD3333" stroke-width="1.5" />
+          <line x1="8" y1="10" x2="16" y2="10" stroke="#DD3333" stroke-width="1.5" />
+          <line x1="8" y1="14" x2="16" y2="14" stroke="#DD3333" stroke-width="1.5" />
+          <line x1="8" y1="18" x2="12" y2="18" stroke="#DD3333" stroke-width="1.5" />
+          <circle cx="16" cy="18" r="1" fill="#DD3333" />
+        </svg>
+      </div> -->
+      <h2 style="color: #fff;">Financial Calculator</h2>
+      <p class="alignment" style="color: #fff;">Calculate your SIP, Fixed Deposit returns, and EMI payments with our advanced financial
+        calculator.</p>
+
+
+        <!-- sip  first resuslt calculator  -->
+      <div class="result-section" *ngIf="activeTab === 'sip' && sipData.result.maturityAmount > 0">
+        <div class="result-card">
+          <h4>Results</h4>
+          <div class="result-item">
+            <span class="label">Maturity Amount:</span>
+            <span class="value">{{ formatCurrency(sipData.result.maturityAmount) }}</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Total Investment:</span>
+            <span class="value">{{ formatCurrency(sipData.result.totalInvestment) }}</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Total Returns:</span>
+            <span class="value profit">{{ formatCurrency(sipData.result.totalReturns) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!--  FD second  -->
+
+
+      <div class="result-section" *ngIf="activeTab === 'fd' && fdData.result.maturityAmount > 0">
+          <div class="result-card">
+            <h4>Results</h4>
+            <div class="result-item">
+              <span class="label">Maturity Amount:</span>
+              <span class="value">{{ formatCurrency(fdData.result.maturityAmount) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Principal Amount:</span>
+              <span class="value">{{ formatCurrency(fdData.principal) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Total Interest:</span>
+              <span class="value profit">{{ formatCurrency(fdData.result.totalInterest) }}</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- last result -->
+
+        <div class="result-section" *ngIf="activeTab === 'emi' && emiData.result.emi > 0">
+          <div class="result-card">
+            <h4>Results</h4>
+            <div class="result-item">
+              <span class="label">Monthly EMI:</span>
+              <span class="value highlight">{{ formatCurrency(emiData.result.emi) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Total Amount Payable:</span>
+              <span class="value">{{ formatCurrency(emiData.result.totalAmount) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Total Interest Payable:</span>
+              <span class="value interest">{{ formatCurrency(emiData.result.totalInterest) }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- emi calculator result  -->
+
+
+
+    <!-- Right Side - Calculator -->
+    <div class="calculator-section">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button class="tab-button" [class.active]="activeTab === 'sip'" (click)="setActiveTab('sip')">
+          SIP Calculator
+        </button>
+        <button class="tab-button" [class.active]="activeTab === 'fd'" (click)="setActiveTab('fd')">
+          FD Calculator
+        </button>
+        <button class="tab-button" [class.active]="activeTab === 'emi'" (click)="setActiveTab('emi')">
+          EMI Calculator
+        </button>
+      </div>
+
+      <!-- SIP Calculator Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'sip'">
+        <h3>SIP Calculator</h3>
+        <div class="form-group">
+          <label>Monthly Investment (₹)</label>
+          <input type="number" [(ngModel)]="sipData.monthlyInvestment" (input)="calculateSIP()"
+            placeholder="Enter monthly investment" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Expected Annual Return (%)</label>
+          <input type="number" [(ngModel)]="sipData.annualReturn" (input)="calculateSIP()"
+            placeholder="Enter expected return" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Time Period (Years)</label>
+          <input type="number" [(ngModel)]="sipData.timePeriod" (input)="calculateSIP()" placeholder="Enter time period"
+            class="form-control">
+        </div>
+
+
+      </div>
+
+      <!-- FD Calculator Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'fd'">
+        <h3>Fixed Deposit Calculator</h3>
+        <div class="form-group">
+          <label>Principal Amount (₹)</label>
+          <input type="number" [(ngModel)]="fdData.principal" (input)="calculateFD()"
+            placeholder="Enter principal amount" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Interest Rate (% per annum)</label>
+          <input type="number" [(ngModel)]="fdData.interestRate" (input)="calculateFD()"
+            placeholder="Enter interest rate" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Time Period (Years)</label>
+          <input type="number" [(ngModel)]="fdData.timePeriod" (input)="calculateFD()" placeholder="Enter time period"
+            class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Compounding Frequency</label>
+          <select [(ngModel)]="fdData.compoundingFrequency" (change)="calculateFD()" class="form-control">
+            <option value="1">Annually</option>
+            <option value="2">Semi-annually</option>
+            <option value="4">Quarterly</option>
+            <option value="12">Monthly</option>
+          </select>
+        </div>
+
+        <!-- <div class="result-section" *ngIf="fdData.result.maturityAmount > 0">
+          <div class="result-card">
+            <h4>Results</h4>
+            <div class="result-item">
+              <span class="label">Maturity Amount:</span>
+              <span class="value">{{ formatCurrency(fdData.result.maturityAmount) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Principal Amount:</span>
+              <span class="value">{{ formatCurrency(fdData.principal) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Total Interest:</span>
+              <span class="value profit">{{ formatCurrency(fdData.result.totalInterest) }}</span>
+            </div>
+          </div>
+        </div> -->
+      </div>
+
+      <!-- EMI Calculator Tab -->
+      <div class="tab-content" *ngIf="activeTab === 'emi'">
+        <h3>EMI Calculator</h3>
+        <div class="form-group">
+          <label>Loan Amount (₹)</label>
+          <input type="number" [(ngModel)]="emiData.loanAmount" (input)="calculateEMI()" placeholder="Enter loan amount"
+            class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Interest Rate (% per annum)</label>
+          <input type="number" [(ngModel)]="emiData.interestRate" (input)="calculateEMI()"
+            placeholder="Enter interest rate" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Loan Tenure (Years)</label>
+          <input type="number" [(ngModel)]="emiData.loanTenure" (input)="calculateEMI()" placeholder="Enter loan tenure"
+            class="form-control">
+        </div>
+
+        <!-- <div class="result-section" *ngIf="emiData.result.emi > 0">
+          <div class="result-card">
+            <h4>Results</h4>
+            <div class="result-item">
+              <span class="label">Monthly EMI:</span>
+              <span class="value highlight">{{ formatCurrency(emiData.result.emi) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Total Amount Payable:</span>
+              <span class="value">{{ formatCurrency(emiData.result.totalAmount) }}</span>
+            </div>
+            <div class="result-item">
+              <span class="label">Total Interest Payable:</span>
+              <span class="value interest">{{ formatCurrency(emiData.result.totalInterest) }}</span>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

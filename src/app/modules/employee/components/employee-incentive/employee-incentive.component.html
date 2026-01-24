@@ -1,0 +1,388 @@
+<div class="incentive-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-trophy"></i>
+        My Incentive Calculator
+      </h1>
+      <button class="btn-primary" (click)="openCalculateModal()">
+        <i class="fas fa-calculator"></i> Calculate Incentive
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="quick-stats" *ngIf="incentives.length > 0">
+    <div class="stat-box blue">
+      <div class="stat-icon">
+        <i class="fas fa-file-invoice-dollar"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ getTotalRecords() }}</h3>
+        <p>Total Records</p>
+      </div>
+    </div>
+
+    <div class="stat-box green">
+      <div class="stat-icon">
+        <i class="fas fa-rupee-sign"></i>
+      </div>
+      <div class="stat-info">
+        <h3>₹{{ getTotalIncentive() | number:'1.0-0' }}</h3>
+        <p>Total Incentive Earned</p>
+      </div>
+    </div>
+
+    <div class="stat-box orange">
+      <div class="stat-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ getApprovedCount() }}</h3>
+        <p>Approved</p>
+      </div>
+    </div>
+
+    <div class="stat-box red">
+      <div class="stat-icon">
+        <i class="fas fa-money-bill-wave"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ getPaidCount() }}</h3>
+        <p>Paid</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Month & Year</label>
+      <input type="month" [(ngModel)]="filters.month" (change)="loadIncentives()" class="form-control">
+    </div>
+
+    <div class="filter-group">
+      <label>Status</label>
+      <select [(ngModel)]="filters.status" (change)="loadIncentives()" class="form-control">
+        <option value="">All Status</option>
+        <option value="draft">Draft</option>
+        <option value="calculated">Calculated</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+        <option value="paid">Paid</option>
+      </select>
+    </div>
+
+    <button class="btn-secondary" (click)="clearFilters()">
+      <i class="fas fa-times"></i> Clear
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading incentives...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && incentives.length === 0">
+    <i class="fas fa-chart-line"></i>
+    <h3>No Incentives Found</h3>
+    <p>Calculate your first incentive to get started</p>
+    <button class="btn-primary" (click)="openCalculateModal()">
+      <i class="fas fa-calculator"></i> Calculate Now
+    </button>
+  </div>
+
+  <!-- Incentives List -->
+  <div class="incentives-list" *ngIf="!loading && incentives.length > 0">
+    <div class="incentive-card" *ngFor="let incentive of incentives">
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="header-left">
+          <h3>{{ incentive.month | date:'MMMM yyyy' }}</h3>
+          <span class="period-label">
+            <i class="fas fa-calendar"></i> Period: {{ incentive.month }}
+          </span>
+        </div>
+        <span class="status-badge" [ngClass]="incentive.status">
+          {{ incentive.status | uppercase }}
+        </span>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body">
+        <!-- Performance Metrics -->
+        <div class="metrics-section">
+          <h4><i class="fas fa-chart-bar"></i> Performance Metrics</h4>
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <span class="metric-label">Total Loans</span>
+              <span class="metric-value">{{ incentive.loanMetrics?.totalLoans || 0 }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Approved</span>
+              <span class="metric-value">{{ incentive.loanMetrics?.approvedLoans || 0 }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Disbursed</span>
+              <span class="metric-value success">{{ incentive.loanMetrics?.disbursedLoans || 0 }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Conversion Rate</span>
+              <span class="metric-value">{{ incentive.loanMetrics?.conversionRate || 0 }}%</span>
+            </div>
+          </div>
+
+          <div class="amount-row">
+            <span class="amount-label">Total Disbursed Amount:</span>
+            <span class="amount-value">₹{{ incentive.loanMetrics?.totalDisbursedAmount | number:'1.0-0' }}</span>
+          </div>
+        </div>
+
+        <!-- Target Achievement -->
+        <div class="target-section" *ngIf="incentive.targets">
+          <h4><i class="fas fa-bullseye"></i> Target Achievement</h4>
+          <div class="target-grid">
+            <div class="target-item">
+              <span class="target-label">Loan Target</span>
+              <div class="target-bar">
+                <div class="target-progress" 
+                     [style.width.%]="getTargetPercentage(incentive.loanMetrics?.disbursedLoans, incentive.targets.loanTarget)">
+                </div>
+              </div>
+              <span class="target-value">
+                {{ incentive.loanMetrics?.disbursedLoans || 0 }} / {{ incentive.targets.loanTarget || 0 }}
+              </span>
+            </div>
+            <div class="target-item">
+              <span class="target-label">Amount Target</span>
+              <div class="target-bar">
+                <div class="target-progress" 
+                     [style.width.%]="getTargetPercentage(incentive.loanMetrics?.totalDisbursedAmount, incentive.targets.amountTarget)">
+                </div>
+              </div>
+              <span class="target-value">
+                ₹{{ incentive.loanMetrics?.totalDisbursedAmount | number:'1.0-0' }} / ₹{{ incentive.targets.amountTarget | number:'1.0-0' }}
+              </span>
+            </div>
+          </div>
+          <div class="achievement-badge" *ngIf="incentive.targets && incentive.targets.achievedPercentage && incentive.targets.achievedPercentage >= 100">
+            <i class="fas fa-star"></i> Target Achieved! {{ incentive.targets.achievedPercentage }}%
+          </div>
+        </div>
+
+        <!-- Incentive Breakdown -->
+        <div class="breakdown-section" *ngIf="expandedCard === incentive._id">
+          <h4><i class="fas fa-calculator"></i> Incentive Breakdown</h4>
+          <div class="breakdown-table">
+            <div class="breakdown-row">
+              <span class="breakdown-label">Per Loan Incentive</span>
+              <span class="breakdown-value">₹{{ incentive.incentiveBreakdown?.perLoanIncentive | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Performance Bonus</span>
+              <span class="breakdown-value">₹{{ incentive.incentiveBreakdown?.performanceBonus | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Target Achievement Bonus</span>
+              <span class="breakdown-value">₹{{ incentive.incentiveBreakdown?.targetAchievementBonus | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Quality Bonus</span>
+              <span class="breakdown-value">₹{{ incentive.incentiveBreakdown?.qualityBonus | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row penalty" *ngIf="incentive.incentiveBreakdown && incentive.incentiveBreakdown.penalties && incentive.incentiveBreakdown.penalties > 0">
+              <span class="breakdown-label">Penalties</span>
+              <span class="breakdown-value">-₹{{ incentive.incentiveBreakdown.penalties | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row total">
+              <span class="breakdown-label">Gross Incentive</span>
+              <span class="breakdown-value">₹{{ incentive.grossIncentive | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row" *ngIf="incentive.deductions > 0">
+              <span class="breakdown-label">Deductions</span>
+              <span class="breakdown-value">-₹{{ incentive.deductions | number:'1.0-0' }}</span>
+            </div>
+            <div class="breakdown-row final">
+              <span class="breakdown-label"><strong>Net Incentive</strong></span>
+              <span class="breakdown-value"><strong>₹{{ incentive.netIncentive | number:'1.0-0' }}</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="remarks-section" *ngIf="incentive.adminRemarks || incentive.rejectionReason">
+          <div class="remark-box" *ngIf="incentive.adminRemarks">
+            <strong><i class="fas fa-comment"></i> Admin Remarks:</strong>
+            <p>{{ incentive.adminRemarks }}</p>
+          </div>
+          <div class="remark-box rejection" *ngIf="incentive.rejectionReason">
+            <strong><i class="fas fa-exclamation-circle"></i> Rejection Reason:</strong>
+            <p>{{ incentive.rejectionReason }}</p>
+          </div>
+        </div>
+
+        <!-- Net Incentive Display -->
+        <div class="net-incentive-box">
+          <div class="net-label">Net Incentive</div>
+          <div class="net-amount">₹{{ incentive.netIncentive | number:'1.0-0' }}</div>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer">
+        <button class="btn-icon" (click)="toggleExpand(incentive._id)">
+          <i class="fas" [ngClass]="expandedCard === incentive._id ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          {{ expandedCard === incentive._id ? 'Hide' : 'Show' }} Breakdown
+        </button>
+
+        <div class="footer-info">
+          <span *ngIf="incentive.calculatedAt">
+            <i class="fas fa-clock"></i> Calculated: {{ incentive.calculatedAt | date:'dd/MM/yyyy' }}
+          </span>
+          <span *ngIf="incentive.approvedAt" class="approved-info">
+            <i class="fas fa-check"></i> Approved: {{ incentive.approvedAt | date:'dd/MM/yyyy' }}
+          </span>
+          <span *ngIf="incentive.paidAt" class="paid-info">
+            <i class="fas fa-money-bill"></i> Paid: {{ incentive.paidAt | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calculate Incentive Modal -->
+<div class="modal-overlay" *ngIf="showCalculateModal" (click)="closeCalculateModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-calculator"></i> Calculate Incentive</h2>
+      <button class="close-btn" (click)="closeCalculateModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Period Selection -->
+      <div class="form-section">
+        <h3>Period</h3>
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label>Month & Year *</label>
+            <input type="month" [(ngModel)]="calculateForm.month" class="form-control" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan Metrics -->
+      <div class="form-section">
+        <h3><i class="fas fa-chart-line"></i> Loan Performance Metrics</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Total Loans Processed *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.totalLoans" 
+                   class="form-control" min="0" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label>Approved Loans *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.approvedLoans" 
+                   class="form-control" min="0" placeholder="0" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Disbursed Loans *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.disbursedLoans" 
+                   class="form-control" min="0" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label>Total Disbursed Amount (₹) *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.totalDisbursedAmount" 
+                   class="form-control" min="0" placeholder="0" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Targets -->
+      <div class="form-section">
+        <h3><i class="fas fa-bullseye"></i> Your Targets</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Loan Target *</label>
+            <input type="number" [(ngModel)]="calculateForm.targets.loanTarget" 
+                   class="form-control" min="0" placeholder="30" required>
+            <small>Monthly loan disbursement target</small>
+          </div>
+          <div class="form-group">
+            <label>Amount Target (₹) *</label>
+            <input type="number" [(ngModel)]="calculateForm.targets.amountTarget" 
+                   class="form-control" min="0" placeholder="5000000" required>
+            <small>Monthly amount target</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rate Card (Optional) -->
+      <div class="form-section collapsible">
+        <div class="section-header" (click)="showRateCard = !showRateCard">
+          <h3><i class="fas fa-percentage"></i> Rate Card (Optional - Default values applied)</h3>
+          <i class="fas" [ngClass]="showRateCard ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </div>
+        <div class="collapsible-content" *ngIf="showRateCard">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Per Loan Incentive (₹)</label>
+              <input type="number" [(ngModel)]="calculateForm.rateCard.perLoan" 
+                     class="form-control" min="0" placeholder="500">
+            </div>
+            <div class="form-group">
+              <label>Performance Rate (%)</label>
+              <input type="number" [(ngModel)]="calculateForm.rateCard.performanceRate" 
+                     class="form-control" min="0" max="100" step="0.01" placeholder="2">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Target Bonus Rate (%)</label>
+              <input type="number" [(ngModel)]="calculateForm.rateCard.targetBonusRate" 
+                     class="form-control" min="0" max="100" step="0.01" placeholder="5">
+            </div>
+            <div class="form-group">
+              <label>Quality Bonus Rate (%)</label>
+              <input type="number" [(ngModel)]="calculateForm.rateCard.qualityBonusRate" 
+                     class="form-control" min="0" max="100" step="0.01" placeholder="1">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview Calculation -->
+      <div class="preview-section" *ngIf="previewCalculation">
+        <h3><i class="fas fa-eye"></i> Preview</h3>
+        <div class="preview-box">
+          <div class="preview-row">
+            <span>Conversion Rate:</span>
+            <span class="value">{{ previewCalculation.conversionRate }}%</span>
+          </div>
+          <div class="preview-row">
+            <span>Estimated Incentive:</span>
+            <span class="value highlight">₹{{ previewCalculation.estimatedIncentive | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-preview" (click)="previewIncentive()">
+        <i class="fas fa-eye"></i> Preview
+      </button>
+      <button class="btn-cancel" (click)="closeCalculateModal()">Cancel</button>
+      <button class="btn-calculate" (click)="calculateIncentive()" [disabled]="saving || !isFormValid()">
+        <i class="fas" [ngClass]="saving ? 'fa-spinner fa-spin' : 'fa-calculator'"></i>
+        {{ saving ? 'Calculating...' : 'Calculate' }}
+      </button>
+    </div>
+  </div>
+</div>

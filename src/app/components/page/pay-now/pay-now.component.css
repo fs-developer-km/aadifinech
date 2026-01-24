@@ -1,0 +1,212 @@
+/* payment-banner.component.css */
+.rzp-payment-banner {
+  width: 100%;
+  background: linear-gradient(135deg, #072654 0%, #0a3d7a 100%);
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  overflow: hidden;
+}
+
+.rzp-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.rzp-content-left {
+  color: white;
+}
+
+.rzp-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  color: #4ade80;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.rzp-title {
+    color: #fff;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.rzp-highlight {
+  color: #4ade80;
+  position: relative;
+}
+
+.rzp-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 2rem;
+}
+
+.rzp-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+.rzp-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rzp-check-icon {
+  width: 24px;
+  height: 24px;
+  color: #4ade80;
+  flex-shrink: 0;
+}
+
+.rzp-feature-item span {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.rzp-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #dd3333 0%, #c52a2a 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(221, 51, 51, 0.4);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.rzp-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(221, 51, 51, 0.5);
+  background: linear-gradient(135deg, #c52a2a 0%, #b02424 100%);
+}
+
+.rzp-arrow-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.rzp-cta-btn:hover .rzp-arrow-icon {
+  transform: translateX(4px);
+}
+
+.rzp-content-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rzp-banner-img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  animation: rzp-float 3s ease-in-out infinite;
+}
+
+@keyframes rzp-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 968px) {
+  .rzp-banner-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .rzp-content-right {
+    order: -1;
+  }
+
+  .rzp-banner-img {
+    max-width: 400px;
+  }
+
+  .rzp-title {
+    color: #fff;
+    font-size: 1.875rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .rzp-payment-banner {
+    padding: 2rem 1.25rem;
+  }
+
+  .rzp-title {
+    color: #fff;
+    font-size: 1.5rem;
+  }
+
+  .rzp-description {
+    font-size: 0.95rem;
+  }
+
+  .rzp-cta-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .rzp-banner-img {
+    max-width: 100%;
+  }
+
+  .rzp-feature-item span {
+    font-size: 0.875rem;
+  }
+
+  .rzp-badge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.875rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .rzp-payment-banner {
+    padding: 1.5rem 1rem;
+  }
+
+  .rzp-title {
+    color: #FFF;
+    font-size: 1.35rem;
+  }
+
+  .rzp-description {
+    font-size: 0.9rem;
+  }
+
+  .rzp-feature-item span {
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,745 @@
+.small-slider-container {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .carousel {
+    width: 100%;
+  }
+
+  .carousel {
+    height: 534; /* Slider ki height ko kam kar diya */
+  }
+
+  .project-card {
+    height: 100%;  /* Full height ka use ho sake */
+  }
+
+  .project-img img {
+    height: 500px; /* Image ki height ko kam kar diya */
+    object-fit: cover;
+    
+    /* Image ko properly cover karega */
+
+  }
+
+  .project-content {
+    margin-top: 10px;
+    padding: 0 10px; /* Thoda padding to adjust content */
+  }
+
+  .project-card.style3 .project-content .project-title a {
+    color: var(--white-color);
+    font-size: 25px;
+}
+  .project-subtitle {
+    font-size: 30px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .project-title a {
+    font-size: 30px;
+    color: #333;
+    text-decoration: none;
+  }
+
+
+  .small-project-card {
+    background: #fff;
+    padding: 15px;  /* Increased padding for better spacing */
+    border-radius: 10px;
+    text-align: center;
+    width: 95%;    /* Reduced card width */
+    height: 220px; /* Reduced height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease; /* Added smooth transform */
+  }
+
+  .small-project-img img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .small-project-content {
+    margin-top: 10px;
+  }
+
+  .project-subtitle {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .project-title a {
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+  }
+
+  /* Center aur side images ke beech gap add karna */
+  .slick-center .small-project-card {
+    transform: scale(1.05); /* Center card ko thoda zoom karna */
+  }
+
+  .slick-slide {
+    margin: 0 10px;  /* Gapping between images
+    /* border: 1px solid grey; */
+  }
+
+  /* Remove next and prev arrows */
+  .slick-prev, .slick-next {
+    display: none !important;
+  }
+
+  /* Add responsiveness */
+  @media (max-width: 768px) {
+    .small-project-card {
+      width: 90%; /* Mobile pe card ka size thoda badhao */
+    }
+  }
+  /* Hiding Next and Prev Arrows */
+.slick-prev, .slick-next {
+    display: none !important; /* This will hide the arrows */
+  }
+
+
+
+/* Button Styling */
+.section-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.btn-tab {
+  border: none;
+  background: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.btn-tab.active,
+.btn-tab:hover {
+  color: #2b4eff;
+  background: rgba(43,78,255,0.1);
+}
+
+.btn-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 2px;
+  background: #2b4e
+}
+
+/* Arrows Positioning */
+.slick-arrows {
+  margin-top: 25px;
+}
+
+.service-box-wrap {
+  display: flex;
+  height: 100%;
+}
+
+.service-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+
+
+
+
+.service-box_content {
+  flex-grow: 1;
+}
+
+.service-box_title {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.service-box_text {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+
+.contact-sec-2 .contact-thumb2{
+  z-index: auto;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.why-thumb7 .why-thumb-wrap .thumb img {
+    border-radius: 15px;
+}
+
+.avatar-initial {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  border: nones;
+}
+
+
+
+/* /* wealth managemtn  */
+
+
+
+
+/* slider card animation css */
+
+
+/* calculator add css all beginn:: */
+
+
+
+/* calculator css end:: */
+
+
+.custom-read-more-btn {
+  background-color: #fff;
+  color: #DD3333;
+  border: 2px solid #DD3333;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-read-more-btn:hover {
+  background-color: #fff;
+  color: #DD3333;
+  text-decoration: none;
+}
+
+
+
+/* arrow button */
+
+.slider-nav-buttons .icon-btn {
+  background-color: #fff;
+  border: 1px solid #DD3333;
+  color: #DD3333;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.slider-nav-buttons .icon-btn:hover {
+  background-color: #DD3333;
+  color: #fff;
+}
+
+.slider-nav-buttons .icon-btn i {
+  font-size: 16px;
+}
+
+
+
+/* add new css for height same card and responsive */
+
+
+/* add new css for button next pewvious for event */
+
+.slider-nav-buttonsss {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.slider-nav-buttonsss .icon-btns {
+  background-color: #fff;
+  border: 2px solid #DD3333;
+  color: #DD3333;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-nav-buttonsss .icon-btns:hover {
+  background-color: #DD3333;
+  color: #fff;
+}
+
+
+
+.achievements-heading {
+font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #222;
+    display: block;
+    margin: revert;
+    letter-spacing: 1px;                         /* Nice letter spacing */
+}
+
+/* Underline design */
+.achievements-heading::after {
+  content: "";
+  display: block;
+  width: 100px;                                /* Length of underline */
+  height: 4px;                                 /* Thickness of underline */
+  background-color: #DD3333;                   /* Custom color underline */
+  margin: 10px auto 0 auto;                     /* Centered under heading */
+  border-radius: 2px;                           /* Smooth edges */
+}
+
+
+
+
+
+
+
+/* fit to image on css */
+
+
+.slide {
+  padding: 0 5px;
+}
+
+.achievement-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.project-card {
+  background: #DD3333;
+  border-radius: 15px;
+  overflow: hidden;
+  /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12); */
+  transition: all 0.3s ease;
+  height: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.project-img {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+  /* background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+.project-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-img img {
+  transform: scale(1.08);
+}
+
+/* Slick Arrows */
+::ng-deep .slick-prev,
+::ng-deep .slick-next {
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .slick-prev:hover,
+::ng-deep .slick-next:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transform: scale(1.1);
+}
+
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next:before {
+  font-size: 24px;
+  opacity: 1;
+}
+
+::ng-deep .slick-prev {
+  left: -25px;
+}
+
+::ng-deep .slick-next {
+  right: -25px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .project-card {
+    max-width: 300px;
+  }
+
+  .project-img {
+    height: 220px;
+    padding: 12px;
+  }
+
+  .achievement-group {
+    gap: 15px;
+  }
+
+  ::ng-deep .slick-prev {
+    left: -15px;
+  }
+
+  ::ng-deep .slick-next {
+    right: -15px;
+  }
+
+  ::ng-deep .slick-prev,
+  ::ng-deep .slick-next {
+    width: 40px;
+    height: 40px;
+  }
+
+  ::ng-deep .slick-prev:before,
+  ::ng-deep .slick-next:before {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .project-card {
+    max-width: 100%;
+  }
+
+  .project-img {
+    height: 200px;
+    padding: 10px;
+  }
+
+  ::ng-deep .slick-prev,
+  ::ng-deep .slick-next {
+    width: 35px;
+    height: 35px;
+  }
+
+  ::ng-deep .slick-prev:before,
+  ::ng-deep .slick-next:before {
+    font-size: 18px;
+  }
+}
+
+
+/* demate accoutunt open css start  */
+
+/* demat-section.component.css */
+
+.demat-section {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.demat-card {
+  background: linear-gradient(135deg, rgba(45, 85, 135, 0.95) 0%, rgba(30, 60, 110, 0.95) 100%);
+  border-radius: 20px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.demat-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(221, 51, 51, 0.1) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.3;
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.demat-image {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.demat-image:hover {
+  transform: scale(1.05);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-header {
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.title .highlight {
+  color: #dd3333;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 18px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
+}
+
+.feature-icon {
+  flex-shrink: 0;
+}
+
+.feature-icon svg {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+}
+
+.feature-item span {
+  font-size: 1.05rem;
+  color: white;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.cta-button {
+  background: #dd3333;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  max-width: fit-content;
+  box-shadow: 0 6px 20px rgba(221, 51, 51, 0.4);
+  margin-top: 5px;
+}
+
+.cta-button:hover {
+  background: #ff4444;
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(221, 51, 51, 0.5);
+}
+
+.cta-button:active {
+  transform: translateX(5px) scale(0.98);
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+.powered-by {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* Responsive Design - Tablet */
+@media (max-width: 968px) {
+  .demat-card {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 35px 25px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .features {
+    gap: 15px;
+  }
+
+  .cta-button {
+    align-self: center;
+  }
+
+  .powered-by {
+    text-align: center;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .demat-card {
+    padding: 25px 20px;
+    gap: 25px;
+    border-radius: 15px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .feature-item {
+    padding: 10px 15px;
+  }
+
+  .feature-item span {
+    font-size: 0.95rem;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 380px) {
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .demat-card {
+    padding: 20px 15px;
+  }
+
+  .feature-item span {
+    font-size: 0.9rem;
+  }
+}
+
+/* demate accoutn open end  */
+
+
+
+
+/* payment css start */
+
+
+
+/* payment css end */

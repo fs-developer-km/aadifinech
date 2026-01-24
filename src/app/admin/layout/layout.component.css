@@ -1,0 +1,174 @@
+/* ========================================
+   ADMIN LAYOUT - COMPLETE WORKING VERSION
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.admin-layout {
+  min-height: 100vh;
+  background: #f1f5f9;
+  position: relative;
+}
+
+/* ========================================
+   DESKTOP LAYOUT (Above 992px)
+   ======================================== */
+
+@media (min-width: 993px) {
+  
+  /* Main content shifts with sidebar */
+  .main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f6f8fa;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* When sidebar collapsed to 80px */
+  .main-content.collapsed {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+}
+
+/* ========================================
+   MOBILE LAYOUT (992px and below)
+   ======================================== */
+
+@media (max-width: 992px) {
+  
+  /* Main content takes full width */
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f6f8fa;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Collapsed or open - always full width on mobile */
+  .main-content.collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* ========================================
+   TOPBAR STYLES
+   ======================================== */
+
+app-topbar {
+  height: 60px;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  z-index: 100;
+  position: sticky;
+  top: 0;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  app-topbar {
+    height: 56px;
+  }
+}
+
+@media (max-width: 576px) {
+  app-topbar {
+    height: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  app-topbar {
+    height: 50px;
+  }
+}
+
+/* ========================================
+   CONTENT AREA (Dashboard Container) - SCROLL FIX
+   ======================================== */
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  transition: all 0.3s ease;
+  /* Add smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Ensure dashboard container inside content-area can scroll properly */
+.content-area > * {
+  min-height: 100%;
+}
+
+/* Custom scrollbar for better UX */
+.content-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.content-area::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ========================================
+   USER DASHBOARD (Full Screen)
+   ======================================== */
+
+.userdash-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f6f8fa;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ========================================
+   SMOOTH TRANSITIONS
+   ======================================== */
+
+.admin-layout,
+.main-content,
+app-topbar,
+.content-area {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   PREVENT HORIZONTAL SCROLL
+   ======================================== */
+
+body {
+  overflow-x: hidden;
+}
+
+.admin-layout {
+  overflow-x: hidden;
+}
+
+.main-content {
+  overflow-x: hidden;
+}

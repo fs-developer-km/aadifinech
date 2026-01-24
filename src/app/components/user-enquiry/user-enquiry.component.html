@@ -1,0 +1,145 @@
+
+<div class="popup-backdrop" *ngIf="isVisible">
+  <div class="enquiry-popup" (click)="$event.stopPropagation()">
+
+    <!-- Close Button -->
+    <button class="close-btn" (click)="closePopups()">
+      <span>&times;</span>
+    </button>
+
+    <!-- Two Column Layout -->
+    <div class="popup-content-wrapper">
+      
+      <!-- Left Side - Welcome Image & Text -->
+      <div class="welcome-side">
+        <div class="welcome-image-section">
+          <img src="https://static.vecteezy.com/system/resources/thumbnails/024/359/868/small/central-banks-regulate-the-supply-of-money-in-an-economy-vector.jpg" 
+               alt="Professional Finance Consultant" class="professional-img" />
+          <div class="welcome-badge">
+            <!-- <div class="badge-content">
+              <h3>FOR WOMEN</h3>
+              <p>WHO DREAM BIG!</p>
+            </div> -->
+          </div>
+        </div>
+        
+        <div class="welcome-text-overlay">
+          <h2 class="main-welcome-title">Welcome to <span>AadiFintech</span></h2>
+          <p class="welcome-description">
+            We're delighted to have you here. To assist you better and keep you updated with relevant information, 
+            we would appreciate if you could share your contact details with us.
+          </p>
+          <div class="privacy-note-box">
+            <span class="lock-icon">🔒</span>
+            <p>Your privacy matters — you can continue browsing even if you choose not to share your details.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Form -->
+      <div class="form-side">
+        <div class="form-header">
+          <h2 class="form-title">Get Started Today</h2>
+          <p class="form-subtitle">Loan & Finance Solutions</p>
+          <div class="info-banner">
+            <p>💼 Instant approval | 📞 Contact within 24 hours</p>
+          </div>
+        </div>
+
+        <!-- Form Section -->
+        <form class="enquiry-form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="name">
+              <span class="icon">👤</span>
+              Your Name
+            </label>
+            <input type="text" id="name" [(ngModel)]="leadName" name="leadName" 
+                   placeholder="Enter your full name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="mobile">
+              <span class="icon">📞</span>
+              Mobile Number
+            </label>
+            <input type="tel" id="mobile" [(ngModel)]="leadPhone" name="leadPhone"
+                   placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[0-9]{10}" required />
+          </div>
+
+          <div class="form-group">
+            <label for="notes">
+              <span class="icon">👤</span>
+              Message
+            </label>
+            <input type="text" id="notes" [(ngModel)]="notes" name="notes" 
+                   placeholder="Enter your Messages"  />
+          </div>
+
+          <!-- Submit Button with Loader -->
+          <button type="submit" class="submit-btn" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="loader"></span>
+            <span *ngIf="!isLoading">Submit Enquiry</span>
+          </button>
+        </form>
+
+        <!-- ✅ Message Section -->
+        <div *ngIf="message" class="message-box" [ngClass]="messageType">
+          {{ message }}
+        </div>
+
+        <!-- Footer Info -->
+        <div class="footer-info">
+          <p>🔒 Your information is safe with us</p>
+          <p class="thank-you-text">Thank you for visiting <strong>Aadi Fintech</strong>. We look forward to serving you!</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Success Modal -->
+<div class="success-modal-backdrop" *ngIf="showSuccessModal">
+  <div class="success-modal">
+    <div class="lead-modal-overlay">
+      <div class="lead-modal-container" (click)="$event.stopPropagation()">
+        <button class="lead-close-button" (click)="closeSuccessModal()">×</button>
+
+        <div class="lead-header-section">
+          <div class="lead-checkmark-wrapper">
+            <svg class="lead-checkmark-svg" viewBox="0 0 52 52">
+              <path class="lead-checkmark-path" d="M14 27l7 7 16-16" />
+            </svg>
+          </div>
+          <h2 class="lead-header-title">Thank You! 🎉</h2>
+          <p class="lead-header-subtitle">Form submitted successfully</p>
+        </div>
+
+        <div class="lead-content-section">
+          <div class="lead-message-block">
+            <h3 class="lead-welcome-title">Welcome to Aadi Fintech!</h3>
+            <p class="lead-welcome-text">We've received your details and our team will contact you within 24 hours.</p>
+          </div>
+
+          <div class="lead-info-card">
+            <p class="lead-info-item"><strong>✓</strong> Your data is secure with us</p>
+            <p class="lead-info-item"><strong>✓</strong> Dedicated support team assigned</p>
+            <p class="lead-info-item"><strong>✓</strong> Personalized financial solutions</p>
+          </div>
+
+          <div class="lead-button-group">
+            <a href="https://aadifintech.com" class="btn btn-danger lead-btn-primary" target="_blank">Visit Website</a>
+            <button class="btn btn-outline-danger lead-btn-secondary" (click)="closeSuccessModal()">Close</button>
+          </div>
+
+          <div class="lead-contact-block">
+            <p class="lead-contact-text">Need help? <a href="mailto:support@aadifintech.com"
+                class="lead-contact-link">Contact Support</a></p>
+            <p class="lead-contact-text">📞 <a href="tel:+911234567890" class="lead-contact-link">+91 9953656810</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

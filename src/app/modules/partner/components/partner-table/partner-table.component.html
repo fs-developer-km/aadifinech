@@ -1,0 +1,514 @@
+<!-- Success Popup -->
+<div class="popup success-popup" *ngIf="showSuccessPopup">
+  <div class="popup-content">
+    <div class="popup-icon">✓</div>
+    <p>{{ popupMessage }}</p>
+  </div>
+</div>
+
+<!-- Error Popup -->
+<div class="popup error-popup" *ngIf="showErrorPopup">
+  <div class="popup-content">
+    <div class="popup-icon">✕</div>
+    <p>{{ popupMessage }}</p>
+  </div>
+</div>
+
+<!-- Main Loader -->
+<div class="main-loader" *ngIf="isLoading">
+  <div class="loader-circle"></div>
+</div>
+
+<!-- Dashboard Container -->
+<div class="dashboard-container mt-3">
+  
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1>My Leads Dashboard</h1>
+      <p class="subtitle">Track and manage your submitted leads</p>
+    </div>
+    <div class="header-right">
+      <button class="btn-primary" (click)="openCreateModal()">
+        <span class="btn-icon">+</span> Create New Lead
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card stat-total">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <p class="stat-label">Total Leads</p>
+        <h3 class="stat-value">{{ totalLeads }}</h3>
+      </div>
+    </div>
+
+    <div class="stat-card stat-pending">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <p class="stat-label">Pending</p>
+        <h3 class="stat-value">{{ getStatsCount('pending') }}</h3>
+      </div>
+    </div>
+
+    <div class="stat-card stat-progress">
+      <div class="stat-icon">🔄</div>
+      <div class="stat-info">
+        <p class="stat-label">In Progress</p>
+        <h3 class="stat-value">{{ getStatsCount('in-progress') }}</h3>
+      </div>
+    </div>
+
+    <div class="stat-card stat-success">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <p class="stat-label">Disbursed</p>
+        <h3 class="stat-value">{{ getStatsCount('disbursed') }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-row">
+      <div class="filter-item">
+        <input 
+          type="text" 
+          class="input-field search-input" 
+          placeholder="🔍 Search by name, mobile, or application number..."
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="applyFilter()">
+      </div>
+
+      <div class="filter-item filter-select">
+        <select class="input-field" [(ngModel)]="statusFilter" (change)="applyFilter()">
+          <option value="">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="documents-pending">Documents Pending</option>
+          <option value="approved">Approved</option>
+          <option value="disbursed">Disbursed</option>
+          <option value="rejected">Rejected</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <button class="btn-filter" (click)="applyFilter()">Apply</button>
+      <button class="btn-reset" (click)="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Leads Table -->
+  <div class="table-container">
+    <div class="table-card">
+      
+      <!-- No Data -->
+      <div class="no-data" *ngIf="leads.length === 0 && !isLoading">
+        <div class="no-data-icon">📋</div>
+        <h3>No leads found</h3>
+        <p>Create your first lead to get started</p>
+        <button class="btn-primary btn-sm" (click)="openCreateModal()">Create Lead</button>
+      </div>
+
+      <!-- Desktop Table -->
+      <div class="desktop-table" *ngIf="leads.length > 0">
+        <table class="leads-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Loan Details</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Assigned To</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let lead of leads">
+              <td>
+                <div class="customer-info">
+                  <p class="customer-name">{{ lead.customerName }}</p>
+                  <p class="customer-mobile">{{ lead.customerMobile }}</p>
+                </div>
+              </td>
+              <td>
+                <div class="loan-info">
+                  <p class="loan-type">{{ lead.loanType }}</p>
+                  <p class="employment-type" *ngIf="lead.employmentType">{{ lead.employmentType }}</p>
+                </div>
+              </td>
+              <td>
+                <p class="amount-value">{{ formatCurrency(lead.loanAmount) }}</p>
+              </td>
+              <td>
+                <span class="badgeee" [class]="getStatusBadgeClass(lead.status)">
+                  {{ lead.status }}
+                </span>
+              </td>
+              <td>
+                <span class="badgeee" [class]="getPriorityBadgeClass(lead.priority)">
+                  {{ lead.priority }}
+                </span>
+              </td>
+              <td>
+                <div class="assigned-info" *ngIf="lead.assignedEmployee">
+                  <p class="emp-name">{{ lead.assignedEmployee.name }}</p>
+                  <p class="emp-role">Employee</p>
+                </div>
+              </td>
+              <td>
+                <div class="date-info">
+                  <p class="date">{{ lead.submittedDate }}</p>
+                  <p class="time">{{ lead.submittedTime }}</p>
+                </div>
+              </td>
+              <td>
+                <button class="btn-view" (click)="viewLeadDetails(lead._id)">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="mobile-cards" *ngIf="leads.length > 0">
+        <div class="lead-card" *ngFor="let lead of leads">
+          <div class="lead-card-header">
+            <h4>{{ lead.customerName }}</h4>
+            <span class="badgeee" [class]="getStatusBadgeClass(lead.status)">{{ lead.status }}</span>
+          </div>
+          
+          <div class="lead-card-body">
+            <div class="lead-detail">
+              <span class="detail-label">📞 Mobile:</span>
+              <span class="detail-value">{{ lead.customerMobile }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">💰 Loan Type:</span>
+              <span class="detail-value">{{ lead.loanType }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">💵 Amount:</span>
+              <span class="detail-value bold">{{ formatCurrency(lead.loanAmount) }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">⚡ Priority:</span>
+              <span class="badgeee" [class]="getPriorityBadgeClass(lead.priority)">{{ lead.priority }}</span>
+            </div>
+            
+            <div class="lead-detail" *ngIf="lead.assignedEmployee">
+              <span class="detail-label">👤 Employee:</span>
+              <span class="detail-value">{{ lead.assignedEmployee.name }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">📅 Date:</span>
+              <span class="detail-value">{{ lead.submittedDate }} • {{ lead.submittedTime }}</span>
+            </div>
+          </div>
+          
+          <div class="lead-card-footer">
+            <button class="btn-view-full" (click)="viewLeadDetails(lead._id)">View Details</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">‹ Prev</button>
+    
+    <button 
+      *ngFor="let page of pageNumbers"
+      class="page-btn"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    
+    <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next ›</button>
+  </div>
+
+</div>
+
+<!-- Create Lead Modal -->
+<div class="modal-overlay" *ngIf="showCreateModal" (click)="closeCreateModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Create New Lead</h2>
+      <button class="modal-close" (click)="closeCreateModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <form (ngSubmit)="createLead()">
+        
+        <div class="form-group">
+          <label>Customer Name *</label>
+          <input 
+            type="text" 
+            class="input-field" 
+            placeholder="Enter customer name"
+            [(ngModel)]="newLead.customerName"
+            name="customerName"
+            required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Mobile Number *</label>
+            <input 
+              type="tel" 
+              class="input-field" 
+              placeholder="+91 9876543210"
+              [(ngModel)]="newLead.customerMobile"
+              name="customerMobile"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label>Email (Optional)</label>
+            <input 
+              type="email" 
+              class="input-field" 
+              placeholder="customer@email.com"
+              [(ngModel)]="newLead.customerEmail"
+              name="customerEmail">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Loan Type *</label>
+            <select class="input-field" [(ngModel)]="newLead.loanType" name="loanType" required>
+              <option *ngFor="let type of loanTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Loan Amount *</label>
+            <input 
+              type="number" 
+              class="input-field" 
+              placeholder="500000"
+              [(ngModel)]="newLead.loanAmount"
+              name="loanAmount"
+              min="1"
+              required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Monthly Income</label>
+            <input 
+              type="number" 
+              class="input-field" 
+              placeholder="75000"
+              [(ngModel)]="newLead.monthlyIncome"
+              name="monthlyIncome"
+              min="0">
+          </div>
+
+          <div class="form-group">
+            <label>Employment Type</label>
+            <select class="input-field" [(ngModel)]="newLead.employmentType" name="employmentType">
+              <option *ngFor="let type of employmentTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Remarks (Optional)</label>
+          <textarea 
+            class="input-field textarea-field" 
+            rows="3"
+            placeholder="Add any additional notes..."
+            [(ngModel)]="newLead.remarks"
+            name="remarks"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeCreateModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+            <span class="loader-mini" *ngIf="isSubmitting"></span>
+            <span *ngIf="!isSubmitting">Create Lead</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Lead Details Modal -->
+<div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+  <div class="modal-container modal-large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Lead Details</h2>
+      <button class="modal-close" (click)="closeDetailsModal()">×</button>
+    </div>
+    
+    <div class="modal-body" *ngIf="selectedLead">
+      
+      <!-- Lead Info Grid -->
+      <div class="details-grid">
+        <div class="detail-box">
+          <label>Customer Name</label>
+          <p>{{ selectedLead.customerName }}</p>
+        </div>
+
+        <div class="detail-box">
+          <label>Mobile Number</label>
+          <p>{{ selectedLead.customerMobile }}</p>
+        </div>
+
+        <div class="detail-box" *ngIf="selectedLead.customerEmail">
+          <label>Email</label>
+          <p>{{ selectedLead.customerEmail }}</p>
+        </div>
+
+        <div class="detail-box">
+          <label>Loan Type</label>
+          <p>{{ selectedLead.loanType }}</p>
+        </div>
+
+        <div class="detail-box">
+          <label>Loan Amount</label>
+          <p class="highlight-amount">{{ formatCurrency(selectedLead.loanAmount) }}</p>
+        </div>
+
+        <div class="detail-box" *ngIf="selectedLead.monthlyIncome">
+          <label>Monthly Income</label>
+          <p>{{ formatCurrency(selectedLead.monthlyIncome) }}</p>
+        </div>
+
+        <div class="detail-box" *ngIf="selectedLead.employmentType">
+          <label>Employment Type</label>
+          <p>{{ selectedLead.employmentType }}</p>
+        </div>
+
+        <div class="detail-box">
+          <label>Status</label>
+          <span class="badgeee" [class]="getStatusBadgeClass(selectedLead.status)">{{ selectedLead.status }}</span>
+        </div>
+
+        <div class="detail-box">
+          <label>Priority</label>
+          <span class="badgeee" [class]="getPriorityBadgeClass(selectedLead.priority)">{{ selectedLead.priority }}</span>
+        </div>
+
+        <div class="detail-box">
+          <label>Submitted Date</label>
+          <p>{{ selectedLead.submittedDate }} • {{ selectedLead.submittedTime }}</p>
+        </div>
+      </div>
+
+      <!-- Assigned Team -->
+      <div class="section-divider"></div>
+      <h3 class="section-title">Assigned Team</h3>
+      
+      <div class="team-grid">
+        <div class="team-member" *ngIf="selectedLead.assignedEmployee">
+          <div class="member-icon">👤</div>
+          <div class="member-info">
+            <p class="member-label">Employee</p>
+            <p class="member-name">{{ selectedLead.assignedEmployee.name }}</p>
+            <p class="member-contact">{{ selectedLead.assignedEmployee.mobile }}</p>
+          </div>
+        </div>
+
+        <div class="team-member" *ngIf="selectedLead.assignedManager">
+          <div class="member-icon">👔</div>
+          <div class="member-info">
+            <p class="member-label">Manager</p>
+            <p class="member-name">{{ selectedLead.assignedManager.name }}</p>
+            <p class="member-contact">{{ selectedLead.assignedManager.mobile }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Remarks Section -->
+      <div class="section-divider"></div>
+      <div class="remarks-header">
+        <h3 class="section-title">Remarks</h3>
+        <button class="btn-add-remark" (click)="openRemarkModal()">+ Add Remark</button>
+      </div>
+
+      <div class="remarks-list" *ngIf="selectedLead.remarks && selectedLead.remarks.length > 0">
+        <div class="remark-item" *ngFor="let remark of selectedLead.remarks">
+          <div class="remark-header">
+            <span class="remark-author">{{ remark.addedByName }}</span>
+            <span class="remark-role">{{ remark.addedByRole }}</span>
+            <span class="remark-time">{{ formatDate(remark.timestamp) }}</span>
+          </div>
+          <p class="remark-message">{{ remark.message }}</p>
+        </div>
+      </div>
+
+      <div class="no-remarks" *ngIf="!selectedLead.remarks || selectedLead.remarks.length === 0">
+        <p>No remarks yet</p>
+      </div>
+
+      <!-- Status History -->
+      <div class="section-divider"></div>
+      <h3 class="section-title">Status History</h3>
+
+      <div class="history-timeline" *ngIf="selectedLead.statusHistory && selectedLead.statusHistory.length > 0">
+        <div class="timeline-item" *ngFor="let history of selectedLead.statusHistory">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="badgeee" [class]="getStatusBadgeClass(history.status)">{{ history.status }}</span>
+              <span class="timeline-time">{{ formatDate(history.timestamp) }}</span>
+            </div>
+            <p class="timeline-user">Updated by: {{ history.updatedByName }}</p>
+            <p class="timeline-remark" *ngIf="history.remark">{{ history.remark }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeDetailsModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Remark Modal -->
+<div class="modal-overlay" *ngIf="showRemarkModal" (click)="closeRemarkModal()">
+  <div class="modal-container modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Add Remark</h2>
+      <button class="modal-close" (click)="closeRemarkModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Your Remark</label>
+        <textarea 
+          class="input-field textarea-field" 
+          rows="4"
+          placeholder="Enter your remark here..."
+          [(ngModel)]="remarkMessage"
+          autofocus></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeRemarkModal()">Cancel</button>
+        <button class="btn-primary" (click)="addRemark()" [disabled]="isSubmitting">
+          <span class="loader-mini" *ngIf="isSubmitting"></span>
+          <span *ngIf="!isSubmitting">Add Remark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

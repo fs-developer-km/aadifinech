@@ -1,0 +1,325 @@
+<header class="th-header header-layout6">
+  <!-- Header Top Bar -->
+  <div class="header-top">
+    <div class="container">
+      <div class="row justify-content-center justify-content-md-between align-items-center gy-2">
+        <div class="col-auto d-none d-md-block">
+          <div class="header-links">
+            <ul>
+              <li><i class="fa-solid fa-phone"></i> <a href="tel:+919953656810">+91 99536 56810</a></li>
+              <li class="d-none d-xl-inline-block">
+                <i class="fa-solid fa-location-dot"></i> Office No. 301, i-THUM Building, Tower - A, Sector - 62, Noida
+              </li>
+              <li>
+                <i class="fa-solid fa-envelope"></i>
+                <a [href]="'mailto:' + email">{{ email }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="header-links">
+            <ul>
+              <!-- <li class="d-none d-lg-inline-block">
+                <div class="dropdown-link">
+                  <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Language
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">German</a></li>
+                    <li><a href="#">French</a></li>
+                    <li><a href="#">Italian</a></li>
+                    <li><a href="#">Latvian</a></li>
+                    <li><a href="#">Spanish</a></li>
+                    <li><a href="#">Greek</a></li>
+                  </ul>
+                </div>
+              </li> -->
+              <li>
+                <div class="header-social">
+                  <span class="social-title">Follow Us:</span>
+
+                  <a href="https://www.facebook.com/profile.php?id=61575732687949" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fa-brands fa-facebook-f"></i>
+                  </a>
+
+                  <a href="https://www.instagram.com/aadifintech01/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-instagram"></i>
+                  </a>
+
+                  <!-- <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-twitter"></i>
+                  </a>
+
+                  <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                  </a> -->
+                </div>
+
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Main Menu Area -->
+  <div class="sticky-wrapper">
+    <div class="sticky-active">
+      <div class="menu-area" style="background-image: url('/img/update1/bg/pattern_bg_2.png');">
+        <div class="container">
+          <div class="row align-items-center justify-content-between">
+            <!-- Logo -->
+            <div class="col-auto">
+              <div class="header-logo">
+                <a routerLink="/" style="text-decoration: none; color: #fff;">
+                  <h5 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;">AADI FINTECH</h5>
+                </a>
+              </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <div class="col-auto">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <!-- Desktop Menu -->
+                  <nav class="main-menu d-none d-lg-inline-block">
+                    <ul>
+                    
+                      <li><a routerLink="/">Home</a></li>
+                      <li class="menu-item-has-children services-dropdown">
+                        <a href="#">About</a>
+                        <ul class="sub-menu">
+                          <!-- <li> -->
+                          <a routerLink="/about">
+                            <i class="fas fa-building" style="margin-right: 6px;"></i>
+                            About Us
+                          </a>
+                          <!-- </li> -->
+                          <!-- <li> -->
+                          <a routerLink="/founderprofile">
+                            <i class="fas fa-user-tie" style="margin-right: 6px;"></i>
+                            Founder Profile
+                          </a>
+
+                          <a routerLink="/team">
+                            <i class="fas fa-users" style="margin-right: 6px;"></i>
+                            Team
+                          </a>
+
+                          <a routerLink="/contact">
+                            <i class="fas fa-phone-alt" style="margin-right: 6px;"></i>
+                            Contact
+                          </a>
+
+                          <!-- </li> -->
+                        </ul>
+                      </li>
+                      <li class="menu-item-has-children services-dropdown" (mouseenter)="openDropdown()"
+                        (mouseleave)="closeDropdown()">
+                        <a href="javascript:void(0)">Services</a>
+                        <div #dropdown class="mega-dropdown" *ngIf="dropdownOpen">
+                          <a routerLink="/services/ourMission" (click)="closeDropdown()">
+                            <i class="fas fa-hand-holding-usd me-2" style="color:#DD3333"></i>Our Mission
+                          </a>
+                          <a routerLink="/services/fund-raising" (click)="closeDropdown()">
+                            <i class="fas fa-hand-holding-usd me-2" style="color:#DD3333"></i> Fund Raising
+                          </a>
+                          <a routerLink="/services/investment-banking" (click)="closeDropdown()">
+                            <i class="fas fa-university me-2" style="color:#DD3333"></i> Debt Restructuring Services
+                          </a>
+                          <a routerLink="/services/training-placement" (click)="closeDropdown()">
+                            <i class="fas fa-chalkboard-teacher me-2" style="color:#DD3333"></i> Training Placement &
+                            Outsourcing
+                          </a>
+                          <a routerLink="/services/credit-rating" (click)="closeDropdown()">
+                            <i class="fas fa-star me-2" style="color:#DD3333"></i> Credit Rating
+                          </a>
+                          <a routerLink="/services/tech-services" (click)="closeDropdown()">
+                            <i class="fas fa-laptop-code me-2" style="color:#DD3333"></i> Tech Services
+                          </a>
+                          <a routerLink="/services/digital-marketing" (click)="closeDropdown()">
+                            <i class="fas fa-bullhorn me-2" style="color:#DD3333"></i> Digital Marketing
+                          </a>
+                          <a routerLink="/services/loanForEveryIndian" (click)="closeDropdown()">
+                            <i class="fas fa-piggy-bank me-2" style="color:#DD3333"></i> Loan For Every Indian
+                          </a>
+                          <a routerLink="/services/realState" (click)="closeDropdown()">
+                            <i class="fas fa-building me-2" style="color:#DD3333"></i> Real State Advisory
+                          </a>
+                          <a routerLink="/services/wealth" (click)="closeDropdown()">
+                            <i class="fas fa-coins me-2" style="color:#DD3333"></i> Wealth Management
+                          </a>
+                          <a routerLink="/services/billDiscounting" (click)="closeDropdown()">
+                            <i class="fas fa-file-invoice-dollar me-2" style="color:#DD3333"></i> Bill Discounting
+                          </a>
+                          <a routerLink="/services/exportbillDiscounting" (click)="closeDropdown()">
+                            <i class="fas fa-globe me-2" style="color:#DD3333"></i> Export Bill Discounting
+                          </a>
+                          <!-- <a routerLink="/services/creditRatingAdversory" (click)="closeDropdown()">
+                            <i class="fas fa-chart-line me-2" style="color:#DD3333"></i> Credit Rating Advisory
+                          </a> -->
+                          <a routerLink="/services/ourInsuranceServices" (click)="closeDropdown()">
+                            <i class="fas fa-shield-alt me-2" style="color:#DD3333"></i> Our Insurance Services
+                          </a>
+                          <a routerLink="/services/ourEndToEndforeignServices" (click)="closeDropdown()">
+                            <i class="fas fa-globe-asia me-2" style="color:#DD3333"></i> Our End to End Foreign Services
+                          </a>
+                          <a routerLink="/services/bankingDomainExpertConsultency" (click)="closeDropdown()">
+                            <i class="fas fa-user-tie me-2" style="color:#DD3333"></i> Banking Domain Expert Consultancy
+                          </a>
+                          <a routerLink="/services/FinancialConsultancyforCorporates" (click)="closeDropdown()">
+                            <i class="fas fa-briefcase me-2" style="color:#DD3333"></i> Financial Consultancy for
+                            Corporates
+                          </a>
+                        </div>
+                      </li>
+
+
+                      <!-- <li><a routerLink="/team">Team</a></li> -->
+                      <li><a routerLink="/partner-page">Become Partner</a></li>
+
+                      <!-- <li >
+                        <a (click)="openLogin()" style="cursor:pointer">
+                          <i class="fa-solid fa-right-to-bracket me-2"></i> Login
+                        </a>
+                      </li> -->
+
+                        <!-- <li><a routerLink="paynow">Pay Now</a></li> -->
+                      <li class="login-item">
+                        <a routerLink="paynow" class="login-btn"
+                          style="color: #fff !important; cursor: pointer; font-weight: bold;">
+                          <i class="fa-solid fa-indian-rupee-sign me-2"></i> Pay Now
+                        </a>
+                      </li>
+                        
+
+                      <!-- 🔥 Login on Right -->
+                      <li class="login-item">
+                        <a (click)="openLogin() " class="login-btn"
+                          style="color: #fff !important; cursor: pointer; font-weight: bold;">
+                          <i class="fa-solid fa-right-to-bracket me-2"></i> Login
+                        </a>
+                      </li>
+
+                    </ul>
+                  </nav>
+
+                  <!-- Mobile Menu Button -->
+                  <button type="button" class="th-menu-toggle d-inline-block d-lg-none"
+                    [ngClass]="{'active': isMobileMenuOpen}" (click)="toggleMobileMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                  </button>
+                </div>
+
+                <!-- Header Buttons -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Mobile Menu -->
+        <!-- Mobile Menu -->
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" [ngClass]="{'active': isMobileMenuOpen}">
+          <ul class="mobile-scroll-container">
+            <li>
+              <a href="javascript:void(0)" (click)="toggleMobileSubMenu('about')">
+                <i class="fas fa-user-circle me-2"></i> About
+                <i class="fas fa-chevron-down float-end"></i>
+              </a>
+              <ul class="sub-menu animated-submenu" [ngClass]="{'open': mobileSubMenu === 'about'}">
+                <li><a routerLink="/about" (click)="toggleMobileMenu()"><i class="fas fa-building me-2"></i> About
+                    Us</a></li>
+                <li><a routerLink="/founderprofile" (click)="toggleMobileMenu()"><i class="fas fa-user-tie me-2"></i>
+                    Founder Profile</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript:void(0)" (click)="toggleMobileSubMenu('services')">
+                <i class="fas fa-briefcase me-2"></i> Services
+                <i class="fas fa-chevron-down float-end"></i>
+              </a>
+              <ul class="sub-menu animated-submenu" [ngClass]="{'open': mobileSubMenu === 'services'}">
+                <li><a routerLink="/services/ourMission" (click)="toggleMobileMenu()"><i
+                      class="fas fa-hand-holding-usd me-2"></i> Our Mission</a></li>
+                <li><a routerLink="/services/fund-raising" (click)="toggleMobileMenu()"><i
+                      class="fas fa-hand-holding-usd me-2"></i> Fund Raising</a></li>
+                <li><a routerLink="/services/investment-banking" (click)="toggleMobileMenu()"><i
+                      class="fas fa-university me-2"></i> Debt Restructuring Services </a></li>
+                <li><a routerLink="/services/training-placement" (click)="toggleMobileMenu()"><i
+                      class="fas fa-chalkboard-teacher me-2"></i> Training Placement</a></li>
+                <li><a routerLink="/services/credit-rating" (click)="toggleMobileMenu()"><i
+                      class="fas fa-star me-2"></i> Credit Rating</a></li>
+                <li><a routerLink="/services/tech-services" (click)="toggleMobileMenu()"><i
+                      class="fas fa-laptop-code me-2"></i> Tech Services</a></li>
+                <li><a routerLink="/services/digital-marketing" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i> Digital Marketing</a></li>
+
+                <li><a routerLink="/services/loanForEveryIndian" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Loan for every indian</a></li>
+                <li><a routerLink="/services/realState" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Real Estate Advisory </a></li>
+                <li><a routerLink="/services/wealth" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Wealth Management </a></li>
+
+                <li><a routerLink="/services/billDiscounting" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Bill Discounting </a></li>
+                <li><a routerLink="/services/exportbillDiscounting" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Export Bill Discounting </a></li>
+                <!-- <li><a routerLink="/services/creditRatingAdversory" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Credit Rating Adversory </a></li> -->
+                <li><a routerLink="/services/ourInsuranceServices" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Our Insurance Services</a></li>
+                <li><a routerLink="/services/ourEndToEndforeignServices" (click)="toggleMobileMenu()"><i
+                      class="fas fa-bullhorn me-2"></i>Our End to End Foreign Services</a></li>
+                <li><a routerLink="/services/bankingDomainExpertConsultency" (click)="toggleMobileMenu()">
+                    <i class="fas fa-bullhorn me-2"></i>Banking Domain Expert Consultencys</a></li>
+                <li>
+                  <a routerLink="/services/FinancialConsultancyforCorporates" (click)="toggleMobileMenu()">
+                    <i class="fas fa-bullhorn me-2"></i>Financial Consultancy for Corporates</a>
+                </li>
+              </ul>
+
+
+            </li>
+
+            <li><a routerLink="/team" (click)="toggleMobileMenu()"><i class="fas fa-users me-2"></i> Team</a></li>
+            <li><a routerLink="/partner-page" (click)="toggleMobileMenu()"><i class="fas fa-handshake me-2"></i> Become
+                Partner</a></li>
+            <li><a routerLink="/contact" (click)="toggleMobileMenu()"><i class="fas fa-envelope me-2"></i> Contact</a>
+            </li>
+
+            <li class="login-item" style="border:2px solid #DD3333 !important;">
+              <a (click)="openLogin()"  >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span class="ms-2">Login</span>
+              </a>
+            </li>
+
+
+
+          </ul>
+
+
+
+
+        </div>
+
+
+
+
+        <!-- Overlay -->
+        <div class="menu-overlay" [ngClass]="{'active': isMobileMenuOpen}" (click)="toggleMobileMenu()"></div>
+
+        <div class="logo-shape"></div>
+      </div>
+    </div>
+  </div>
+</header>

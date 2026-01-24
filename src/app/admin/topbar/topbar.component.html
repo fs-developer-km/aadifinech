@@ -1,0 +1,195 @@
+<div class="topnav" [class.sidebar-collapsed]="!isSidebarOpen">
+  <div class="topnav-content">
+
+    <!-- Left Section - Toggle + Breadcrumb -->
+    <div class="left-section">
+      <button class="toggle-btn" (click)="onToggle()">
+        <span class="hamburger" [class.active]="isSidebarOpen">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+
+      <div class="title-breadcrumb">
+        <h1 class="page-title">AadiFintech</h1>
+        <!-- <div class="breadcrumb">
+          <span class="breadcrumb-item">Home</span>
+          <span class="separator">/</span>
+          <span class="breadcrumb-item active">Dashboard</span>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Center Section - Search (Optional) -->
+    <!-- <div class="center-section">
+      <div class="search-container">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search projects, users, documents..."
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="onSearch()"
+          />
+          <span class="search-shortcut">Ctrl+K</span>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Right Section - Actions & Profile -->
+    <div class="right-section">
+
+      <!-- Quick Actions -->
+      <!-- <div class="quick-actions">
+        <button class="action-btn notifications" title="Notifications">
+          <span class="icon">🔔</span>
+          <span class="badge" *ngIf="notificationsCount > 0">{{ notificationsCount }}</span>
+        </button>
+
+        <button class="action-btn messages" title="Messages">
+          <span class="icon">💬</span>
+          <span class="badge" *ngIf="messagesCount > 0">{{ messagesCount }}</span>
+        </button>
+
+        <button class="action-btn settings" title="Settings">
+          <span class="icon">⚙️</span>
+        </button>
+      </div> -->
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <div class="profile-wrapper" (click)="toggleProfileDropdown()">
+          <div class="profile-avatar-container">
+            <div class="profile-avatar">
+              <span>{{ userProfile.avatar }}</span>
+            </div>
+            <div class="status-indicator"></div>
+          </div>
+
+          <div class="profile-details">
+            <span class="profile-name">{{ userProfile.name }}</span>
+            <span class="profile-role">{{ userProfile.email }}</span>
+          </div>
+
+          <span class="dropdown-arrow" [class.open]="isProfileDropdownOpen">
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+              <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
+        </div>
+
+        <!-- Profile Dropdown Menu -->
+        <div *ngIf="isProfileDropdownOpen" class="profile-dropdown-menu">
+          
+          <!-- User Info Header -->
+          <div class="dropdown-user-header">
+            <div class="user-header-avatar">
+              <span>{{ userProfile.avatar }}</span>
+            </div>
+            <div class="user-header-info">
+              <h4 class="user-header-name">{{ userProfile.name }}</h4>
+              <p class="user-header-email">{{ userProfile.email }}</p>
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <!-- Dropdown Menu Items -->
+          <div class="dropdown-menu-items">
+
+            <div class="dropdown-menu-item" routerLink="/admin/dashboard" (click)="closeProfileDropdown()">
+              <span class="menu-item-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </span>
+              <div class="menu-item-content">
+                <span class="menu-item-label">Dashboard</span>
+                <span class="menu-item-desc">View Dashboard</span>
+              </div>
+              <span class="menu-item-arrow">
+                <i class="fas fa-chevron-right"></i>
+              </span>
+            </div>
+
+            <div class="dropdown-menu-item" routerLink="/admin/userlead" (click)="closeProfileDropdown()">
+              <span class="menu-item-icon">
+                <i class="fas fa-users"></i>
+              </span>
+              <div class="menu-item-content">
+                <span class="menu-item-label">User Lead</span>
+                <span class="menu-item-desc">Manage User Leads</span>
+              </div>
+              <span class="menu-item-arrow">
+                <i class="fas fa-chevron-right"></i>
+              </span>
+            </div>
+
+            <div class="dropdown-menu-item" routerLink="/admin/userlogin" (click)="closeProfileDropdown()">
+              <span class="menu-item-icon">
+                <i class="fas fa-sign-in-alt"></i>
+              </span>
+              <div class="menu-item-content">
+                <span class="menu-item-label">User Login</span>
+                <span class="menu-item-desc">View User Login</span>
+              </div>
+              <span class="menu-item-arrow">
+                <i class="fas fa-chevron-right"></i>
+              </span>
+            </div>
+
+            <div class="dropdown-menu-item" routerLink="/admin/cookies" (click)="closeProfileDropdown()">
+              <span class="menu-item-icon">
+                <i class="fas fa-cookie-bite"></i>
+              </span>
+              <div class="menu-item-content">
+                <span class="menu-item-label">Cookies</span>
+                <span class="menu-item-desc">Manage Cookies</span>
+              </div>
+              <span class="menu-item-arrow">
+                <i class="fas fa-chevron-right"></i>
+              </span>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Logout Option -->
+            <div class="dropdown-menu-item logout-item" 
+                 (click)="onProfileMenuClick('logout')"
+                 [class.loading]="isLoggingOut">
+              <span class="menu-item-icon logout-icon">
+                <i class="fas fa-sign-out-alt" *ngIf="!isLoggingOut"></i>
+                <i class="fas fa-spinner fa-spin logout-spinner" *ngIf="isLoggingOut"></i>
+              </span>
+              <div class="menu-item-content">
+                <span class="menu-item-label">{{ isLoggingOut ? 'Logging out...' : 'Logout' }}</span>
+                <span class="menu-item-desc">{{ isLoggingOut ? 'Please wait' : 'Sign out from account' }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop -->
+<div *ngIf="isProfileDropdownOpen" class="dropdown-backdrop" (click)="closeProfileDropdown()"></div>
+
+<!-- Fullscreen Logout Loader Overlay -->
+<div class="logout-loader-overlay" *ngIf="isLoggingOut">
+  <div class="logout-loader-container">
+    <div class="logout-loader-spinner">
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+    </div>
+    <h3 class="logout-loader-title">Logging Out</h3>
+    <p class="logout-loader-text">Please wait while we securely sign you out...</p>
+  </div>
+</div>

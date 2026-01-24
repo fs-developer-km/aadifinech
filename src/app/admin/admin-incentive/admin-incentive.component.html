@@ -1,0 +1,590 @@
+<div class="admin-incentive-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-trophy"></i>
+        Admin - Incentive Managementttt
+      </h1>
+      <button class="btn-primary" (click)="openCalculateModal()">
+        <i class="fas fa-calculator"></i> Calculate for Employee
+      </button>
+    </div>
+  </div>
+
+  <!-- Statistics Dashboard -->
+  <div class="stats-section">
+    <h2 class="section-title">
+      <i class="fas fa-chart-pie"></i> Statistics Overview
+    </h2>
+    
+    <div class="stats-grid" *ngIf="statistics">
+      <div class="stat-card blue">
+        <div class="stat-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+        <div class="stat-content">
+          <h3>{{ statistics.overall?.totalRecords || 0 }}</h3>
+          <p>Total Records</p>
+        </div>
+      </div>
+
+      <div class="stat-card green">
+        <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+        <div class="stat-content">
+          <h3>₹{{ statistics.overall?.totalGrossIncentive || 0 | number:'1.0-0' }}</h3>
+          <p>Gross Incentive</p>
+        </div>
+      </div>
+
+      <div class="stat-card orange">
+        <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+        <div class="stat-content">
+          <h3>₹{{ statistics.overall?.totalNetIncentive || 0 | number:'1.0-0' }}</h3>
+          <p>Net Incentive</p>
+        </div>
+      </div>
+
+      <div class="stat-card red">
+        <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="stat-content">
+          <h3>₹{{ statistics.overall?.totalPenalties || 0 | number:'1.0-0' }}</h3>
+          <p>Total Penalties</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Breakdown -->
+    <div class="status-breakdown" *ngIf="statistics && statistics.byStatus">
+      <h3>Status Breakdown</h3>
+      <div class="breakdown-grid">
+        <div class="breakdown-card" *ngFor="let status of statistics.byStatus">
+          <div class="breakdown-header">
+            <span class="status-badge" [ngClass]="status._id">{{ status._id | uppercase }}</span>
+            <span class="count-badge">{{ status.count }}</span>
+          </div>
+          <div class="breakdown-details">
+            <div class="detail-item">
+              <span class="label">Gross:</span>
+              <span class="value">₹{{ status.totalGross | number:'1.0-0' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Net:</span>
+              <span class="value">₹{{ status.totalNet | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Performers -->
+    <div class="top-performers" *ngIf="statistics && statistics.topEmployees && statistics.topEmployees.length > 0">
+      <h3><i class="fas fa-star"></i> Top Performers</h3>
+      <div class="performers-grid">
+        <div class="performer-card" *ngFor="let emp of statistics.topEmployees; let i = index">
+          <div class="rank-badge">{{ i + 1 }}</div>
+          <div class="performer-info">
+            <h4 style="color:#fff">{{ emp.employeeName }}</h4>
+            <p style="color:#fff"><i class="fas fa-coins"></i> ₹{{ emp.totalIncentive | number:'1.0-0' }}</p>
+            <p style="color:#fff"><i class="fas fa-handshake"></i> {{ emp.totalLoans }} Loans</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="filters-header">
+      <h3><i class="fas fa-filter"></i> Filters</h3>
+      <button class="btn-clear" (click)="clearFilters()">
+        <i class="fas fa-times"></i> Clear All
+      </button>
+    </div>
+
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label>Month & Year</label>
+        <input type="month" [(ngModel)]="filters.month" (change)="loadIncentives()" class="form-control">
+      </div>
+
+      <div class="filter-group">
+        <label>Status</label>
+        <select [(ngModel)]="filters.status" (change)="loadIncentives()" class="form-control">
+          <option value="">All Status</option>
+          <option value="draft">Draft</option>
+          <option value="calculated">Calculated</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="paid">Paid</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Employee ID</label>
+        <input type="text" [(ngModel)]="filters.employeeId" (change)="loadIncentives()" 
+               placeholder="Enter employee ID" class="form-control">
+      </div>
+
+      <div class="filter-group">
+        <label>Employee Name</label>
+        <input type="text" [(ngModel)]="filters.employeeName" (change)="filterByName()" 
+               placeholder="Search by name" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading incentives...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && filteredIncentives.length === 0">
+    <i class="fas fa-inbox"></i>
+    <h3>No Incentives Found</h3>
+    <p>No incentives match the selected filters</p>
+  </div>
+
+  <!-- Incentives List -->
+  <div class="table-section" *ngIf="!loading && filteredIncentives.length > 0">
+    <div class="table-header">
+      <h3><i class="fas fa-list"></i> Incentives List ({{ filteredIncentives.length }})</h3>
+      <div class="view-toggle">
+        <button [class.active]="viewMode === 'card'" (click)="viewMode = 'card'">
+          <i class="fas fa-th-large"></i> Card
+        </button>
+        <button [class.active]="viewMode === 'table'" (click)="viewMode = 'table'">
+          <i class="fas fa-table"></i> Table
+        </button>
+      </div>
+    </div>
+
+    <!-- Card View -->
+    <div class="incentives-grid" *ngIf="viewMode === 'card'">
+      <div class="incentive-card" *ngFor="let incentive of filteredIncentives">
+        <div class="card-header">
+          <div class="employee-info">
+            <div class="employee-avatar"><i class="fas fa-user"></i></div>
+            <div class="employee-details">
+              <h4>{{ incentive.employeeName }}</h4>
+              <p><i class="fas fa-phone"></i> {{ incentive.employeeMobile }}</p>
+            </div>
+          </div>
+          <span class="status-badge" [ngClass]="incentive.status">{{ incentive.status | uppercase }}</span>
+        </div>
+
+        <div class="card-body">
+          <div class="info-row">
+            <div class="info-item">
+              <i class="fas fa-calendar"></i>
+              <span>{{ incentive.month | date:'MMMM yyyy' }}</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-handshake"></i>
+              <span>{{ incentive.loanMetrics?.disbursedLoans || 0 }} Loans</span>
+            </div>
+          </div>
+
+          <div class="summary-row">
+            <div class="summary-box gross">
+              <i class="fas fa-coins"></i>
+              <div>
+                <span class="label">Gross Incentive</span>
+                <span class="value">₹{{ incentive.grossIncentive | number:'1.0-0' }}</span>
+              </div>
+            </div>
+            <div class="summary-box net">
+              <i class="fas fa-money-bill-wave"></i>
+              <div>
+                <span class="label">Net Incentive</span>
+                <span class="value">₹{{ incentive.netIncentive | number:'1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-metrics">
+            <div class="metric">
+              <span class="metric-label">Conversion:</span>
+              <span class="metric-value">{{ incentive.loanMetrics?.conversionRate || 0 }}%</span>
+            </div>
+            <div class="metric" *ngIf="incentive.incentiveBreakdown && incentive.incentiveBreakdown.penalties && incentive.incentiveBreakdown.penalties > 0">
+              <span class="metric-label">Penalties:</span>
+              <span class="metric-value penalty">-₹{{ incentive.incentiveBreakdown.penalties | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-view" (click)="viewDetails(incentive)">
+            <i class="fas fa-eye"></i> View
+          </button>
+
+          <div class="action-buttons" *ngIf="incentive.status === 'calculated'">
+            <button class="btn-edit" (click)="editIncentive(incentive)">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn-approve" (click)="openApproveModal(incentive)">
+              <i class="fas fa-check"></i> Approve
+            </button>
+            <button class="btn-reject" (click)="openRejectModal(incentive)">
+              <i class="fas fa-times"></i> Reject
+            </button>
+          </div>
+
+          <button class="btn-paid" *ngIf="incentive.status === 'approved'" (click)="openPayModal(incentive)">
+            <i class="fas fa-money-bill"></i> Mark Paid
+          </button>
+
+          <button class="btn-delete" *ngIf="incentive.status !== 'paid'" (click)="deleteIncentive(incentive._id)">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div class="table-wrapper" *ngIf="viewMode === 'table'">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Month</th>
+            <th>Loans</th>
+            <th>Gross</th>
+            <th>Net</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let incentive of filteredIncentives">
+            <td>
+              <div class="employee-cell">
+                <strong>{{ incentive.employeeName }}</strong>
+                <small>{{ incentive.employeeMobile }}</small>
+              </div>
+            </td>
+            <td>{{ incentive.month | date:'MMM yyyy' }}</td>
+            <td class="center">{{ incentive.loanMetrics?.disbursedLoans || 0 }}</td>
+            <td class="amount">₹{{ incentive.grossIncentive | number:'1.0-0' }}</td>
+            <td class="amount">₹{{ incentive.netIncentive | number:'1.0-0' }}</td>
+            <td><span class="status-badge" [ngClass]="incentive.status">{{ incentive.status }}</span></td>
+            <td>
+              <div class="table-actions">
+                <button class="btn-icon" (click)="viewDetails(incentive)" title="View"><i class="fas fa-eye"></i></button>
+                <button class="btn-icon success" *ngIf="incentive.status === 'calculated'" (click)="openApproveModal(incentive)" title="Approve"><i class="fas fa-check"></i></button>
+                <button class="btn-icon danger" *ngIf="incentive.status === 'calculated'" (click)="openRejectModal(incentive)" title="Reject"><i class="fas fa-times"></i></button>
+                <button class="btn-icon info" *ngIf="incentive.status === 'approved'" (click)="openPayModal(incentive)" title="Mark Paid"><i class="fas fa-money-bill"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Calculate/Edit Modal -->
+<div class="modal-overlay" *ngIf="showCalculateModal" (click)="closeCalculateModal()">
+  <div class="modal-content large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-calculator"></i> {{ isEditMode ? 'Edit' : 'Calculate' }} Incentive</h2>
+      <button class="close-btn" (click)="closeCalculateModal()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-section">
+        <h3>Employee & Period</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Select Employee *</label>
+           <select [(ngModel)]="calculateForm.employeeId">
+  <option *ngFor="let emp of employees" [value]="emp._id">
+    {{ emp.name }} ({{ emp.mobile }})
+  </option>
+</select>
+
+            <small *ngIf="loadingEmployees" class="loading-text">
+              <i class="fas fa-spinner fa-spin"></i> Loading employees...
+            </small>
+            <small *ngIf="!loadingEmployees && employees.length === 0" class="error-text">
+              No employees found. Please add employees first.
+            </small>
+            <small *ngIf="calculateForm.employeeId" class="selected-text">
+              ✓ Selected: {{ calculateForm.employeeId }}
+            </small>
+          </div>
+          <div class="form-group">
+            <label>Month & Year *</label>
+            <input type="month" [(ngModel)]="calculateForm.month" class="form-control" [disabled]="isEditMode">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3><i class="fas fa-chart-line"></i> Loan Metrics</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Total Loans *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.totalLoans" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Approved Loans *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.approvedLoans" class="form-control" min="0">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Disbursed Loans *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.disbursedLoans" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Total Disbursed Amount (₹) *</label>
+            <input type="number" [(ngModel)]="calculateForm.loanMetrics.totalDisbursedAmount" class="form-control" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3><i class="fas fa-bullseye"></i> Targets</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Loan Target *</label>
+            <input type="number" [(ngModel)]="calculateForm.targets.loanTarget" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Amount Target (₹) *</label>
+            <input type="number" [(ngModel)]="calculateForm.targets.amountTarget" class="form-control" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section collapsible">
+        <div class="section-header" (click)="showRateCard = !showRateCard">
+          <h3><i class="fas fa-percentage"></i> Rate Card (Optional)</h3>
+          <i class="fas" [ngClass]="showRateCard ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </div>
+        <div class="collapsible-content" *ngIf="showRateCard">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Per Loan (₹)</label>
+              <input type="number" [(ngModel)]="calculateForm.rateCard.perLoan" class="form-control" min="0">
+            </div>
+            <div class="form-group">
+              <label>Performance Rate (%)</label>
+              <input type="number" [(ngModel)]="calculateForm.rateCard.performanceRate" class="form-control" min="0" step="0.01">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeCalculateModal()">Cancel</button>
+      <button class="btn-calculate" (click)="calculateIncentive()" [disabled]="saving">
+        <i class="fas" [ngClass]="saving ? 'fa-spinner fa-spin' : 'fa-calculator'"></i>
+        {{ saving ? 'Processing...' : (isEditMode ? 'Update' : 'Calculate') }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- View Details Modal -->
+<div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+  <div class="modal-content large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-file-invoice-dollar"></i> Incentive Details</h2>
+      <button class="close-btn" (click)="closeDetailsModal()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="modal-body" *ngIf="selectedIncentive">
+      <div class="detail-section">
+        <h3>Employee Information</h3>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="label">Name:</span>
+            <span class="value">{{ selectedIncentive.employeeName }}</span>
+          </div>
+
+          <!-- <div class="detail-item">
+            <span class="label">id employee :</span>
+            <span class="value">{{ selectedIncentive.employeeId }}</span>
+          </div> -->
+          <div class="detail-item">
+            <span class="label">Mobile:</span>
+            <span class="value">{{ selectedIncentive.employeeMobile }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Period:</span>
+            <span class="value">{{ selectedIncentive.month | date:'MMMM yyyy' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Status:</span>
+            <span class="status-badge" [ngClass]="selectedIncentive.status">{{ selectedIncentive.status | uppercase }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Performance Metrics</h3>
+        <div class="metrics-display">
+          <div class="metric-box">
+            <span class="metric-label">Total Loans</span>
+            <span class="metric-value">{{ selectedIncentive.loanMetrics?.totalLoans || 0 }}</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Disbursed</span>
+            <span class="metric-value">{{ selectedIncentive.loanMetrics?.disbursedLoans || 0 }}</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Conversion</span>
+            <span class="metric-value">{{ selectedIncentive.loanMetrics?.conversionRate || 0 }}%</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Amount</span>
+            <span class="metric-value">₹{{ selectedIncentive.loanMetrics?.totalDisbursedAmount | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>Incentive Breakdown</h3>
+        <div class="breakdown-table">
+          <div class="breakdown-row">
+            <span>Per Loan Incentive</span>
+            <span>₹{{ selectedIncentive.incentiveBreakdown?.perLoanIncentive | number:'1.0-0' }}</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Performance Bonus</span>
+            <span>₹{{ selectedIncentive.incentiveBreakdown?.performanceBonus | number:'1.0-0' }}</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Target Bonus</span>
+            <span>₹{{ selectedIncentive.incentiveBreakdown?.targetAchievementBonus | number:'1.0-0' }}</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Quality Bonus</span>
+            <span>₹{{ selectedIncentive.incentiveBreakdown?.qualityBonus | number:'1.0-0' }}</span>
+          </div>
+          <div class="breakdown-row penalty" *ngIf="selectedIncentive.incentiveBreakdown && selectedIncentive.incentiveBreakdown.penalties && selectedIncentive.incentiveBreakdown.penalties > 0">
+            <span>Penalties</span>
+            <span>-₹{{ selectedIncentive.incentiveBreakdown.penalties | number:'1.0-0' }}</span>
+          </div>
+          <div class="breakdown-row total">
+            <span><strong>Gross Incentive</strong></span>
+            <span><strong>₹{{ selectedIncentive.grossIncentive | number:'1.0-0' }}</strong></span>
+          </div>
+          <div class="breakdown-row" *ngIf="selectedIncentive.deductions && selectedIncentive.deductions > 0">
+            <span>Deductions</span>
+            <span>-₹{{ selectedIncentive.deductions | number:'1.0-0' }}</span>
+          </div>
+          <div class="breakdown-row final">
+            <span><strong>Net Incentive</strong></span>
+            <span><strong>₹{{ selectedIncentive.netIncentive | number:'1.0-0' }}</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeDetailsModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Approve Modal -->
+<div class="modal-overlay" *ngIf="showApproveModal" (click)="closeApproveModal()">
+  <div class="modal-content small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-check-circle"></i> Approve Incentive</h2>
+      <button class="close-btn" (click)="closeApproveModal()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="approval-info" *ngIf="selectedIncentive">
+        <p><strong>Employee:</strong> {{ selectedIncentive.employeeName }}</p>
+        <p><strong>Net Incentive:</strong> ₹{{ selectedIncentive.netIncentive | number:'1.0-0' }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>Admin Remarks (Optional)</label>
+        <textarea [(ngModel)]="approveRemarks" class="form-control" rows="4" placeholder="Add remarks..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeApproveModal()">Cancel</button>
+      <button class="btn-approve" (click)="approveIncentive()" [disabled]="saving">
+        <i class="fas" [ngClass]="saving ? 'fa-spinner fa-spin' : 'fa-check'"></i>
+        {{ saving ? 'Approving...' : 'Approve' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal-overlay" *ngIf="showRejectModal" (click)="closeRejectModal()">
+  <div class="modal-content small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-times-circle"></i> Reject Incentive</h2>
+      <button class="close-btn" (click)="closeRejectModal()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Rejection Reason *</label>
+        <textarea [(ngModel)]="rejectReason" class="form-control" rows="4" placeholder="Enter reason..." required></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeRejectModal()">Cancel</button>
+      <button class="btn-reject" (click)="rejectIncentive()" [disabled]="saving || !rejectReason">
+        <i class="fas" [ngClass]="saving ? 'fa-spinner fa-spin' : 'fa-times'"></i>
+        {{ saving ? 'Rejecting...' : 'Reject' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Mark Paid Modal -->
+<div class="modal-overlay" *ngIf="showPayModal" (click)="closePayModal()">
+  <div class="modal-content small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-money-bill"></i> Mark as Paid</h2>
+      <button class="close-btn" (click)="closePayModal()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="payment-info" *ngIf="selectedIncentive">
+        <p><strong>Employee:</strong> {{ selectedIncentive.employeeName }}</p>
+        <p><strong>Amount:</strong> ₹{{ selectedIncentive.netIncentive | number:'1.0-0' }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>Payment Reference (Optional)</label>
+        <input type="text" [(ngModel)]="paymentReference" class="form-control" placeholder="Transaction ID / Reference">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closePayModal()">Cancel</button>
+      <button class="btn-paid" (click)="markAsPaid()" [disabled]="saving">
+        <i class="fas" [ngClass]="saving ? 'fa-spinner fa-spin' : 'fa-money-bill'"></i>
+        {{ saving ? 'Processing...' : 'Mark Paid' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-container">
+  <div class="toast" [ngClass]="toast.type" *ngIf="toast.show" [@slideIn]>
+    <i class="fas" [ngClass]="{
+      'fa-check-circle': toast.type === 'success',
+      'fa-exclamation-circle': toast.type === 'error',
+      'fa-info-circle': toast.type === 'info'
+    }"></i>
+    <span>{{ toast.message }}</span>
+  </div>
+</div>

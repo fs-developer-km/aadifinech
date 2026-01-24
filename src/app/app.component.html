@@ -1,0 +1,26 @@
+<app-navbar *ngIf="!isAdminRoute()"></app-navbar>
+<app-cookies-popup></app-cookies-popup>
+<router-outlet></router-outlet>
+<app-footer *ngIf="!isAdminRoute()"></app-footer>
+
+<!-- Scroll to Top Button -->
+<button class="scroll-to-top" (click)="scrollToTop()" [class.show]="isScrollButtonVisible">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<app-user-enquiry *ngIf="showPopup"></app-user-enquiry>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/9953656810" target="_blank" class="floating-btn whatsapp-btn" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Call Floating Button -->
+<a 
+  href="tel:9953656810"
+  class="floating-btn call-btn"
+  aria-label="Call Now"
+  (click)="handleCallClick($event)">
+  <i class="fas fa-phone-alt"></i>
+</a>
+

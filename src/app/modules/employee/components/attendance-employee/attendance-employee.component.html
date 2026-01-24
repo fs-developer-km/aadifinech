@@ -1,0 +1,400 @@
+<div class="attendance-container">
+  
+  <!-- Header -->
+  <div class="attendance-header">
+    <div class="header-content">
+      <h1><i class="fas fa-clock"></i> Attendance Management</h1>
+      <div class="current-time">
+        <i class="far fa-calendar-alt"></i>
+        <span>{{ currentTime | date:'EEEE, d MMMM y' }}</span>
+        <span class="time">{{ currentTime | date:'h:mm:ss a' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'today'"
+      (click)="switchTab('today')">
+      <i class="fas fa-home"></i>
+      Today
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'history'"
+      (click)="switchTab('history')">
+      <i class="fas fa-history"></i>
+      History
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'monthly'"
+      (click)="switchTab('monthly')">
+      <i class="fas fa-chart-bar"></i>
+      Monthly
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'leave'"
+      (click)="switchTab('leave')">
+      <i class="fas fa-umbrella-beach"></i>
+      Leave
+    </button>
+  </div>
+
+  <!-- TODAY TAB -->
+  <div *ngIf="activeTab === 'today'" class="tab-content">
+    
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="loader"></div>
+      <p>Loading...</p>
+    </div>
+
+    <!-- Today's Attendance -->
+    <div *ngIf="!isLoading" class="today-section">
+      
+      <!-- Status Card -->
+      <div class="status-card" *ngIf="!hasCheckedIn">
+        <div class="status-icon not-checked">
+          <i class="fas fa-sign-in-alt"></i>
+        </div>
+        <div class="status-content">
+          <h2>Ready to Start Your Day?</h2>
+          <p>Click the button below to check in</p>
+        </div>
+      </div>
+
+      <div class="status-card checked-in" *ngIf="hasCheckedIn && !hasCheckedOut">
+        <div class="status-icon active">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="status-content">
+          <h2>You're Checked In!</h2>
+          <p>Started at: {{ formatTime(todayAttendance?.checkInTime!) }}</p>
+        </div>
+      </div>
+
+      <div class="status-card checked-out" *ngIf="hasCheckedOut">
+        <div class="status-icon complete">
+          <i class="fas fa-door-open"></i>
+        </div>
+        <div class="status-content">
+          <h2>Day Complete!</h2>
+          <p>Checked out at: {{ formatTime(todayAttendance?.checkOutTime!) }}</p>
+        </div>
+      </div>
+
+      <!-- Check In/Out Buttons -->
+      <div class="action-buttons">
+        <button 
+          *ngIf="!hasCheckedIn"
+          class="action-btn check-in-btn"
+          (click)="checkIn()"
+          [disabled]="isLoading || isGettingLocation">
+          <i class="fas fa-sign-in-alt"></i>
+          <span *ngIf="!isGettingLocation">Check In</span>
+          <span *ngIf="isGettingLocation">Getting Location...</span>
+        </button>
+
+        <button 
+          *ngIf="hasCheckedIn && !hasCheckedOut"
+          class="action-btn check-out-btn"
+          (click)="checkOut()"
+          [disabled]="isLoading || isGettingLocation">
+          <i class="fas fa-sign-out-alt"></i>
+          <span *ngIf="!isGettingLocation">Check Out</span>
+          <span *ngIf="isGettingLocation">Getting Location...</span>
+        </button>
+      </div>
+
+      <!-- Today's Details -->
+      <div *ngIf="todayAttendance" class="today-details">
+        <div class="detail-card">
+          <i class="fas fa-clock"></i>
+          <div class="detail-content">
+            <span class="label">Check In</span>
+            <span class="value">{{ formatTime(todayAttendance.checkInTime) }}</span>
+          </div>
+        </div>
+
+        <div class="detail-card" *ngIf="todayAttendance.checkOutTime">
+          <i class="fas fa-door-open"></i>
+          <div class="detail-content">
+            <span class="label">Check Out</span>
+            <span class="value">{{ formatTime(todayAttendance.checkOutTime) }}</span>
+          </div>
+        </div>
+
+        <div class="detail-card" *ngIf="todayAttendance.workDuration">
+          <i class="fas fa-hourglass-half"></i>
+          <div class="detail-content">
+            <span class="label">Work Duration</span>
+            <span class="value">{{ formatDuration(todayAttendance.workDuration) }}</span>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <i class="fas fa-info-circle"></i>
+          <div class="detail-content">
+            <span class="label">Status</span>
+            <span [class]="'badge ' + getStatusClass(todayAttendance.status)">
+              {{ todayAttendance.status }}
+            </span>
+          </div>
+        </div>
+
+        <div class="detail-card" *ngIf="todayAttendance.isLate">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div class="detail-content">
+            <span class="label">Late By</span>
+            <span class="value late">{{ todayAttendance.lateByMinutes }} mins</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div *ngIf="activeTab === 'history'" class="tab-content">
+    
+    <!-- Filters -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label>Start Date</label>
+        <input 
+          type="date" 
+          [(ngModel)]="historyStartDate"
+          class="date-input">
+      </div>
+      <div class="filter-group">
+        <label>End Date</label>
+        <input 
+          type="date" 
+          [(ngModel)]="historyEndDate"
+          class="date-input">
+      </div>
+      <button class="filter-btn" (click)="filterHistory()">
+        <i class="fas fa-filter"></i>
+        Filter
+      </button>
+    </div>
+
+    <!-- History List -->
+    <div class="history-list">
+      <div *ngFor="let record of attendanceHistory" class="history-card">
+        <div class="history-header">
+          <span class="date">{{ formatDate(record.date) }}</span>
+          <span [class]="'status-badge ' + getStatusClass(record.status)">
+            {{ record.status }}
+          </span>
+        </div>
+        <div class="history-body">
+          <div class="history-item">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Check In: {{ formatTime(record.checkInTime) }}</span>
+          </div>
+          <div class="history-item" *ngIf="record.checkOutTime">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Check Out: {{ formatTime(record.checkOutTime) }}</span>
+          </div>
+          <div class="history-item">
+            <i class="fas fa-clock"></i>
+            <span>Duration: {{ formatDuration(record.workDuration) }}</span>
+          </div>
+          <div class="history-item" *ngIf="record.isLate">
+            <i class="fas fa-exclamation-triangle text-warning"></i>
+            <span>Late by {{ record.lateByMinutes }} mins</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data -->
+    <div *ngIf="attendanceHistory.length === 0" class="no-data">
+      <i class="fas fa-inbox"></i>
+      <p>No attendance records found</p>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="historyTotalPages > 1" class="pagination">
+      <button 
+        class="page-btn" 
+        (click)="previousPage()"
+        [disabled]="historyPage === 1">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <span class="page-info">Page {{ historyPage }} of {{ historyTotalPages }}</span>
+      <button 
+        class="page-btn" 
+        (click)="nextPage()"
+        [disabled]="historyPage === historyTotalPages">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- MONTHLY TAB -->
+  <div *ngIf="activeTab === 'monthly'" class="tab-content">
+    
+    <!-- Month Selector -->
+    <div class="month-selector">
+      <button class="month-btn" (click)="changeMonth(-1)">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <h2>{{ getMonthName(selectedMonth) }} {{ selectedYear }}</h2>
+      <button class="month-btn" (click)="changeMonth(1)">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Monthly Stats -->
+    <div *ngIf="monthlySummary" class="monthly-stats">
+      <div class="stat-box">
+        <i class="fas fa-check-circle"></i>
+        <div class="stat-content">
+          <span class="stat-value">{{ monthlySummary.totalPresent }}</span>
+          <span class="stat-label">Present Days</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <i class="fas fa-clock"></i>
+        <div class="stat-content">
+          <span class="stat-value">{{ monthlySummary.totalLate }}</span>
+          <span class="stat-label">Late Days</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="stat-content">
+          <span class="stat-value">{{ monthlySummary.totalWorkingDays }}</span>
+          <span class="stat-label">Working Days</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <i class="fas fa-hourglass-half"></i>
+        <div class="stat-content">
+          <span class="stat-value">{{ monthlySummary.averageWorkHours }}h</span>
+          <span class="stat-label">Avg Work Hours</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Records -->
+    <div class="monthly-records">
+      <div *ngFor="let record of monthlyAttendance" class="monthly-card">
+        <div class="card-date">{{ formatDate(record.date) }}</div>
+        <div class="card-details">
+          <span>{{ formatTime(record.checkInTime) }}</span>
+          <span class="separator">→</span>
+          <span>{{ formatTime(record.checkOutTime) }}</span>
+        </div>
+        <span [class]="'badge ' + getStatusClass(record.status)">
+          {{ record.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAVE TAB -->
+  <div *ngIf="activeTab === 'leave'" class="tab-content">
+    
+    <!-- New Leave Button -->
+    <div class="leave-header">
+      <button class="new-leave-btn" (click)="openLeaveModal()">
+        <i class="fas fa-plus"></i>
+        Request Leave
+      </button>
+    </div>
+
+    <!-- Leave Requests List -->
+    <div class="leave-list">
+      <div *ngFor="let leave of leaveRequests" class="leave-card">
+        <div class="leave-type">
+          <i class="fas fa-umbrella-beach"></i>
+          <span>{{ leave.leaveType }}</span>
+        </div>
+        <div class="leave-dates">
+          <span>{{ formatDate(leave.fromDate) }}</span>
+          <span class="separator">to</span>
+          <span>{{ formatDate(leave.toDate) }}</span>
+          <span class="days">({{ leave.numberOfDays }} days)</span>
+        </div>
+        <div class="leave-reason">{{ leave.reason }}</div>
+        <div class="leave-footer">
+          <span class="leave-date">Applied: {{ formatDate(leave.createdAt) }}</span>
+          <span [class]="'leave-status ' + getLeaveStatusClass(leave.status)">
+            {{ leave.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Leaves -->
+    <div *ngIf="leaveRequests.length === 0" class="no-data">
+      <i class="fas fa-umbrella-beach"></i>
+      <p>No leave requests yet</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Leave Request Modal -->
+<div class="modal-overlay" *ngIf="showLeaveModal" (click)="closeLeaveModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Request Leave</h2>
+      <button class="close-btn" (click)="closeLeaveModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Leave Type</label>
+        <select [(ngModel)]="newLeaveRequest.leaveType" class="form-control">
+          <option value="Sick Leave">Sick Leave</option>
+          <option value="Casual Leave">Casual Leave</option>
+          <option value="Earned Leave">Earned Leave</option>
+          <option value="Emergency Leave">Emergency Leave</option>
+          <option value="Unpaid Leave">Unpaid Leave</option>
+          <option value="Work From Home">Work From Home</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>From Date</label>
+          <input 
+            type="date" 
+            [(ngModel)]="newLeaveRequest.fromDate"
+            class="form-control">
+        </div>
+        <div class="form-group">
+          <label>To Date</label>
+          <input 
+            type="date" 
+            [(ngModel)]="newLeaveRequest.toDate"
+            class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea 
+          [(ngModel)]="newLeaveRequest.reason"
+          class="form-control"
+          rows="4"
+          placeholder="Please provide a reason for your leave..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeLeaveModal()">Cancel</button>
+      <button class="submit-btn" (click)="submitLeaveRequest()">Submit Request</button>
+    </div>
+  </div>
+</div>

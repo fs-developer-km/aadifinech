@@ -1,0 +1,77 @@
+<!-- cookie-consent.component.html -->
+<div class="cookie-popup-wrapper" *ngIf="showCookiePopup">
+    <div class="cookie-popup-container">
+        <!-- <button class="cookie-close-btn" (click)="onDecline()">×</button> -->
+        
+        <div class="cookie-icon-section">
+            <svg class="cookie-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="#dd3333"/>
+                <circle cx="8" cy="10" r="1.5" fill="white"/>
+                <circle cx="16" cy="10" r="1.5" fill="white"/>
+                <circle cx="10" cy="15" r="1" fill="white"/>
+                <circle cx="14" cy="15" r="1" fill="white"/>
+                <circle cx="12" cy="13" r="1" fill="white"/>
+                <path d="M7 16.5C7 16.5 9 18 12 18C15 18 17 16.5 17 16.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <div class="cookie-content-area">
+            <h3 class="cookie-popup-title">🍪 We Use Cookies</h3>
+            <p class="cookie-popup-text">
+                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. 
+                By clicking "Accept All", you consent to our use of cookies.
+            </p>
+
+            <div class="cookie-details-section" *ngIf="showDetails">
+                <div class="cookie-category-item">
+                    <div class="cookie-category-header">
+                        <label class="cookie-checkbox-label">
+                            <input type="checkbox" checked disabled class="cookie-checkbox-input">
+                            <span class="cookie-category-name">Essential Cookies</span>
+                        </label>
+                        <span class="cookie-required-badge">Required</span>
+                    </div>
+                    <p class="cookie-category-desc">Necessary for the website to function properly.</p>
+                </div>
+
+                <div class="cookie-category-item">
+                    <div class="cookie-category-header">
+                        <label class="cookie-checkbox-label">
+                            <input type="checkbox"  class="cookie-checkbox-input">
+                            <span class="cookie-category-name">Analytics Cookies</span>
+                        </label>
+                    </div>
+                    <p class="cookie-category-desc">Help us understand how visitors interact with our website.</p>
+                </div>
+
+                <div class="cookie-category-item">
+                    <div class="cookie-category-header">
+                        <label class="cookie-checkbox-label">
+                            <input type="checkbox"  class="cookie-checkbox-input">
+                            <span class="cookie-category-name">Marketing Cookies</span>
+                        </label>
+                    </div>
+                    <p class="cookie-category-desc">Used to track visitors across websites for marketing purposes.</p>
+                </div>
+            </div>
+
+            <div class="cookie-button-container">
+                <button class="btn cookie-btn-settings" (click)="toggleDetails()">
+                    {{ showDetails ? 'Hide Details' : 'Cookie Settings' }}
+                </button>
+                <button class="btn cookie-btn-decline" (click)="onDecline()">
+                    Decline
+                </button>
+                <button class="btn cookie-btn-accept" (click)="onAcceptAll()">
+                    Accept All
+                </button>
+            </div>
+
+            <!-- <div class="cookie-footer-links">
+                <a href="/privacy-policy" class="cookie-footer-link">Privacy Policy</a>
+                <span class="cookie-link-separator">•</span>
+                <a href="/cookie-policy" class="cookie-footer-link">Cookie Policy</a>
+            </div> -->
+        </div>
+    </div>
+</div>

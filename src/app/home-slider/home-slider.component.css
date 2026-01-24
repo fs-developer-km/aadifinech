@@ -1,0 +1,82 @@
+/* Animation Classes */
+.animate-top {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideTop 1s forwards;
+  }
+  
+  .animate-bottom {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideBottom 1s forwards;
+  }
+  
+  /* Keyframes */
+  @keyframes slideTop {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideBottom {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Optional: delay for better effect */
+  .hero-style6 .animate-top {
+    animation-delay: 0.2s;
+  }
+  
+  .hero-style6 .animate-bottom {
+    animation-delay: 0.4s;
+  }
+  
+
+
+
+
+  .animate-top {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideTop 1s forwards;
+  }
+  
+  .animate-bottom {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideBottom 1s forwards;
+  }
+  
+  /* Keyframes */
+  @keyframes slideTop {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideBottom {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Delays for Smoothness */
+  .hero-style6 .animate-top {
+    animation-delay: 0.2s;
+  }
+  
+  .hero-style6 .animate-bottom {
+    animation-delay: 0.4s;
+  }
+  
+
+  .me-2 {
+  margin-right: 8px;
+}
+

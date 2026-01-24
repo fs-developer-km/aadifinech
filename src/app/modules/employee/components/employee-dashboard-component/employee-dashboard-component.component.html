@@ -1,0 +1,655 @@
+<!-- Success Popup -->
+<div class="popup success-popup" *ngIf="showSuccessPopup">
+  <div class="popup-content">
+    <div class="popup-icon">✓</div>
+    <p>{{ popupMessage }}</p>
+  </div>
+</div>
+
+<!-- Error Popup -->
+<div class="popup error-popup" *ngIf="showErrorPopup">
+  <div class="popup-content">
+    <div class="popup-icon">✕</div>
+    <p>{{ popupMessage }}</p>
+  </div>
+</div>
+
+<!-- Main Loader -->
+<div class="main-loader" *ngIf="isLoading">
+  <div class="loader-circle"></div>
+</div>
+
+<!-- Dashboard Container -->
+<div class="dashboard-container">
+  
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1>Paerner Lead Dashboard</h1>
+      <p class="subtitle">Manage assigned leads and track performance</p>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="quick-stats">
+    <div class="quick-stat-card stat-followup">
+      <div class="quick-stat-icon">📅</div>
+      <div class="quick-stat-info">
+        <p class="quick-stat-label">Today's Follow-ups</p>
+        <h3 class="quick-stat-value">{{ getTodayFollowups() }}</h3>
+      </div>
+    </div>
+
+    <div class="quick-stat-card stat-overdue">
+      <div class="quick-stat-icon">⚠️</div>
+      <div class="quick-stat-info">
+        <p class="quick-stat-label">Overdue Tasks</p>
+        <h3 class="quick-stat-value">{{ getOverdueTasks() }}</h3>
+      </div>
+    </div>
+
+    <div class="quick-stat-card stat-urgent">
+      <div class="quick-stat-icon">🔥</div>
+      <div class="quick-stat-info">
+        <p class="quick-stat-label">Urgent Priority</p>
+        <h3 class="quick-stat-value">{{ getPriorityCount('urgent') }}</h3>
+      </div>
+    </div>
+
+    <div class="quick-stat-card stat-total">
+      <div class="quick-stat-icon">📊</div>
+      <div class="quick-stat-info">
+        <p class="quick-stat-label">Total Assigned</p>
+        <h3 class="quick-stat-value">{{ totalLeads }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-section">
+    <h3 class="section-heading">Status Overview</h3>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-icon-mini">⏳</span>
+          <span class="stat-title">Pending</span>
+        </div>
+        <h4 class="stat-number">{{ getStatusCount('pending') }}</h4>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-icon-mini">🔄</span>
+          <span class="stat-title">In Progress</span>
+        </div>
+        <h4 class="stat-number">{{ getStatusCount('in-progress') }}</h4>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-icon-mini">📄</span>
+          <span class="stat-title">Documents Pending</span>
+        </div>
+        <h4 class="stat-number">{{ getStatusCount('documents-pending') }}</h4>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-icon-mini">✅</span>
+          <span class="stat-title">Approved</span>
+        </div>
+        <h4 class="stat-number">{{ getStatusCount('approved') }}</h4>
+      </div>
+
+      <div class="stat-card stat-success">
+        <div class="stat-header">
+          <span class="stat-icon-mini">💰</span>
+          <span class="stat-title">Disbursed</span>
+        </div>
+        <h4 class="stat-number">{{ getStatusCount('disbursed') }}</h4>
+      </div>
+
+      <div class="stat-card stat-rejected">
+        <div class="stat-header">
+          <span class="stat-icon-mini">❌</span>
+          <span class="stat-title">Rejected</span>
+        </div>
+        <h4 class="stat-number">{{ getStatusCount('rejected') }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <h3 class="section-heading">Filter & Search</h3>
+    
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label>Search</label>
+        <input 
+          type="text" 
+          class="input-field" 
+          placeholder="🔍 Name, mobile, application no..."
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="applyFilter()">
+      </div>
+
+      <div class="filter-item">
+        <label>Status</label>
+        <select class="input-field" [(ngModel)]="statusFilter">
+          <option value="">All Status</option>
+          <option *ngFor="let status of statusOptions" [value]="status">
+            {{ status | titlecase }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Priority</label>
+        <select class="input-field" [(ngModel)]="priorityFilter">
+          <option value="">All Priority</option>
+          <option *ngFor="let priority of priorityOptions" [value]="priority">
+            {{ priority | titlecase }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>From Date</label>
+        <input type="date" class="input-field" [(ngModel)]="dateFrom">
+      </div>
+
+      <div class="filter-item">
+        <label>To Date</label>
+        <input type="date" class="input-field" [(ngModel)]="dateTo">
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-filter" (click)="applyFilter()">Apply Filters</button>
+        <button class="btn-reset" (click)="resetFilters()">Reset All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leads Table -->
+  <div class="table-section">
+    <h3 class="section-heading">Assigned Leads ({{ totalLeads }})</h3>
+    
+    <div class="table-card">
+      
+      <!-- No Data -->
+      <div class="no-data" *ngIf="leads.length === 0 && !isLoading">
+        <div class="no-data-icon">📋</div>
+        <h3>No leads assigned</h3>
+        <p>You don't have any assigned leads yet</p>
+      </div>
+
+      <!-- Desktop Table -->
+      <div class="desktop-table" *ngIf="leads.length > 0">
+        <table class="leads-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Partner</th>
+              <th>Loan Info</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Next Follow-up</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let lead of leads">
+              <td>
+                <div class="customer-info">
+                  <p class="customer-name">{{ lead.customerName }}</p>
+                  <p class="customer-mobile">{{ lead.customerMobile }}</p>
+                </div>
+              </td>
+              <td>
+                <div class="partner-info">
+                  <p class="partner-name">{{ lead.partnerName }}</p>
+                  <p class="partner-date">{{ lead.submittedDate }}</p>
+                </div>
+              </td>
+              <td>
+                <div class="loan-info">
+                  <p class="loan-type">{{ lead.loanType }}</p>
+                  <p class="employment-type">{{ lead.employmentType }}</p>
+                </div>
+              </td>
+              <td>
+                <p class="amount-value">{{ formatCurrency(lead.loanAmount) }}</p>
+              </td>
+              <td>
+                <span class="badgee" [class]="getStatusBadgeClass(lead.status)">
+                  {{ lead.status }}
+                </span>
+                <p class="sub-status" *ngIf="lead.subStatus">{{ lead.subStatus }}</p>
+              </td>
+              <td>
+                <span class="badgee" [class]="getPriorityBadgeClass(lead.priority)">
+                  {{ lead.priority }}
+                </span>
+              </td>
+              <td>
+                <p class="follow-date" *ngIf="lead.nextFollowUpDate">
+                  {{ formatDate(lead.nextFollowUpDate) }}
+                </p>
+                <p class="no-follow" *ngIf="!lead.nextFollowUpDate">Not set</p>
+              </td>
+              <td>
+                <button class="btn-view" (click)="viewLeadDetails(lead._id)">
+                  Manage
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="mobile-cards" *ngIf="leads.length > 0">
+        <div class="lead-card" *ngFor="let lead of leads">
+          <div class="lead-card-header">
+            <h4>{{ lead.customerName }}</h4>
+            <span class="badgee" [class]="getPriorityBadgeClass(lead.priority)">
+              {{ lead.priority }}
+            </span>
+          </div>
+          
+          <div class="lead-card-body">
+            <div class="lead-detail">
+              <span class="detail-label">📞 Mobile:</span>
+              <span class="detail-value">{{ lead.customerMobile }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">🏢 Partner:</span>
+              <span class="detail-value">{{ lead.partnerName }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">💼 Loan:</span>
+              <span class="detail-value">{{ lead.loanType }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">💵 Amount:</span>
+              <span class="detail-value bold">{{ formatCurrency(lead.loanAmount) }}</span>
+            </div>
+            
+            <div class="lead-detail">
+              <span class="detail-label">📊 Status:</span>
+              <span class="badgee" [class]="getStatusBadgeClass(lead.status)">
+                {{ lead.status }}
+              </span>
+            </div>
+            
+            <div class="lead-detail" *ngIf="lead.nextFollowUpDate">
+              <span class="detail-label">📅 Follow-up:</span>
+              <span class="detail-value">{{ formatDate(lead.nextFollowUpDate) }}</span>
+            </div>
+          </div>
+          
+          <div class="lead-card-footer">
+            <button class="btn-view-full" (click)="viewLeadDetails(lead._id)">
+              Manage Lead
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">
+      ‹ Prev
+    </button>
+    
+    <button 
+      *ngFor="let page of pageNumbers"
+      class="page-btn"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    
+    <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next ›
+    </button>
+  </div>
+
+</div>
+
+<!-- Lead Details Modal -->
+<div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+  <div class="modal-container modal-large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Lead Management</h2>
+      <button class="modal-close" (click)="closeDetailsModal()">×</button>
+    </div>
+    
+    <div class="modal-body" *ngIf="selectedLead">
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn-action btn-update" (click)="openUpdateModal()">
+          📝 Update Status
+        </button>
+        <button class="btn-action btn-remark" (click)="openRemarkModal()">
+          💬 Add Remark
+        </button>
+      </div>
+
+      <!-- Customer Info -->
+      <div class="info-section">
+        <h4 class="info-heading">Customer Information</h4>
+        <div class="details-grid">
+          <div class="detail-box">
+            <label>Name</label>
+            <p>{{ selectedLead.customerName }}</p>
+          </div>
+          <div class="detail-box">
+            <label>Mobile</label>
+            <p>{{ selectedLead.customerMobile }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.customerEmail">
+            <label>Email</label>
+            <p>{{ selectedLead.customerEmail }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.employmentType">
+            <label>Employment</label>
+            <p>{{ selectedLead.employmentType }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.monthlyIncome">
+            <label>Monthly Income</label>
+            <p>{{ formatCurrency(selectedLead.monthlyIncome) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan Details -->
+      <div class="info-section">
+        <h4 class="info-heading">Loan Details</h4>
+        <div class="details-grid">
+          <div class="detail-box">
+            <label>Loan Type</label>
+            <p>{{ selectedLead.loanType }}</p>
+          </div>
+          <div class="detail-box">
+            <label>Requested Amount</label>
+            <p class="highlight-amount">{{ formatCurrency(selectedLead.loanAmount) }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.bankName">
+            <label>Bank</label>
+            <p>{{ selectedLead.bankName }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.applicationNumber">
+            <label>Application No.</label>
+            <p>{{ selectedLead.applicationNumber }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.sanctionedAmount">
+            <label>Sanctioned Amount</label>
+            <p class="highlight-amount">{{ formatCurrency(selectedLead.sanctionedAmount) }}</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.interestRate">
+            <label>Interest Rate</label>
+            <p>{{ selectedLead.interestRate }}% p.a.</p>
+          </div>
+          <div class="detail-box" *ngIf="selectedLead.tenure">
+            <label>Tenure</label>
+            <p>{{ selectedLead.tenure }} months</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Status -->
+      <div class="info-section">
+        <h4 class="info-heading">Current Status</h4>
+        <div class="status-info">
+          <div class="status-item">
+            <label>Status:</label>
+            <span class="badgee" [class]="getStatusBadgeClass(selectedLead.status)">
+              {{ selectedLead.status }}
+            </span>
+          </div>
+          <div class="status-item" *ngIf="selectedLead.subStatus">
+            <label>Sub Status:</label>
+            <span class="badgee badge-sub">{{ selectedLead.subStatus }}</span>
+          </div>
+          <div class="status-item">
+            <label>Priority:</label>
+            <span class="badgee" [class]="getPriorityBadgeClass(selectedLead.priority)">
+              {{ selectedLead.priority }}
+            </span>
+          </div>
+          <div class="status-item" *ngIf="selectedLead.nextFollowUpDate">
+            <label>Next Follow-up:</label>
+            <span>{{ formatDateTime(selectedLead.nextFollowUpDate) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Partner Info -->
+      <div class="info-section" *ngIf="selectedLead.submittedBy">
+        <h4 class="info-heading">Partner Information</h4>
+        <div class="partner-box">
+          <p><strong>{{ selectedLead.partnerName }}</strong></p>
+          <p class="partner-contact">{{ selectedLead.submittedBy.mobile }}</p>
+          <p class="partner-submitted">
+            Submitted: {{ selectedLead.submittedDate }} • {{ selectedLead.submittedTime }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Remarks -->
+      <div class="info-section">
+        <h4 class="info-heading">Remarks & Notes</h4>
+        <div class="remarks-list" *ngIf="selectedLead.remarks && selectedLead.remarks.length > 0">
+          <div class="remark-item" *ngFor="let remark of selectedLead.remarks">
+            <div class="remark-header">
+              <span class="remark-author">{{ remark.addedByName }}</span>
+              <span class="remark-role">{{ remark.addedByRole }}</span>
+              <span class="remark-time">{{ formatDate(remark.timestamp) }}</span>
+            </div>
+            <p class="remark-message">{{ remark.message }}</p>
+          </div>
+        </div>
+        <p class="no-remarks" *ngIf="!selectedLead.remarks || selectedLead.remarks.length === 0">
+          No remarks added yet
+        </p>
+      </div>
+
+      <!-- Status History -->
+      <div class="info-section">
+        <h4 class="info-heading">Status History</h4>
+        <div class="history-timeline" *ngIf="selectedLead.statusHistory && selectedLead.statusHistory.length > 0">
+          <div class="timeline-item" *ngFor="let history of selectedLead.statusHistory">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <span class="badgee" [class]="getStatusBadgeClass(history.status)">
+                  {{ history.status }}
+                </span>
+                <span class="timeline-time">{{ formatDate(history.timestamp) }}</span>
+              </div>
+              <p class="timeline-user">By: {{ history.updatedByName }}</p>
+              <p class="timeline-remark" *ngIf="history.remark">{{ history.remark }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeDetailsModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Update Status Modal -->
+<div class="modal-overlay" *ngIf="showUpdateModal" (click)="closeUpdateModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Update Lead Status</h2>
+      <button class="modal-close" (click)="closeUpdateModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <form (ngSubmit)="updateLeadStatus()">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status *</label>
+            <select class="input-field" [(ngModel)]="updateForm.status" name="status" required>
+              <option *ngFor="let status of statusOptions" [value]="status">
+                {{ status | titlecase }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Sub Status</label>
+            <select class="input-field" [(ngModel)]="updateForm.subStatus" name="subStatus">
+              <option value="">Select sub status</option>
+              <option *ngFor="let sub of subStatusOptions" [value]="sub">
+                {{ sub | titlecase }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Priority *</label>
+          <select class="input-field" [(ngModel)]="updateForm.priority" name="priority" required>
+            <option *ngFor="let priority of priorityOptions" [value]="priority">
+              {{ priority | titlecase }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Next Follow-up Date</label>
+          <input 
+            type="datetime-local" 
+            class="input-field" 
+            [(ngModel)]="updateForm.nextFollowUpDate"
+            name="nextFollowUpDate">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bank Name</label>
+            <input 
+              type="text" 
+              class="input-field" 
+              placeholder="HDFC Bank"
+              [(ngModel)]="updateForm.bankName"
+              name="bankName">
+          </div>
+
+          <div class="form-group">
+            <label>Application Number</label>
+            <input 
+              type="text" 
+              class="input-field" 
+              placeholder="HDFC2026001"
+              [(ngModel)]="updateForm.applicationNumber"
+              name="applicationNumber">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sanctioned Amount</label>
+            <input 
+              type="number" 
+              class="input-field" 
+              placeholder="500000"
+              [(ngModel)]="updateForm.sanctionedAmount"
+              name="sanctionedAmount"
+              min="0">
+          </div>
+
+          <div class="form-group">
+            <label>Interest Rate (%)</label>
+            <input 
+              type="number" 
+              class="input-field" 
+              placeholder="10.5"
+              [(ngModel)]="updateForm.interestRate"
+              name="interestRate"
+              step="0.1"
+              min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tenure (Months)</label>
+          <input 
+            type="number" 
+            class="input-field" 
+            placeholder="60"
+            [(ngModel)]="updateForm.tenure"
+            name="tenure"
+            min="0">
+        </div>
+
+        <div class="form-group">
+          <label>Remark</label>
+          <textarea 
+            class="input-field textarea-field" 
+            rows="3"
+            placeholder="Add your notes here..."
+            [(ngModel)]="updateForm.remark"
+            name="remark"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeUpdateModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+            <span class="loader-mini" *ngIf="isSubmitting"></span>
+            <span *ngIf="!isSubmitting">Update Lead</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Remark Modal -->
+<div class="modal-overlay" *ngIf="showRemarkModal" (click)="closeRemarkModal()">
+  <div class="modal-container modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Add Remark</h2>
+      <button class="modal-close" (click)="closeRemarkModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Your Remark</label>
+        <textarea 
+          class="input-field textarea-field" 
+          rows="4"
+          placeholder="Enter your remark or note..."
+          [(ngModel)]="remarkMessage"
+          autofocus></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeRemarkModal()">Cancel</button>
+        <button class="btn-primary" (click)="addRemark()" [disabled]="isSubmitting">
+          <span class="loader-mini" *ngIf="isSubmitting"></span>
+          <span *ngIf="!isSubmitting">Add Remark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+<div *ngIf="loading" class="loader-box">
+    <i class="fas fa-spinner fa-spin"></i> Loading cookies...
+</div>
+
+
+<div class="cookies-management-wrapper">
+    <!-- Header Section -->
+    <div class="cookies-page-header">
+        <div class="header-content">
+            <h1 class="page-main-title">Cookies Management</h1>
+            <p class="page-subtitle">View, manage, and monitor all browser cookies</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-mini-box">
+                <i class="fas fa-cookie"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Total Cookies</span>
+                    <span class="stat-number">{{ getTotalVisitors() }}</span>
+                </div>
+            </div>
+            <div class="stat-mini-box">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Active</span>
+                    <span class="stat-number">{{ getActiveVisitors() }}</span>
+                </div>
+            </div>
+            <div class="stat-mini-box">
+                <i class="fas fa-times-circle"></i>
+                <div class="stat-info">
+                    <span class="stat-label">Expired</span>
+                    <span class="stat-number">{{ getExpiredVisitors() }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls Section -->
+  <div class="controls-section">
+  <!-- 🔍 Search Box -->
+  <div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input
+      type="text"
+      class="search-input-field"
+      placeholder="Search by IP address, page, or user agent..."
+      [(ngModel)]="searchQuery"
+    />
+  </div>
+
+  <!-- 🧭 Filter + Sort Controls -->
+  <div class="filter-controls">
+    <!-- Filter by Status -->
+    <select class="filter-dropdown" [(ngModel)]="filterType">
+      <option value="all">All Status</option>
+      <option value="Active">Active Visitors</option>
+      <option value="Expired">Expired Visitors</option>
+      <option value="Disabled">Disabled Visitors</option>
+    </select>
+
+    <!-- Sort by Fields -->
+    <select class="sort-dropdown" [(ngModel)]="sortBy">
+      <option value="ip">Sort by IP Address</option>
+      <option value="page">Sort by Page Visited</option>
+      <option value="session">Sort by Session Duration</option>
+      <option value="date">Sort by Created Date</option>
+    </select>
+
+    <!-- Clear Button -->
+    <button class="clear-all-btn" (click)="clearAllCookies()">
+      <i class="fas fa-trash-alt"></i> Clear All
+    </button>
+  </div>
+</div>
+
+
+    <div *ngIf="loading" class="loader-box">
+  <i class="fas fa-spinner fa-spin"></i> Loading visitors...
+</div>
+
+    <!-- Table Container -->
+    <div class="table-container-wrapper">
+        <table class="cookies-table">
+            <thead class="table-header-section">
+                <tr class="header-row">
+                   <th class="table-header-cell">Visitor ID</th>
+          <th class="table-header-cell">IP Address</th>
+          <th class="table-header-cell">Page Visited</th>
+          <th class="table-header-cell">User Agent</th>
+          <th class="table-header-cell">Session Duration (sec)</th>
+          <th class="table-header-cell">Visit Date</th>
+          <th class="table-header-cell">Created At</th>
+          <th class="table-header-cell">Updated At</th>
+          <th class="table-header-cell">Action</th>
+                </tr>
+            </thead>
+            <tbody class="table-body-section">
+
+                <!-- <tr class="data-row" *ngFor="let visitor of cookiesData; let i = index"> -->
+                    <tr *ngFor="let visitor of sortCookiesData(); let i = index">
+
+          <td class="table-data-cell">
+            <span class="cell-badge">{{ visitor.visitorId }}</span>
+          </td>
+          <td class="table-data-cell">{{ visitor.ipAddress }}</td>
+          <td class="table-data-cell">{{ visitor.pageVisited }}</td>
+          <td class="table-data-cell">
+            <code class="cookie-value-code">{{ visitor.userAgent | slice:0:40 }}...</code>
+          </td>
+          <td class="table-data-cell">{{ visitor.sessionDuration }}</td>
+          <td class="table-data-cell">{{ visitor.visitDate | date:'short' }}</td>
+          <td class="table-data-cell">{{ visitor.createdAt | date:'short' }}</td>
+          <td class="table-data-cell">{{ visitor.updatedAt | date:'short' }}</td>
+          <td class="table-data-cell">
+            <div class="action-buttons">
+              <button class="action-btn view-btn" title="View details">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="action-btn delete-btn" (click)="deleteCookie(i)" title="Delete record">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- if empty table data show this from chatgtp -->
+
+         <div class="empty-state" *ngIf="cookiesData.length === 0 && !loading">
+    <i class="fas fa-inbox empty-icon"></i>
+    <h3 class="empty-title">No visitor data found</h3>
+    <p class="empty-message">Once visitors come, they’ll appear here!</p>
+  </div>
+
+                <!-- <tr class="data-row" *ngFor="let cookie of sortCookiesData(); let i = index">
+                    <td class="table-data-cell">
+                        <span class="cell-badge">{{ cookie.cookieId }}</span>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="cookie-name-text">{{ cookie.cookieName }}</span>
+                    </td>
+                    <td class="table-data-cell">
+                        <code class="cookie-value-code">{{ cookie.cookieValue | slice:0:30 }}...</code>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="domain-text">{{ cookie.domain }}</span>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="path-text">{{ cookie.path }}</span>
+                    </td>
+                    <td class="table-data-cell">
+                        <div class="expiry-info" [class.expired]="cookie.status === 'Expired'">
+                            <span *ngIf="cookie.expiryDate !== '--'">{{ cookie.expiryDate }}</span>
+                            <span *ngIf="cookie.expiryDate === '--'" class="session-badge">Session</span>
+                        </div>
+                    </td>
+                    <td class="table-data-cell">
+                        <div class="type-badge">
+                            <i [class]="getCookieTypeIcon(cookie.cookieType)" class="type-icon"></i>
+                            <span>{{ cookie.cookieType }}</span>
+                        </div>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="secure-badge" [class.yes]="cookie.secure" [class.no]="!cookie.secure">
+                            <i [class]="cookie.secure ? 'fas fa-shield-alt' : 'fas fa-lock-open'"></i>
+                            {{ cookie.secure ? 'Yes' : 'No' }}
+                        </span>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="httponly-badge" [class.yes]="cookie.httpOnly" [class.no]="!cookie.httpOnly">
+                            <i [class]="cookie.httpOnly ? 'fas fa-lock' : 'fas fa-lock-open'"></i>
+                            {{ cookie.httpOnly ? 'Yes' : 'No' }}
+                        </span>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="samesite-badge">{{ cookie.sameSite }}</span>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="size-text">{{ cookie.size }}</span>
+                    </td>
+                    <td class="table-data-cell">
+                        <span class="status-badge" [ngClass]="getStatusBadgeClass(cookie.status)">
+                            <i [class]="getStatusIcon(cookie.status)"></i>
+                            {{ cookie.status }}
+                        </span>
+                    </td>
+                    <td class="table-data-cell">
+                        <div class="action-buttons">
+                            <button class="action-btn view-btn" title="View details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn delete-btn" (click)="deleteCookie(i)" title="Delete cookie">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty State -->
+    <!-- <div class="empty-state" *ngIf="sortCookiesData().length === 0">
+        <i class="fas fa-inbox empty-icon"></i>
+        <h3 class="empty-title">No cookies found</h3>
+        <p class="empty-message">Try adjusting your search or filter criteria</p>
+    </div> -->
+</div>

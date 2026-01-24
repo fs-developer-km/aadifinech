@@ -1,0 +1,28 @@
+.partner-slider-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.partner-slide-track {
+  display: flex;
+  width: calc(200%); /* duplicated logos */
+  animation: scroll linear infinite;
+}
+
+.partner-slide-item {
+  flex: 0 0 auto;
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner-logo {
+  max-height: 150px;
+  object-fit: contain;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* scroll half width for duplicated logos */
+}

@@ -1,0 +1,652 @@
+<div class="admin-attendance-container">
+  
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="header-left">
+      <h1><i class="fas fa-users-cog"></i> Admin Attendance Panel</h1>
+      <p class="subtitle">Manage employee attendance and leave requests</p>
+    </div>
+    <div class="header-right">
+      <div class="current-datetime">
+        <i class="far fa-calendar-alt"></i>
+        <div class="datetime-content">
+          <span class="date">{{ currentTime | date:'EEEE, d MMMM y' }}</span>
+          <span class="time">{{ currentTime | date:'h:mm:ss a' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="admin-tabs">
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'today'"
+      (click)="switchTab('today')">
+      <i class="fas fa-calendar-day"></i>
+      <span>Today's Attendance</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'reports'"
+      (click)="switchTab('reports')">
+      <i class="fas fa-chart-line"></i>
+      <span>Reports</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'leaves'"
+      (click)="switchTab('leaves')">
+      <i class="fas fa-umbrella-beach"></i>
+      <span>Leave Requests</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'manual'"
+      (click)="switchTab('manual')">
+      <i class="fas fa-edit"></i>
+      <span>Manual Entry</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'statistics'"
+      (click)="switchTab('statistics')">
+      <i class="fas fa-chart-pie"></i>
+      <span>Statistics</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="loader"></div>
+    <p>Loading data...</p>
+  </div>
+
+  <!-- TODAY'S ATTENDANCE TAB -->
+  <div *ngIf="activeTab === 'today' && !isLoading" class="tab-content">
+    
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ todayStats.totalEmployees }}</span>
+          <span class="stat-label">Total Employees</span>
+        </div>
+      </div>
+
+      <div class="stat-card present">
+        <div class="stat-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ todayStats.present }}</span>
+          <span class="stat-label">Present Today</span>
+        </div>
+      </div>
+
+      <div class="stat-card absent">
+        <div class="stat-icon">
+          <i class="fas fa-user-times"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ todayStats.absent }}</span>
+          <span class="stat-label">Absent Today</span>
+        </div>
+      </div>
+
+      <div class="stat-card percentage">
+        <div class="stat-icon">
+          <i class="fas fa-percentage"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ ((todayStats.present / todayStats.totalEmployees) * 100).toFixed(1) }}%</span>
+          <span class="stat-label">Attendance Rate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Present Employees -->
+    <div class="attendance-section">
+      <div class="section-header">
+        <h2><i class="fas fa-check-circle"></i> Present Employees ({{ todayPresent.length }})</h2>
+        <button class="refresh-btn" (click)="loadTodayAttendance()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+      </div>
+
+      <div class="attendance-list">
+        <div *ngFor="let attendance of todayPresent" class="attendance-card">
+          <div class="card-left">
+            <div class="employee-avatar">
+              <!-- {{ attendance.employeeName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) }} -->
+            </div>
+            <div class="employee-info">
+              <h3>{{ attendance.employeeName }}</h3>
+              <p>{{ attendance.employeeCode }}</p>
+            </div>
+          </div>
+
+          <div class="card-center">
+            <div class="time-info">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>In: {{ formatTime(attendance.checkInTime) }}</span>
+            </div>
+            <div class="time-info" *ngIf="attendance.checkOutTime">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Out: {{ formatTime(attendance.checkOutTime) }}</span>
+            </div>
+            <div class="time-info" *ngIf="attendance.workDuration">
+              <i class="fas fa-clock"></i>
+              <span>{{ formatDuration(attendance.workDuration) }}</span>
+            </div>
+          </div>
+
+          <div class="card-right">
+            <span [class]="'status-badge ' + getStatusClass(attendance.status)">
+              {{ attendance.status }}
+            </span>
+            <span *ngIf="attendance.isLate" class="late-badge">
+              <i class="fas fa-exclamation-triangle"></i>
+              Late ({{ attendance.lateByMinutes }}m)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Present Employees -->
+      <div *ngIf="todayPresent.length === 0" class="no-data">
+        <i class="fas fa-user-slash"></i>
+        <p>No employees present today</p>
+      </div>
+    </div>
+
+    <!-- Absent Employees -->
+    <div class="attendance-section" *ngIf="todayAbsent.length > 0">
+      <div class="section-header">
+        <h2><i class="fas fa-times-circle"></i> Absent Employees ({{ todayAbsent.length }})</h2>
+      </div>
+
+      <div class="absent-list">
+        <div *ngFor="let employee of todayAbsent" class="absent-card">
+          <div class="employee-avatar absent">
+            <!-- {{ employee.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) }} -->
+          </div>
+          <div class="employee-details">
+            <h4>{{ employee.name }}</h4>
+            <p>{{ employee.employeeCode || 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTS TAB -->
+  <div *ngIf="activeTab === 'reports' && !isLoading" class="tab-content">
+    
+    <!-- Employee Report Filters -->
+    <div class="report-filters">
+      <h2>Employee Attendance Report</h2>
+      
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Select Employee</label>
+          <select [(ngModel)]="selectedEmployeeId" class="form-select">
+            <option value="">Choose employee...</option>
+            <option *ngFor="let emp of employees" [value]="emp._id">
+              {{ emp.name }} ({{ emp.employeeCode }})
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Start Date</label>
+          <input type="date" [(ngModel)]="reportStartDate" class="form-input">
+        </div>
+
+        <div class="filter-group">
+          <label>End Date</label>
+          <input type="date" [(ngModel)]="reportEndDate" class="form-input">
+        </div>
+
+        <button class="load-btn" (click)="loadEmployeeReport()">
+          <i class="fas fa-search"></i> Load Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Employee Attendance Records -->
+    <div *ngIf="employeeAttendance.length > 0" class="report-section">
+      <div class="report-table-wrapper">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Late</th>
+              <th>Early Out</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of employeeAttendance">
+              <td>{{ formatDate(record.date) }}</td>
+              <td>{{ formatTime(record.checkInTime) }}</td>
+              <!-- <td>{{ formatTime(record.checkOutTime) }}</td> -->
+              <td>{{ formatDuration(record.workDuration) }}</td>
+              <td>
+                <span [class]="'status-badge ' + getStatusClass(record.status)">
+                  {{ record.status }}
+                </span>
+              </td>
+              <td>
+                <span *ngIf="record.isLate" class="text-warning">
+                  {{ record.lateByMinutes }}m
+                </span>
+                <span *ngIf="!record.isLate">-</span>
+              </td>
+              <td>
+                <span *ngIf="record.isEarlyOut" class="text-warning">
+                  {{ record.earlyOutByMinutes }}m
+                </span>
+                <span *ngIf="!record.isEarlyOut">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" *ngIf="reportTotalPages > 1">
+        <button class="page-btn" (click)="previousReportPage()" [disabled]="reportPage === 1">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="page-info">Page {{ reportPage }} of {{ reportTotalPages }}</span>
+        <button class="page-btn" (click)="nextReportPage()" [disabled]="reportPage === reportTotalPages">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Monthly Report -->
+    <div class="monthly-section">
+      <div class="month-header">
+        <button class="month-nav-btn" (click)="changeReportMonth(-1)">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <h2>{{ getMonthName(selectedMonth) }} {{ selectedYear }} - Monthly Report</h2>
+        <button class="month-nav-btn" (click)="changeReportMonth(1)">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="load-btn" (click)="loadMonthlyReport()">
+          <i class="fas fa-sync-alt"></i> Load
+        </button>
+      </div>
+
+      <div *ngIf="monthlyReport.length > 0" class="monthly-grid">
+        <div *ngFor="let report of monthlyReport" class="monthly-card">
+          <div class="monthly-header">
+            <h3>{{ report.employee.name }}</h3>
+            <span class="emp-code">{{ report.employee.employeeCode }}</span>
+          </div>
+          <div class="monthly-stats">
+            <div class="mini-stat">
+              <span class="label">Present</span>
+              <span class="value">{{ report.totalPresent }}</span>
+            </div>
+            <div class="mini-stat">
+              <span class="label">Half Day</span>
+              <span class="value">{{ report.totalHalfDay }}</span>
+            </div>
+            <div class="mini-stat">
+              <span class="label">Late</span>
+              <span class="value">{{ report.totalLate }}</span>
+            </div>
+            <div class="mini-stat">
+              <span class="label">Hours</span>
+              <span class="value">{{ report.totalWorkHours.toFixed(1) }}h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAVE REQUESTS TAB -->
+  <div *ngIf="activeTab === 'leaves' && !isLoading" class="tab-content">
+    
+    <!-- Leave Filters -->
+    <div class="leave-filters">
+      <button 
+        class="filter-chip" 
+        [class.active]="leaveFilter === 'all'"
+        (click)="filterLeaves('all')">
+        All Requests
+      </button>
+      <button 
+        class="filter-chip pending" 
+        [class.active]="leaveFilter === 'Pending'"
+        (click)="filterLeaves('Pending')">
+        Pending
+      </button>
+      <button 
+        class="filter-chip approved" 
+        [class.active]="leaveFilter === 'Approved'"
+        (click)="filterLeaves('Approved')">
+        Approved
+      </button>
+      <button 
+        class="filter-chip rejected" 
+        [class.active]="leaveFilter === 'Rejected'"
+        (click)="filterLeaves('Rejected')">
+        Rejected
+      </button>
+    </div>
+
+    <!-- Leave Requests List -->
+    <div class="leave-requests-list">
+      <div *ngFor="let leave of leaveRequests" class="leave-request-card">
+        <div class="leave-card-header">
+          <div class="employee-info-leave">
+            <div class="emp-avatar">
+              <!-- {{ leave.employeeName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) }} -->
+            </div>
+            <div>
+              <h3>{{ leave.employeeName }}</h3>
+              <!-- <p>{{ leave.employeeId.employeeCode || 'N/A' }}</p> -->
+{{ leave.employeeId && leave.employeeId.employeeCode || 'N/A' }}
+
+              <!-- <p>yha employee code aayega</p> -->
+            </div>
+          </div>
+          <span [class]="'leave-status-badge ' + getLeaveStatusClass(leave.status)">
+            {{ leave.status }}
+          </span>
+        </div>
+
+        <div class="leave-card-body">
+          <div class="leave-detail">
+            <i class="fas fa-calendar"></i>
+            <span>{{ leave.leaveType }}</span>
+          </div>
+          <div class="leave-detail">
+            <i class="fas fa-clock"></i>
+            <span>{{ formatDate(leave.fromDate) }} to {{ formatDate(leave.toDate) }}</span>
+            <strong>({{ leave.numberOfDays }} days)</strong>
+          </div>
+          <div class="leave-reason">
+            <strong>Reason:</strong> {{ leave.reason }}
+          </div>
+          <div class="leave-applied">
+            Applied on: {{ formatDate(leave.createdAt) }}
+          </div>
+        </div>
+
+        <div class="leave-card-footer" *ngIf="leave.status === 'Pending'">
+          <button class="approve-btn" (click)="openLeaveApproval(leave)">
+            <i class="fas fa-check"></i> Review
+          </button>
+        </div>
+
+        <div class="leave-card-footer" *ngIf="leave.status === 'Rejected' && leave.rejectionReason">
+          <div class="rejection-reason">
+            <strong>Rejection Reason:</strong> {{ leave.rejectionReason }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Leaves -->
+    <div *ngIf="leaveRequests.length === 0" class="no-data">
+      <i class="fas fa-clipboard-list"></i>
+      <p>No leave requests found</p>
+    </div>
+  </div>
+
+  <!-- MANUAL ENTRY TAB -->
+  <div *ngIf="activeTab === 'manual' && !isLoading" class="tab-content">
+    
+    <div class="manual-entry-section">
+      <div class="section-header">
+        <h2><i class="fas fa-user-plus"></i> Manual Attendance Entry</h2>
+        <p>Add attendance record for absent or missed entries</p>
+      </div>
+
+      <button class="add-entry-btn" (click)="openManualEntry()">
+        <i class="fas fa-plus-circle"></i> Add Manual Entry
+      </button>
+
+      <div class="info-box">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <h4>Manual Entry Guidelines</h4>
+          <ul>
+            <li>Use manual entry only for genuine cases like system failures or missed check-ins</li>
+            <li>Verify employee details before creating entry</li>
+            <li>Provide clear remarks for audit purposes</li>
+            <li>Manual entries are flagged in the system for tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATISTICS TAB -->
+  <div *ngIf="activeTab === 'statistics' && !isLoading" class="tab-content">
+    
+    <div class="stats-header">
+      <button class="month-nav-btn" (click)="changeStatsMonth(-1)">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <h2>{{ getMonthName(statsMonth) }} {{ statsYear }} - Statistics</h2>
+      <button class="month-nav-btn" (click)="changeStatsMonth(1)">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <button class="load-btn" (click)="loadStatistics()">
+        <i class="fas fa-sync-alt"></i> Load
+      </button>
+    </div>
+
+    <div *ngIf="statistics" class="statistics-grid">
+      <div class="stat-box large">
+        <div class="stat-icon-large">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content-large">
+          <span class="stat-value-large">{{ statistics.totalEmployees }}</span>
+          <span class="stat-label-large">Total Employees</span>
+        </div>
+      </div>
+
+      <div class="stat-box large">
+        <div class="stat-icon-large">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-content-large">
+          <span class="stat-value-large">{{ statistics.workingDays }}</span>
+          <span class="stat-label-large">Working Days</span>
+        </div>
+      </div>
+
+      <div class="stat-box large">
+        <div class="stat-icon-large">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-content-large">
+          <span class="stat-value-large">{{ statistics.totalPresent }}</span>
+          <span class="stat-label-large">Total Present</span>
+        </div>
+      </div>
+
+      <div class="stat-box large">
+        <div class="stat-icon-large">
+          <i class="fas fa-percentage"></i>
+        </div>
+        <div class="stat-content-large">
+          <span class="stat-value-large">{{ statistics.attendancePercentage }}%</span>
+          <span class="stat-label-large">Attendance Rate</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <span class="stat-label">Half Days</span>
+        <span class="stat-value">{{ statistics.totalHalfDay }}</span>
+      </div>
+
+      <div class="stat-box">
+        <span class="stat-label">Late Arrivals</span>
+        <span class="stat-value">{{ statistics.totalLate }}</span>
+      </div>
+
+      <div class="stat-box">
+        <span class="stat-label">Early Departures</span>
+        <span class="stat-value">{{ statistics.totalEarlyOut }}</span>
+      </div>
+
+      <div class="stat-box">
+        <span class="stat-label">Expected Attendance</span>
+        <span class="stat-value">{{ statistics.expectedAttendance }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Leave Approval Modal -->
+<div class="modal-overlay" *ngIf="showLeaveModal" (click)="closeLeaveModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Review Leave Request</h2>
+      <button class="modal-close" (click)="closeLeaveModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="selectedLeave">
+      <div class="leave-details-modal">
+        <div class="detail-row">
+          <strong>Employee:</strong>
+          <span>{{ selectedLeave.employeeName }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Leave Type:</strong>
+          <span>{{ selectedLeave.leaveType }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Duration:</strong>
+          <span>{{ formatDate(selectedLeave.fromDate) }} to {{ formatDate(selectedLeave.toDate) }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Days:</strong>
+          <span>{{ selectedLeave.numberOfDays }} days</span>
+        </div>
+        <div class="detail-row">
+          <strong>Reason:</strong>
+          <span>{{ selectedLeave.reason }}</span>
+        </div>
+      </div>
+
+      <div class="rejection-section">
+        <label>Rejection Reason (if rejecting):</label>
+        <textarea 
+          [(ngModel)]="leaveAction.rejectionReason"
+          class="form-textarea"
+          rows="3"
+          placeholder="Provide reason if rejecting..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-reject" (click)="rejectLeave()" [disabled]="isSubmitting">
+        <i class="fas fa-times"></i>
+        <span *ngIf="!isSubmitting">Reject</span>
+        <span *ngIf="isSubmitting">Processing...</span>
+      </button>
+      <button class="btn-approve" (click)="approveLeave()" [disabled]="isSubmitting">
+        <i class="fas fa-check"></i>
+        <span *ngIf="!isSubmitting">Approve</span>
+        <span *ngIf="isSubmitting">Processing...</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Manual Entry Modal -->
+<div class="modal-overlay" *ngIf="showManualModal" (click)="closeManualModal()">
+  <div class="modal-content large" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Manual Attendance Entry</h2>
+      <button class="modal-close" (click)="closeManualModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label>Select Employee *</label>
+          <select [(ngModel)]="manualEntry.employeeId" class="form-control">
+            <option value="">Choose employee...</option>
+            <option *ngFor="let emp of employees" [value]="emp._id">
+              {{ emp.name }} ({{ emp.employeeCode }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Date *</label>
+          <input type="date" [(ngModel)]="manualEntry.date" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="manualEntry.status" class="form-control">
+            <option value="Present">Present</option>
+            <option value="Half-Day">Half Day</option>
+            <option value="Leave">Leave</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Check-In Time *</label>
+          <input type="time" [(ngModel)]="manualEntry.checkInTime" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Check-Out Time</label>
+          <input type="time" [(ngModel)]="manualEntry.checkOutTime" class="form-control">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Remarks *</label>
+          <textarea 
+            [(ngModel)]="manualEntry.remarks"
+            class="form-control"
+            rows="3"
+            placeholder="Provide reason for manual entry..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeManualModal()">Cancel</button>
+      <button class="btn-submit" (click)="submitManualEntry()" [disabled]="isSubmitting">
+        <i class="fas fa-save"></i>
+        <span *ngIf="!isSubmitting">Create Entry</span>
+        <span *ngIf="isSubmitting">Creating...</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="success-modal" *ngIf="showSuccessModal">
+  <div class="success-content">
+    <i class="fas fa-check-circle"></i>
+    <h3>Success!</h3>
+    <p>{{ successMessage }}</p>
+  </div>
+</div>

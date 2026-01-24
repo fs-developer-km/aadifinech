@@ -1,0 +1,69 @@
+.circle {
+    position: relative;
+    width: 120px; /* Inner circle size */
+    height: 120px;
+    background-color: #00A8FF; /* Inner circle color */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-num-wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; /* Adjust size of the red circle around the number */
+    height: 50px;
+    border-radius: 50%;
+    background-color: red; /* Red circle */
+}
+
+.circle-num {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+.shape-mockup {
+    position: absolute; /* Position the image absolutely */
+    right: 0; /* Align to the right */
+    bottom: 20px; /* 20px upar from the bottom */
+    z-index: 3; /* Ensure it stays above other elements */
+    transform: translateY(-20px); /* Adjust the image to go slightly up */
+}
+
+@media (max-width: 992px) {
+    .shape-mockup {
+        right: 0;
+        bottom: 20px;
+        transform: translateY(-20px); /* For mobile, keeping it similar */
+    }
+}
+
+
+
+
+/* Ensure the image and the testimonial are properly layered */
+.testimonial-sec3 {
+  position: relative;
+}
+
+.testimonial-sec3 .thumb {
+  z-index: 1;
+}
+
+.testimonial-sec3 .th-carousel {
+  z-index: 2; /* Ensure carousel appears above the image */
+}
+
+/* Ensure testimonial content is aligned properly */
+.testimonial-sec3 .testi-slider3 {
+  position: relative;
+  z-index: 2; /* Set a higher z-index to display testimonials over the image */
+}
+
+/* Optional: Style the carousel to ensure it works properly */
+.testimonial-sec3 .testi-slider3 .slick-slide {
+  transition: transform 0.3s ease-in-out;
+}

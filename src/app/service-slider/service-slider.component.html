@@ -1,0 +1,12 @@
+<section class="service-slider">
+  <div class="slider-track">
+    <div class="slide" *ngFor="let s of serviceNames">
+      {{ s }}
+    </div>
+
+    <!-- Duplicate list for seamless loop -->
+    <div class="slide" *ngFor="let s of serviceNames">
+      {{ s }}
+    </div>
+  </div>
+</section>

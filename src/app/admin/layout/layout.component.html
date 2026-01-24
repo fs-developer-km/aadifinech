@@ -1,0 +1,62 @@
+<!-- <div class="admin-layout">
+  <app-sidebar class="sidebar" [(isSidebarOpen)]="isSidebarOpen"></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar (toggleSidebar)="toggleSidebar()" [isSidebarOpen]="isSidebarOpen"></app-topbar>
+
+    <div class="content-area" [class.collapsed]="!isSidebarOpen">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="admin-layout">
+  <app-sidebar [(isSidebarOpen)]="isSidebarOpen"></app-sidebar>
+
+  <div class="main-content" [class.collapsed]="!isSidebarOpen">
+    <app-topbar [isSidebarOpen]="isSidebarOpen"></app-topbar>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="admin-layout">
+  <ng-container *ngIf="!isUserDash; else userOnly">
+    <app-sidebar [(isSidebarOpen)]="isSidebarOpen"></app-sidebar>
+
+    <div class="main-content" [class.collapsed]="!isSidebarOpen">
+      <app-topbar [isSidebarOpen]="isSidebarOpen" (toggleSidebar)="toggleSidebar()"></app-topbar>
+    
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #userOnly>
+    <div class="userdash-container">
+      <router-outlet></router-outlet>
+    </div>
+  </ng-template>
+</div>
+
+<!-- <app-topbar
+    [isSidebarOpen]="isSidebarOpen"
+    (toggleSidebar)="toggleSidebar()">
+</app-topbar>
+
+<div class="layout-container">
+  
+  <app-sidebar 
+      [isSidebarOpen]="isSidebarOpen"
+      (isSidebarOpenChange)="isSidebarOpen = $event">
+  </app-sidebar>
+
+  <div class="content" [class.sidebar-collapsed]="!isSidebarOpen">
+      <router-outlet></router-outlet>
+  </div>
+
+</div> -->

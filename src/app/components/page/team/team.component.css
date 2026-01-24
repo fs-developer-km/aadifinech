@@ -1,0 +1,144 @@
+   body {
+     margin: 0;
+     padding: 0;
+     font-family: 'Orbitron', sans-serif;
+     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+     color: #fff;
+     height: 100vh;
+     overflow: hidden;
+     position: relative;
+   }
+
+   .stars,
+   .stars2,
+   .stars3 {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     background: transparent;
+     z-index: 0;
+   }
+
+   .stars:after,
+   .stars2:after,
+   .stars3:after {
+     content: "";
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 1px;
+     height: 1px;
+     background: transparent;
+     box-shadow:
+       50px 100px white, 200px 300px white, 400px 250px white,
+       100px 150px white, 250px 200px white, 350px 400px white,
+       600px 100px white, 500px 350px white;
+     animation: animStar 100s linear infinite;
+   }
+
+   .stars2:after {
+     box-shadow:
+       150px 200px white, 300px 350px white, 450px 150px white,
+       600px 400px white, 700px 250px white, 800px 300px white;
+     animation-duration: 120s;
+   }
+
+   .stars3:after {
+     box-shadow:
+       50px 400px white, 200px 100px white, 350px 200px white,
+       500px 300px white, 650px 350px white, 750px 200px white;
+     animation-duration: 150s;
+   }
+
+   @keyframes animStar {
+     from {
+       transform: translateY(0px);
+     }
+
+     to {
+       transform: translateY(-1000px);
+     }
+   }
+
+   .main-content {
+     position: relative;
+     z-index: 2;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+     text-align: center;
+     padding: 20px;
+   }
+
+   h1 {
+     font-size: 3rem;
+     font-weight: bold;
+     margin-bottom: 20px;
+     animation: bounce 2s infinite;
+   }
+
+   .subtitle {
+     font-size: 1.5rem;
+     color: #ccc;
+   }
+
+   @keyframes bounce {
+
+     0%,
+     100% {
+       transform: translateY(0);
+     }
+
+     50% {
+       transform: translateY(-10px);
+     }
+   }
+
+   .btn-dev {
+     margin-top: 30px;
+     padding: 12px 30px;
+     border: 2px solid white;
+     color: white;
+     border-radius: 30px;
+     text-decoration: none;
+     font-weight: bold;
+     transition: all 0.3s ease;
+   }
+
+   .btn-dev:hover {
+     background: white;
+     color: black;
+   }
+
+   @media (max-width: 768px) {
+     h1 {
+       font-size: 2.5rem;
+     }
+
+     .subtitle {
+       font-size: 1.2rem;
+     }
+   }
+
+
+   /* .team-card .team-img img {
+     width: 100%;
+     border: 1px solid #DD3333;
+   } */
+
+
+   .team-card .team-img {
+  width: 100%;
+  height: 450px;   /* jitni height tumhe chahiye */
+  overflow: hidden;
+  border-radius: 10px; /* optional, agar rounded chahiye */
+}
+
+.team-card .team-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* image ko crop karke equal banayega */
+  border: 1px solid #DD3333;
+}

@@ -1,0 +1,91 @@
+<div class="th-hero-wrapper hero-6" id="hero">
+  <ngx-slick-carousel #slickModal="slick-carousel" class="hero-slider-6" [config]="slideConfig">
+    <div ngxSlickItem *ngFor="let slide of slides" class="th-hero-slide">
+
+      <div class="th-hero-bg"></div>
+
+      <!-- Shapes -->
+      <div class="hero-shape hero-6-shape1 jump">
+        <img src="/img/hero/home1-shape1.png" alt="img">
+      </div>
+      <div class="hero-shape hero-6-shape2 jump-reverse">
+        <img src="/img/hero/home1-shape2.png" alt="img">
+      </div>
+      <div class="hero-shape hero-6-shape3">
+        <img class="spin" src="/img/hero/home1-shape3.png" alt="img">
+      </div>
+      <div class="hero-shape hero-6-shape4">
+        <img class="spin" src="/img/hero/home1-shape4.png" alt="img">
+      </div>
+      <div class="hero-shape hero-6-shape5">
+        <img class="spin" src="/img/hero/home1-shape5.png" alt="img">
+      </div>
+      <div class="hero-shape hero-6-shape6 jump-reverse"></div>
+      <div class="hero-shape hero-6-shape7 jump"></div>
+      <div class="hero-shape hero-6-shape8 jump-reverse"></div>
+
+      <!-- Main Content -->
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7">
+            <div class="hero-style6">
+              <span class="hero-subtitle animate-top">{{ slide.subtitle }}</span>
+              <h2 class="hero-title animate-bottom">{{ slide.title1 }}</h2>
+              <h2 class="hero-title animate-bottom">{{ slide.title2 }}</h2>
+              <div class="checklist animate-bottom">
+                <ul style="list-style: none; padding-left: 0;">
+                  <li style="list-style: none;"><i class="fas fa-user-tie me-2"></i> Experts Advisors</li>
+                  <li><i class="fas fa-shield-alt me-2"></i> 100+ Insurance</li>
+                </ul>
+
+              </div>
+              <div class="btn-group animate-bottom">
+                <a [routerLink]="slide.link" class="th-btn style3">
+                  Get Started
+                  <i class="fas fa-long-arrow-right ms-2"></i>
+                </a>
+                <a routerLink="/services/fund-raising" class="th-btn style6">
+                  Our Services
+                  <i class="fas fa-long-arrow-right ms-2"></i>
+                </a>
+                <a routerLink="paynow" class="th-btn style6">
+                Pay Now
+                  <i class="fas fa-long-arrow-right ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5 align-self-center d-lg-block d-none">
+            <div class="video-wrap text-end">
+              <a href="https://youtube.com/@aadifntech?si=x5JpXOjKBOTjlDy9" class="video-link popup-video"
+                target="_blank" rel="noopener noreferrer">
+                <span class="play-btn">
+                  <i class="fas fa-play"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="hero-6-thumb">
+        <img [src]="slide.image" alt="img">
+      </div>
+
+    </div> <!-- End ngxSlickItem -->
+  </ngx-slick-carousel>
+
+  <!-- Slider Arrows -->
+  <div class="icon-box">
+    <button (click)="slickModal.slickPrev()" class="slick-arrow default">
+      <i class="far fa-arrow-left"></i>
+    </button>
+    <button (click)="slickModal.slickNext()" class="slick-arrow default">
+      <i class="far fa-arrow-right"></i>
+    </button>
+  </div>
+
+</div>
