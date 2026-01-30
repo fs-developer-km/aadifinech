@@ -97,16 +97,16 @@
           <div class="card-actions">
             <button class="btn-dropdown" (click)="toggleDropdown(lead._id, $event)" type="button" title="Actions">⋮</button>
 
-            <div class="dropdown-menu" *ngIf="openDropdownId === lead._id">
-              <button class="dropdown-item view-item" (click)="viewDetails(lead, $event)" type="button">
+            <div class="dropdown-menu" *ngIf="openDropdownId === lead._id" [style.display]="openDropdownId === lead._id ? 'block' : 'none'">
+              <button class="dropdown-item view-item" (click)="viewDetails(lead, $event); $event.stopPropagation()" type="button">
                 <span class="item-icon">👁️</span>
                 <span>View Details</span>
               </button>
-              <button class="dropdown-item pending-item" (click)="updateToPending(lead, $event)" type="button">
+              <button class="dropdown-item pending-item" (click)="updateToPending(lead, $event); $event.stopPropagation()" type="button">
                 <span class="item-icon">⏳</span>
                 <span>Mark Pending</span>
               </button>
-              <button class="dropdown-item success-item" (click)="updateToSuccess(lead, $event)" type="button">
+              <button class="dropdown-item success-item" (click)="updateToSuccess(lead, $event); $event.stopPropagation()" type="button">
                 <span class="item-icon">✓</span>
                 <span>Mark Success</span>
               </button>

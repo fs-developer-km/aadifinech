@@ -174,7 +174,8 @@
                 of Experience</span>
             </div>
           </div>
-          <div class="img1"><img class="tilt-active" src="/img/team/team10.jpg" alt="About"
+          <div class="img1"><img class="tilt-active" src="/img/team/converted-image.jpg
+" alt="About"
               style="width: 480px; height: auto;"></div>
         </div>
       </div>
@@ -363,19 +364,30 @@
 
 <!-- five -->
 
-<section class="cta-sec7" style="background-image: url('/img/bg/cta_bg_6.png');">
-  <div class="cta-thumb7 shape-mockup d-lg-block d-none" data-top="0" data-left="0"><img
-      src="/img/normal/cta7-thumb.png" alt="img"></div>
-  <div class="container">
-    <div class="row justify-content-end align-items-center">
-      <div class="col-lg-5 col-md-8">
-        <div class="title-area mb-0">
-          <h2 class="cta-title h3 text-white">Where Protection Meets Convenience</h2>
+<section class="cta-sec7" style="background-color: #dd3333;">
+  <div class="container-fluid p-0">
+    <div class="row g-0 align-items-stretch">
+      <!-- Image Column -->
+      <div class="col-lg-6 col-12 order-1 order-lg-1">
+        <div style="width: 100%; height: 100%; min-height: 250px; overflow: hidden;">
+          <img 
+            src="/img/team/team111.jpg" 
+            alt="img" 
+            class="d-block" 
+            style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
         </div>
       </div>
-      <div class="col-lg-3 col-md-4 mt-4 mt-md-0 text-md-end"><a routerLink="/contact" class="th-btn style3">Contact Us
-          <i class="fas fa-arrow-right"></i>
-        </a></div>
+      
+      <!-- Content & Button Column -->
+      <div class="col-lg-6 col-12 order-2 order-lg-2 d-flex align-items-center justify-content-center">
+        <div class="w-100 text-center text-lg-start px-3 py-4 px-md-5 py-md-5">
+          <h2 class="text-white mb-3 mb-md-4 fw-bold" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">Where Protection Meets Convenience</h2>
+          <a routerLink="/contact" class="th-btn style3 btn btn-light px-3 px-md-4 py-2 py-md-3">
+            Contact Us
+            <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -551,269 +563,287 @@
 
 
 <!-- nine -->
-<div class="bg-title contact-sec-2" style="background-image: url('/img/bg/contact-bg2.png');">
-  <div class="contact-border-shape shape-mockup d-xl-block d-none">
-    <img src="/img/shape/contact-img-border.png" alt="Aadi Fintech Border" data-top="0" data-left="0">
-  </div>
-  <div class="contact-thumb2 shape-mockup d-xl-block d-none h-100"
-    style="background-image: url('/img/shape/contact-img-shape.png');">
-    <img src="/img/normal/contact-2-thumb.png" alt="Contact Thumb">
-  </div>
-  <div class="container">
-    <div class="contact-area">
-      <div class="row justify-content-end">
-        <div class="col-xl-6 align-self-end space-bottom">
-          <div class="contact-form-wrap">
-            <div class="contact-video shape-mockup d-xl-block d-none" data-top="220px" data-left="-210px">
-              <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style2 popup-video"><i
-                  class="fas fa-play"></i></a>
-            </div>
-            <div class="title-area mb-40">
-              <span class="sub-title">Free Consultation</span>
-              <h2 class="sec-title">Get Financial Assistance Now</h2>
-            </div>
-
-
-
-            <form action="https://themeholy.com/html/insurax/demo/mail.php" method="POST" class="contact-form2">
-
-
-              <!-- <ul class="insurance-tab nav nav-pills mb-40" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="loan-tab" data-bs-toggle="pill" data-bs-target="#loan"
-                    type="button" role="tab">
-                    <i class="fa-solid fa-building-columns"></i> Business Loan
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="discounting-tab" data-bs-toggle="pill" data-bs-target="#discounting"
-                    type="button" role="tab">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> Bill Discounting
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="funding-tab" data-bs-toggle="pill" data-bs-target="#funding"
-                    type="button" role="tab">
-                    <i class="fa-solid fa-hand-holding-dollar"></i> Funding Solutions
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="compliance-tab" data-bs-toggle="pill" data-bs-target="#compliance"
-                    type="button" role="tab">
-                    <i class="fa-solid fa-scale-balanced"></i> Compliance Advisory
-                  </button>
-                </li>
-              </ul> -->
-
-              <ul class="insurance-tab nav nav-pills mb-40" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" [ngClass]="{active: activeTab === 'loan'}" (click)="onTabClick('loan')">
-                    <i class="fa-solid fa-building-columns"></i> Business Loan
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" [ngClass]="{active: activeTab === 'discounting'}"
-                    (click)="onTabClick('discounting')">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> Bill Discounting
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" [ngClass]="{active: activeTab === 'funding'}"
-                    (click)="onTabClick('funding')">
-                    <i class="fa-solid fa-hand-holding-dollar"></i> Funding Solutions
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" [ngClass]="{active: activeTab === 'compliance'}"
-                    (click)="onTabClick('compliance')">
-                    <i class="fa-solid fa-scale-balanced"></i> Compliance Advisory
-                  </button>
-                </li>
-              </ul>
-
-              <!-- 🌟 Dynamic Form Title -->
-              <h5 class="form-subtitle text-black mb-3">
-                <strong>{{ selectedTabTitle }}</strong>
-              </h5>
-
-              <div class="tab-content" id="pills-tabContent">
-                <!-- Business Loan -->
-                <!-- Business Loan Form -->
-                <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'loan' }">
-                  <form [formGroup]="businessLoanForm" (ngSubmit)="sendBusinessLoanToWhatsApp()">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="text" class="form-control style-white" formControlName="name"
-                            placeholder="Full Name" />
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="email" class="form-control style-white" formControlName="email"
-                            placeholder="Email Address" />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <select class="form-select style-white" formControlName="service">
-                        <option value="" hidden>Select Loan Type</option>
-                        <option value="SME Loan">SME Loan</option>
-                        <option value="Working Capital">Working Capital</option>
-                        <option value="Machinery Loan">Machinery Loan</option>
-                      </select>
-                    </div>
-                    <div class="btn-group form-btn col-12">
-                      <button type="submit" class="th-btn">Request Quote <i class="far fa-arrow-right"></i></button>
-                    </div>
-
-                    <!-- Success message -->
-                    <div *ngIf="isSubmittedSuccessfully" class="alert alert-success mt-3">
-                      🙌 Thank you! Your request has been sent successfully. We will contact you soon.
-                    </div>
-                  </form>
-                </div>
-
-
-                <!-- Bill Discounting -->
-                <div class="tab-pane fade" id="discounting" role="tabpanel"
-                  [ngClass]="{ 'show active': activeTab === 'discounting' }">
-                  <form [formGroup]="discountingForm" (ngSubmit)="sendDiscountingToWhatsApp()">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="text" class="form-control style-white" formControlName="name"
-                            placeholder="Full Name" />
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="email" class="form-control style-white" formControlName="email"
-                            placeholder="Email Address" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <select formControlName="discountingType" class="form-select style-white">
-                        <option value="" hidden>Select Invoice Type</option>
-                        <option value="Trade Invoice">Trade Invoice</option>
-                        <option value="Purchase Order">Purchase Order</option>
-                      </select>
-                    </div>
-
-                    <div class="btn-group form-btn col-12">
-                      <button type="submit" class="th-btn">Request Quote <i class="far fa-arrow-right"></i></button>
-                    </div>
-
-                    <!-- Success message -->
-                    <div *ngIf="isDiscountingSubmitted" class="alert alert-success mt-3">
-                      🙌 Thank you! Your Bill Discounting request has been sent successfully. We will contact you soon.
-                    </div>
-                  </form>
-                </div>
-
-
-                <!-- Funding Solutions -->
-                <div class="tab-pane fade" id="funding" role="tabpanel"
-                  [ngClass]="{ 'show active': activeTab === 'funding' }">
-                  <form [formGroup]="fundingForm" (ngSubmit)="sendFundingToWhatsApp()">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="text" class="form-control style-white" formControlName="name"
-                            placeholder="Full Name" />
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="email" class="form-control style-white" formControlName="email"
-                            placeholder="Email Address" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <select formControlName="fundingType" class="form-select style-white">
-                        <option value="" hidden>Select Funding Option</option>
-                        <option value="Equity Funding">Equity Funding</option>
-                        <option value="Debt Funding">Debt Funding</option>
-                        <option value="Bridge Funding">Bridge Funding</option>
-                      </select>
-                    </div>
-
-                    <div class="btn-group form-btn col-12">
-                      <button type="submit" class="th-btn">Request Quote <i class="far fa-arrow-right"></i></button>
-                    </div>
-
-                    <!-- Success message -->
-                    <div *ngIf="isFundingSubmitted" class="alert alert-success mt-3">
-                      🙌 Thank you! Your Funding request has been sent successfully. We will contact you soon.
-                    </div>
-                  </form>
-                </div>
-
-
-                <!-- Compliance Advisory -->
-                <div class="tab-pane fade" id="compliance" role="tabpanel"
-                  [ngClass]="{ 'show active': activeTab === 'compliance' }">
-                  <form [formGroup]="complianceForm" (ngSubmit)="sendComplianceToWhatsApp()">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="text" class="form-control style-white" formControlName="name"
-                            placeholder="Full Name" />
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <input type="email" class="form-control style-white" formControlName="email"
-                            placeholder="Email Address" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <select formControlName="compliance" class="form-select style-white">
-                        <option value="" hidden>Select Compliance Type</option>
-                        <option value="RERA">RERA Compliance</option>
-                        <option value="Company Law">Company Law Advisory</option>
-                        <option value="Financial Audit">Financial Audit</option>
-                      </select>
-                    </div>
-
-                    <div class="btn-group form-btn col-12">
-                      <button type="submit" class="th-btn">Request Quote </button>
-                    </div>
-
-                    <!-- Success message -->
-                    <div *ngIf="isComplianceSubmitted" class="alert alert-success mt-3">
-                      🙌 Thank you! Your Compliance Advisory request has been sent successfully. We will contact you
-                      soon.
-                    </div>
-                  </form>
-                </div>
-
-
-
-              </div>
-            </form>
-
-            <!-- <div class="skill-feature mt-40 mb-0">
-              <h5 class="skill-feature_title">Current Project Value</h5>
-              <div class="progress">
-                <div class="progress-bar" style="width: 85%;">
-                  <div class="progress-value">₹4.2 Cr</div>
-                </div>
-              </div>
-            </div> -->
-
-          </div>
+<section class="contact-sec-2" style="background-color: #dd3333;">
+  <div class="container-fluid p-0">
+    <div class="row g-0 align-items-stretch">
+      
+      <!-- Left Side - Image -->
+      <div class="col-lg-7 col-12 order-1 order-lg-1">
+        <div style="width: 100%; height: 100%; min-height: auto; max-height: 600px; overflow: hidden; position: relative;">
+          <img 
+            src="/img/team/DSC00245.jpg" 
+            alt="Contact Thumb" 
+            class="d-block"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
         </div>
       </div>
+      
+      <!-- Right Side - Form Content -->
+      <div class="col-lg-5 col-12 order-2 order-lg-2">
+        <div class="p-4 p-md-5" style="background-color: white; min-height: auto; max-height: 600px; overflow-y: auto;">
+          
+          <div class="title-area mb-4">
+            <span class="sub-title" style="color: #dd3333; font-weight: 600;">Free Consultation</span>
+            <h2 class="sec-title text-dark mb-0" style="font-size: clamp(1.5rem, 3vw, 2rem);">Get Financial Assistance Now</h2>
+          </div>
+
+          <form class="contact-form2">
+            
+            <!-- Tabs -->
+            <ul class="insurance-tab nav nav-pills mb-4" role="tablist" style="gap: 8px; flex-wrap: wrap;">
+              <li class="nav-item" role="presentation">
+                <button 
+                  type="button"
+                  class="nav-link btn btn-sm" 
+                  [ngClass]="{active: activeTab === 'loan'}" 
+                  (click)="onTabClick('loan')"
+                  [style.background-color]="activeTab === 'loan' ? '#dd3333' : '#f0f0f0'"
+                  [style.color]="activeTab === 'loan' ? 'white' : '#333'"
+                  style="border: none; padding: 8px 12px; font-size: 13px;">
+                  <i class="fa-solid fa-building-columns"></i> Business Loan
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button 
+                  type="button"
+                  class="nav-link btn btn-sm" 
+                  [ngClass]="{active: activeTab === 'discounting'}" 
+                  (click)="onTabClick('discounting')"
+                  [style.background-color]="activeTab === 'discounting' ? '#dd3333' : '#f0f0f0'"
+                  [style.color]="activeTab === 'discounting' ? 'white' : '#333'"
+                  style="border: none; padding: 8px 12px; font-size: 13px;">
+                  <i class="fa-solid fa-file-invoice-dollar"></i> Bill Discounting
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button 
+                  type="button"
+                  class="nav-link btn btn-sm" 
+                  [ngClass]="{active: activeTab === 'funding'}" 
+                  (click)="onTabClick('funding')"
+                  [style.background-color]="activeTab === 'funding' ? '#dd3333' : '#f0f0f0'"
+                  [style.color]="activeTab === 'funding' ? 'white' : '#333'"
+                  style="border: none; padding: 8px 12px; font-size: 13px;">
+                  <i class="fa-solid fa-hand-holding-dollar"></i> Funding Solutions
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button 
+                  type="button"
+                  class="nav-link btn btn-sm" 
+                  [ngClass]="{active: activeTab === 'compliance'}" 
+                  (click)="onTabClick('compliance')"
+                  [style.background-color]="activeTab === 'compliance' ? '#dd3333' : '#f0f0f0'"
+                  [style.color]="activeTab === 'compliance' ? 'white' : '#333'"
+                  style="border: none; padding: 8px 12px; font-size: 13px;">
+                  <i class="fa-solid fa-scale-balanced"></i> Compliance Advisory
+                </button>
+              </li>
+            </ul>
+
+            <!-- Dynamic Form Title -->
+            <h5 class="form-subtitle mb-3" style="color: #dd3333; font-weight: 600; font-size: 16px;">
+              {{ selectedTabTitle }}
+            </h5>
+
+            <div class="tab-content">
+              
+              <!-- Business Loan Form -->
+              <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'loan' }">
+                <form [formGroup]="businessLoanForm" (ngSubmit)="sendBusinessLoanToWhatsApp()">
+                  <div class="row">
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="name"
+                        placeholder="Full Name"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        formControlName="email"
+                        placeholder="Email Address"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <select 
+                      class="form-select" 
+                      formControlName="service"
+                      style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                      <option value="" hidden>Select Loan Type</option>
+                      <option value="SME Loan">SME Loan</option>
+                      <option value="Working Capital">Working Capital</option>
+                      <option value="Machinery Loan">Machinery Loan</option>
+                    </select>
+                  </div>
+                  <div class="text-center text-lg-start">
+                    <button 
+                      type="submit" 
+                      class="btn px-4 py-2"
+                      style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
+                      Request Quote <i class="far fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+
+                  <div *ngIf="isSubmittedSuccessfully" class="alert alert-success mt-3">
+                    🙌 Thank you! Your request has been sent successfully. We will contact you soon.
+                  </div>
+                </form>
+              </div>
+
+              <!-- Bill Discounting Form -->
+              <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'discounting' }">
+                <form [formGroup]="discountingForm" (ngSubmit)="sendDiscountingToWhatsApp()">
+                  <div class="row">
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="name"
+                        placeholder="Full Name"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        formControlName="email"
+                        placeholder="Email Address"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <select 
+                      formControlName="discountingType" 
+                      class="form-select"
+                      style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                      <option value="" hidden>Select Invoice Type</option>
+                      <option value="Trade Invoice">Trade Invoice</option>
+                      <option value="Purchase Order">Purchase Order</option>
+                    </select>
+                  </div>
+                  <div class="text-center text-lg-start">
+                    <button 
+                      type="submit" 
+                      class="btn px-4 py-2"
+                      style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
+                      Request Quote <i class="far fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+
+                  <div *ngIf="isDiscountingSubmitted" class="alert alert-success mt-3">
+                    🙌 Thank you! Your Bill Discounting request has been sent successfully. We will contact you soon.
+                  </div>
+                </form>
+              </div>
+
+              <!-- Funding Solutions Form -->
+              <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'funding' }">
+                <form [formGroup]="fundingForm" (ngSubmit)="sendFundingToWhatsApp()">
+                  <div class="row">
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="name"
+                        placeholder="Full Name"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        formControlName="email"
+                        placeholder="Email Address"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <select 
+                      formControlName="fundingType" 
+                      class="form-select"
+                      style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                      <option value="" hidden>Select Funding Option</option>
+                      <option value="Equity Funding">Equity Funding</option>
+                      <option value="Debt Funding">Debt Funding</option>
+                      <option value="Bridge Funding">Bridge Funding</option>
+                    </select>
+                  </div>
+                  <div class="text-center text-lg-start">
+                    <button 
+                      type="submit" 
+                      class="btn px-4 py-2"
+                      style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
+                      Request Quote <i class="far fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+
+                  <div *ngIf="isFundingSubmitted" class="alert alert-success mt-3">
+                    🙌 Thank you! Your Funding request has been sent successfully. We will contact you soon.
+                  </div>
+                </form>
+              </div>
+
+              <!-- Compliance Advisory Form -->
+              <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'compliance' }">
+                <form [formGroup]="complianceForm" (ngSubmit)="sendComplianceToWhatsApp()">
+                  <div class="row">
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        formControlName="name"
+                        placeholder="Full Name"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        formControlName="email"
+                        placeholder="Email Address"
+                        style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <select 
+                      formControlName="compliance" 
+                      class="form-select"
+                      style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
+                      <option value="" hidden>Select Compliance Type</option>
+                      <option value="RERA">RERA Compliance</option>
+                      <option value="Company Law">Company Law Advisory</option>
+                      <option value="Financial Audit">Financial Audit</option>
+                    </select>
+                  </div>
+                  <div class="text-center text-lg-start">
+                    <button 
+                      type="submit" 
+                      class="btn px-4 py-2"
+                      style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
+                      Request Quote <i class="far fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+
+                  <div *ngIf="isComplianceSubmitted" class="alert alert-success mt-3">
+                    🙌 Thank you! Your Compliance Advisory request has been sent successfully. We will contact you soon.
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+      
     </div>
   </div>
-</div>
+</section>
 
 
 

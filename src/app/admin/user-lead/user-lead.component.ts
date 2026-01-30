@@ -156,10 +156,15 @@ export class UserLeadComponent implements OnInit {
 
 
   fetchEmployees(): void {
-    this.http.get<{ success: boolean; employees: Employee[] }>(this.employeeApiUrl).subscribe({
+  const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get<{ success: boolean; employees: Employee[] }>(this.employeeApiUrl, {headers}).subscribe({
       next: (res) => {
         if (res.success && res.employees) {
           this.employees = res.employees;
+          console.log("emplpoyess",this.employees);
         }
       },
       error: (err) => {

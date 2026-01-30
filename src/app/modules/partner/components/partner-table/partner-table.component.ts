@@ -128,7 +128,7 @@ export class PartnerTableComponent implements OnInit {
   loadLeads() {
     this.isLoading = true;
     
-    let url = `${this.apiUrl}/partner/my-leads?page=${this.currentPage}&limit=${this.limit}`;
+    let url = `https://api.aadifintech.com/api/partnerLead/partner/my-leads?page=${this.currentPage}&limit=${this.limit}`;
     
     if (this.statusFilter) {
       url += `&status=${this.statusFilter}`;
@@ -143,7 +143,8 @@ export class PartnerTableComponent implements OnInit {
         this.leads = response.leads;
         this.totalLeads = response.total;
         this.totalPages = response.totalPages;
-        this.stats = response.stats || {};
+        this.stats = response.stats;
+        console.log("statsssssss",this.stats);
         this.isLoading = false;
 
         console.log("partner lead data...",this.leads)

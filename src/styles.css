@@ -41,7 +41,7 @@ body {
     font-weight: 400;
     color: var(--body-color);
     line-height: 26px;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     -webkit-font-smoothing: antialiased
 }
 
@@ -14129,26 +14129,26 @@ span.select2-selection.select2-selection--single:focus {
     }
 }
 
-.contact-sec-2 .contact-thumb2 {
+/* .contact-sec-2 .contact-thumb2 {
     -webkit-mask-size: 100% 100%;
     width: 880px
-}
+} */
 
-.contact-sec-2 .contact-thumb2 img {
+/* .contact-sec-2 .contact-thumb2 img {
     height: 100%;
     object-fit: cover;
     width: 100%
-}
-
+} */
+/* 
 .contact-sec-2 .contact-border-shape {
     height: 100%;
     width: 920px
-}
-
+} */
+/* 
 .contact-sec-2 .contact-border-shape img {
     height: 100%;
     width: 100%
-}
+} */
 
 .contact-form {
     position: relative;
@@ -14208,7 +14208,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .contact-sec-2 {
-    margin-top: 100px
+    margin-top: 0px
 }
 
 .contact-form-wrap {
@@ -14463,23 +14463,23 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 @media (max-width: 1600px) {
-    .contact-sec-2 .contact-thumb2 {
+    /* .contact-sec-2 .contact-thumb2 {
         width: 720px
-    }
-
+    } */
+/* 
     .contact-sec-2 .contact-border-shape {
         width: 750px
-    }
+    } */
 }
 
 @media (max-width: 1500px) {
-    .contact-sec-2 .contact-thumb2 {
+    /* .contact-sec-2 .contact-thumb2 {
         width: 620px
-    }
+    } */
 
-    .contact-sec-2 .contact-border-shape {
+    /* .contact-sec-2 .contact-border-shape {
         width: 650px
-    }
+    } */
 }
 
 @media (max-width: 1399px) {
@@ -14487,13 +14487,13 @@ span.select2-selection.select2-selection--single:focus {
         padding: 50px
     }
 
-    .contact-sec-2 .contact-thumb2 {
+    /* .contact-sec-2 .contact-thumb2 {
         width: 600px
-    }
+    } */
 
-    .contact-sec-2 .contact-border-shape {
+    /* .contact-sec-2 .contact-border-shape {
         width: 630px
-    }
+    } */
 }
 
 @media (max-width: 1200px) {
@@ -17923,7 +17923,7 @@ span.select2-selection.select2-selection--single:focus {
 }
 
 .cta-sec7 {
-    padding: 50px;
+    padding: 15px;
     overflow: hidden
 }
 
@@ -20896,5 +20896,5 @@ p{
 
 
 
-html, body { height: 100%; }
+html, body {  }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

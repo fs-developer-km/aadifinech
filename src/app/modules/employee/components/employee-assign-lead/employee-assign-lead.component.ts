@@ -106,13 +106,24 @@ export class EmployeeAssignLeadComponent implements OnInit {
 
   toggleDropdown(leadId: any, event: Event): void {
     event.stopPropagation();
+    event.preventDefault();
     const id = String(leadId);
+
+    console.log('===================');
+    console.log('Toggle Dropdown Clicked!');
+    console.log('Lead ID:', id);
+    console.log('Current openDropdownId:', this.openDropdownId);
 
     if (this.openDropdownId === id) {
       this.openDropdownId = null;
+      console.log('❌ CLOSED');
     } else {
       this.openDropdownId = id;
+      console.log('✅ OPENED');
     }
+
+    console.log('New openDropdownId:', this.openDropdownId);
+    console.log('===================');
   }
 
   viewDetails(lead: Lead, event?: Event): void {

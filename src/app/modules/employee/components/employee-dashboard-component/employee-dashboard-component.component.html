@@ -25,7 +25,7 @@
   <!-- Header -->
   <div class="dashboard-header">
     <div class="header-left">
-      <h1>Paerner Lead Dashboard</h1>
+      <h1>Partner Lead Dashboard</h1>
       <p class="subtitle">Manage assigned leads and track performance</p>
     </div>
   </div>
@@ -48,13 +48,38 @@
       </div>
     </div>
 
-    <div class="quick-stat-card stat-urgent">
-      <div class="quick-stat-icon">🔥</div>
-      <div class="quick-stat-info">
-        <p class="quick-stat-label">Urgent Priority</p>
-        <h3 class="quick-stat-value">{{ getPriorityCount('urgent') }}</h3>
-      </div>
-    </div>
+<div class="quick-stat-card stat-urgent">
+  <div class="quick-stat-icon">🔥</div>
+  <div class="quick-stat-info">
+    <p class="quick-stat-label">Urgent Priority</p>
+    <h3 class="quick-stat-value">{{ getPriorityCount('urgent') }}</h3>
+  </div>
+</div>
+
+<div class="quick-stat-card stat-high">
+  <div class="quick-stat-icon">⚡</div>
+  <div class="quick-stat-info">
+    <p class="quick-stat-label">High Priority</p>
+    <h3 class="quick-stat-value">{{ getPriorityCount('high') }}</h3>
+  </div>
+</div>
+
+<div class="quick-stat-card stat-medium">
+  <div class="quick-stat-icon">⬆️</div>
+  <div class="quick-stat-info">
+    <p class="quick-stat-label">Medium Priority</p>
+    <h3 class="quick-stat-value">{{ getPriorityCount('medium') }}</h3>
+  </div>
+</div>
+
+<div class="quick-stat-card stat-low">
+  <div class="quick-stat-icon">⬇️</div>
+  <div class="quick-stat-info">
+    <p class="quick-stat-label">Low Priority</p>
+    <h3 class="quick-stat-value">{{ getPriorityCount('low') }}</h3>
+  </div>
+</div>
+
 
     <div class="quick-stat-card stat-total">
       <div class="quick-stat-icon">📊</div>
@@ -173,7 +198,7 @@
 
   <!-- Leads Table -->
   <div class="table-section">
-    <h3 class="section-heading">Assigned Leads ({{ totalLeads }})</h3>
+    <h3 class="section-heading">Assigned Leadsssss ({{ totalLeads }})</h3>
     
     <div class="table-card">
       

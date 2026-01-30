@@ -134,11 +134,12 @@ export class EmployeeDashboardComponentComponent implements OnInit {
   }
 
   loadDashboardStats() {
-    this.http.get<any>(`${this.apiUrl}/employee/dashboard/stats`, {
+    this.http.get<any>(`https://api.aadifintech.com/api/partnerLead/employee/dashboard/stats`, {
       headers: this.getHeaders()
     }).subscribe({
       next: (response) => {
         this.dashboardStats = response.stats;
+        console.log("dashboardStats",this.dashboardStats)
       },
       error: (error) => {
         console.error('Stats error:', error);
@@ -428,9 +429,17 @@ export class EmployeeDashboardComponentComponent implements OnInit {
     return this.dashboardStats?.byStatus?.[status]?.count || 0;
   }
 
+  // getPriorityCount(priority: string): number {
+  //   return this.dashboardStats?.byPriority?.[priority] || 0;
+  // }
+
   getPriorityCount(priority: string): number {
-    return this.dashboardStats?.byPriority?.[priority] || 0;
-  }
+  if (!this.dashboardStats?.byPriority) return 0;
+  return this.dashboardStats.byPriority[priority] ?? 0;
+}
+
+
+  
 
   getTodayFollowups(): number {
     return this.dashboardStats?.todayFollowups || 0;

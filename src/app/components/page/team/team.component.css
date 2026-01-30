@@ -1,144 +1,138 @@
-   body {
-     margin: 0;
-     padding: 0;
-     font-family: 'Orbitron', sans-serif;
-     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-     color: #fff;
-     height: 100vh;
-     overflow: hidden;
-     position: relative;
-   }
-
-   .stars,
-   .stars2,
-   .stars3 {
-     position: absolute;
-     width: 100%;
-     height: 100%;
-     background: transparent;
-     z-index: 0;
-   }
-
-   .stars:after,
-   .stars2:after,
-   .stars3:after {
-     content: "";
-     position: absolute;
-     top: 0;
-     left: 0;
-     width: 1px;
-     height: 1px;
-     background: transparent;
-     box-shadow:
-       50px 100px white, 200px 300px white, 400px 250px white,
-       100px 150px white, 250px 200px white, 350px 400px white,
-       600px 100px white, 500px 350px white;
-     animation: animStar 100s linear infinite;
-   }
-
-   .stars2:after {
-     box-shadow:
-       150px 200px white, 300px 350px white, 450px 150px white,
-       600px 400px white, 700px 250px white, 800px 300px white;
-     animation-duration: 120s;
-   }
-
-   .stars3:after {
-     box-shadow:
-       50px 400px white, 200px 100px white, 350px 200px white,
-       500px 300px white, 650px 350px white, 750px 200px white;
-     animation-duration: 150s;
-   }
-
-   @keyframes animStar {
-     from {
-       transform: translateY(0px);
-     }
-
-     to {
-       transform: translateY(-1000px);
-     }
-   }
-
-   .main-content {
-     position: relative;
-     z-index: 2;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
-     height: 100vh;
-     text-align: center;
-     padding: 20px;
-   }
-
-   h1 {
-     font-size: 3rem;
-     font-weight: bold;
-     margin-bottom: 20px;
-     animation: bounce 2s infinite;
-   }
-
-   .subtitle {
-     font-size: 1.5rem;
-     color: #ccc;
-   }
-
-   @keyframes bounce {
-
-     0%,
-     100% {
-       transform: translateY(0);
-     }
-
-     50% {
-       transform: translateY(-10px);
-     }
-   }
-
-   .btn-dev {
-     margin-top: 30px;
-     padding: 12px 30px;
-     border: 2px solid white;
-     color: white;
-     border-radius: 30px;
-     text-decoration: none;
-     font-weight: bold;
-     transition: all 0.3s ease;
-   }
-
-   .btn-dev:hover {
-     background: white;
-     color: black;
-   }
-
-   @media (max-width: 768px) {
-     h1 {
-       font-size: 2.5rem;
-     }
-
-     .subtitle {
-       font-size: 1.2rem;
-     }
-   }
-
-
-   /* .team-card .team-img img {
-     width: 100%;
-     border: 1px solid #DD3333;
-   } */
-
-
-   .team-card .team-img {
+/* Team Card Image Container - Fixed Size */
+.team-card .team-img-wrap {
   width: 100%;
-  height: 450px;   /* jitni height tumhe chahiye */
+  position: relative;
+}
+
+.team-card .team-img {
+  width: 100%;
+  height: 500px; /* Fixed height for all images */
   overflow: hidden;
-  border-radius: 10px; /* optional, agar rounded chahiye */
+  border-radius: 10px;
+  position: relative;
 }
 
 .team-card .team-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;  /* image ko crop karke equal banayega */
-  border: 1px solid #DD3333;
+  object-fit: cover; /* Image crop hoke fit hogi, cut nahi hogi */
+  object-position: center; /* Center se crop hoga */
+  border: 2px solid #DD3333;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect */
+.team-card:hover .team-img img {
+  transform: scale(1.05);
+}
+
+/* Team Content */
+.team-card .team-content {
+  padding: 20px;
+  text-align: center;
+  background: white;
+  border-radius: 0 0 10px 10px;
+}
+
+.team-card .team-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #DD3333;
+  margin: 0;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 767px) {
+  .team-card .team-img {
+    height: 500px; /* Mobile pe chhoti height */
+  }
+  
+  .team-card .team-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Responsive - Tablet */
+@media (min-width: 768px) and (max-width: 991px) {
+  .team-card .team-img {
+    height: 500px;
+  }
+}
+
+/* Responsive - Large Screen */
+@media (min-width: 1200px) {
+  .team-card .team-img {
+    height: 500x; /* Badi screen pe thodi badi height */
+  }
+}
+
+
+
+
+/* Team Group Photos Section */
+.team-group-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.group-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.group-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.team-group-card:hover .group-img-wrap img {
+  transform: scale(1.1);
+}
+
+.group-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(221,51,51,0.95), transparent);
+  padding: 30px 20px;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+
+.team-group-card:hover .group-overlay {
+  transform: translateY(0);
+}
+
+.group-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .group-img-wrap {
+    height: 280px;
+  }
+  
+  .group-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .group-img-wrap {
+    height: 350px;
+  }
 }
