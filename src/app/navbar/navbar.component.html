@@ -39,22 +39,22 @@
                 <div class="header-social">
                   <span class="social-title">Follow Us:</span>
 
-                  <a href="https://www.facebook.com/profile.php?id=61575732687949" target="_blank"
-                    rel="noopener noreferrer">
+                  <!-- Facebook -->
+                  <a href="https://www.facebook.com/share/1B4L7oaqWH/" target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-facebook-f"></i>
                   </a>
 
-                  <a href="https://www.instagram.com/aadifintech01/" target="_blank" rel="noopener noreferrer">
+                  <!-- Instagram -->
+                  <a href="https://www.instagram.com/aadi__fintech?igsh=c2VkdHVudmZpYXZm" target="_blank"
+                    rel="noopener noreferrer">
                     <i class="fa-brands fa-instagram"></i>
                   </a>
 
-                  <!-- <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-twitter"></i>
+                  <!-- LinkedIn -->
+                  <a href="https://www.linkedin.com/company/aadi-fintech/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin-in"></i>
                   </a>
 
-                  <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-linkedin-in"></i>
-                  </a> -->
                 </div>
 
               </li>
@@ -74,8 +74,16 @@
             <!-- Logo -->
             <div class="col-auto">
               <div class="header-logo">
-                <a routerLink="/" style="text-decoration: none; color: #fff;">
-                  <h5 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;">AADI FINTECH</h5>
+                <a routerLink="/"
+                  style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+
+                  <img src="/logos/logo1.jpeg" alt="Logo" style="
+          height: 90px;
+          width: 90px;
+          object-fit: cover;
+          border-radius: 10px;
+        ">
+
                 </a>
               </div>
             </div>
@@ -87,7 +95,7 @@
                   <!-- Desktop Menu -->
                   <nav class="main-menu d-none d-lg-inline-block">
                     <ul>
-                    
+
                       <li><a routerLink="/">Home</a></li>
                       <li class="menu-item-has-children services-dropdown">
                         <a href="#">About</a>
@@ -187,14 +195,14 @@
                         </a>
                       </li> -->
 
-                        <!-- <li><a routerLink="paynow">Pay Now</a></li> -->
+                      <!-- <li><a routerLink="paynow">Pay Now</a></li> -->
                       <li class="login-item">
                         <a routerLink="paynow" class="login-btn"
                           style="color: #fff !important; cursor: pointer; font-weight: bold;">
                           <i class="fa-solid fa-indian-rupee-sign me-2"></i> Pay Now
                         </a>
                       </li>
-                        
+
 
                       <!-- 🔥 Login on Right -->
                       <li class="login-item">
@@ -297,7 +305,7 @@
             </li>
 
             <li class="login-item" style="border:2px solid #DD3333 !important;">
-              <a (click)="openLogin()"  >
+              <a (click)="openLogin()">
                 <i class="fa-solid fa-right-to-bracket"></i>
                 <span class="ms-2">Login</span>
               </a>

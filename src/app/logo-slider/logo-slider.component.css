@@ -1,28 +1,120 @@
-.partner-slider-wrapper {
-  overflow: hidden;
+/* =============================================
+   CHANNEL PARTNER LOGO SLIDER
+   ============================================= */
+
+.partner-section {
+  padding: 48px 0;
+  background: #f8f8f8;
+}
+
+/* Heading */
+.partner-heading {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.partner-heading h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #DD3333;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 10px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.heading-line {
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #DD3333;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Outer wrapper — clips track + shows fades */
+.slider-outer {
   position: relative;
+  overflow: hidden;
+  width: 100%;
 }
 
-.partner-slide-track {
+/* Left & right edge fade masks */
+.fade-left,
+.fade-right {
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.fade-left {
+  left: 0;
+  background: linear-gradient(to right, #f8f8f8 0%, transparent 100%);
+}
+
+.fade-right {
+  right: 0;
+  background: linear-gradient(to left, #f8f8f8 0%, transparent 100%);
+}
+
+/* Track wrapper */
+.slider-track-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* The moving strip — width is auto (set by content) */
+.slider-track {
   display: flex;
-  width: calc(200%); /* duplicated logos */
-  animation: scroll linear infinite;
+  align-items: center;
+  width: max-content;
+  will-change: transform;
 }
 
-.partner-slide-item {
+/* Individual logo cell */
+.logo-item {
   flex: 0 0 auto;
-  margin: 0 20px;
+  padding: 0 28px;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 72px;
 }
 
-.partner-logo {
-  max-height: 150px;
+.logo-item img {
+  height: 44px;
+  width: auto;
+  max-width: 120px;
   object-fit: contain;
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: block;
 }
 
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* scroll half width for duplicated logos */
+.logo-item img:hover {
+  opacity: 0.85;
+  transform: scale(1.08);
+}
+
+/* Separator line between logos */
+.logo-item + .logo-item {
+  border-left: 1px solid #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .logo-item {
+    padding: 0 18px;
+    height: 56px;
+  }
+  .logo-item img {
+    height: 32px;
+    max-width: 90px;
+  }
+  .fade-left, .fade-right {
+    width: 40px;
+  }
 }

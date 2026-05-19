@@ -1,209 +1,358 @@
-<div class="calculator-container">
-  <div class="calculator-wrapper">
-    <!-- Left Side - Image/Icon -->
-    <div class="image-section">
-      <!-- <div class="calculator-icon">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #fff;">
-          <rect x="4" y="2" width="16" height="20" rx="2" ry="2" stroke="#DD3333" stroke-width="2" />
-          <line x1="8" y1="6" x2="16" y2="6" stroke="#DD3333" stroke-width="1.5" />
-          <line x1="8" y1="10" x2="16" y2="10" stroke="#DD3333" stroke-width="1.5" />
-          <line x1="8" y1="14" x2="16" y2="14" stroke="#DD3333" stroke-width="1.5" />
-          <line x1="8" y1="18" x2="12" y2="18" stroke="#DD3333" stroke-width="1.5" />
-          <circle cx="16" cy="18" r="1" fill="#DD3333" />
-        </svg>
-      </div> -->
-      <h2 style="color: #fff;">Financial Calculator</h2>
-      <p class="alignment" style="color: #fff;">Calculate your SIP, Fixed Deposit returns, and EMI payments with our advanced financial
-        calculator.</p>
+<div class="calc-root">
 
-
-        <!-- sip  first resuslt calculator  -->
-      <div class="result-section" *ngIf="activeTab === 'sip' && sipData.result.maturityAmount > 0">
-        <div class="result-card">
-          <h4>Results</h4>
-          <div class="result-item">
-            <span class="label">Maturity Amount:</span>
-            <span class="value">{{ formatCurrency(sipData.result.maturityAmount) }}</span>
-          </div>
-          <div class="result-item">
-            <span class="label">Total Investment:</span>
-            <span class="value">{{ formatCurrency(sipData.result.totalInvestment) }}</span>
-          </div>
-          <div class="result-item">
-            <span class="label">Total Returns:</span>
-            <span class="value profit">{{ formatCurrency(sipData.result.totalReturns) }}</span>
-          </div>
+  <!-- Header -->
+  <div class="calc-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <path d="M9 9h6M9 12h6M9 15h4"/>
+          </svg>
         </div>
+        <span>Financial Calculator</span>
       </div>
-
-      <!--  FD second  -->
-
-
-      <div class="result-section" *ngIf="activeTab === 'fd' && fdData.result.maturityAmount > 0">
-          <div class="result-card">
-            <h4>Results</h4>
-            <div class="result-item">
-              <span class="label">Maturity Amount:</span>
-              <span class="value">{{ formatCurrency(fdData.result.maturityAmount) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Principal Amount:</span>
-              <span class="value">{{ formatCurrency(fdData.principal) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Total Interest:</span>
-              <span class="value profit">{{ formatCurrency(fdData.result.totalInterest) }}</span>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- last result -->
-
-        <div class="result-section" *ngIf="activeTab === 'emi' && emiData.result.emi > 0">
-          <div class="result-card">
-            <h4>Results</h4>
-            <div class="result-item">
-              <span class="label">Monthly EMI:</span>
-              <span class="value highlight">{{ formatCurrency(emiData.result.emi) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Total Amount Payable:</span>
-              <span class="value">{{ formatCurrency(emiData.result.totalAmount) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Total Interest Payable:</span>
-              <span class="value interest">{{ formatCurrency(emiData.result.totalInterest) }}</span>
-            </div>
-          </div>
-        </div>
-    </div>
-
-    <!-- emi calculator result  -->
-
-
-
-    <!-- Right Side - Calculator -->
-    <div class="calculator-section">
-      <!-- Tab Navigation -->
-      <div class="tab-navigation">
-        <button class="tab-button" [class.active]="activeTab === 'sip'" (click)="setActiveTab('sip')">
-          SIP Calculator
-        </button>
-        <button class="tab-button" [class.active]="activeTab === 'fd'" (click)="setActiveTab('fd')">
-          FD Calculator
-        </button>
-        <button class="tab-button" [class.active]="activeTab === 'emi'" (click)="setActiveTab('emi')">
-          EMI Calculator
-        </button>
-      </div>
-
-      <!-- SIP Calculator Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'sip'">
-        <h3>SIP Calculator</h3>
-        <div class="form-group">
-          <label>Monthly Investment (₹)</label>
-          <input type="number" [(ngModel)]="sipData.monthlyInvestment" (input)="calculateSIP()"
-            placeholder="Enter monthly investment" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Expected Annual Return (%)</label>
-          <input type="number" [(ngModel)]="sipData.annualReturn" (input)="calculateSIP()"
-            placeholder="Enter expected return" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Time Period (Years)</label>
-          <input type="number" [(ngModel)]="sipData.timePeriod" (input)="calculateSIP()" placeholder="Enter time period"
-            class="form-control">
-        </div>
-
-
-      </div>
-
-      <!-- FD Calculator Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'fd'">
-        <h3>Fixed Deposit Calculator</h3>
-        <div class="form-group">
-          <label>Principal Amount (₹)</label>
-          <input type="number" [(ngModel)]="fdData.principal" (input)="calculateFD()"
-            placeholder="Enter principal amount" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Interest Rate (% per annum)</label>
-          <input type="number" [(ngModel)]="fdData.interestRate" (input)="calculateFD()"
-            placeholder="Enter interest rate" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Time Period (Years)</label>
-          <input type="number" [(ngModel)]="fdData.timePeriod" (input)="calculateFD()" placeholder="Enter time period"
-            class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Compounding Frequency</label>
-          <select [(ngModel)]="fdData.compoundingFrequency" (change)="calculateFD()" class="form-control">
-            <option value="1">Annually</option>
-            <option value="2">Semi-annually</option>
-            <option value="4">Quarterly</option>
-            <option value="12">Monthly</option>
-          </select>
-        </div>
-
-        <!-- <div class="result-section" *ngIf="fdData.result.maturityAmount > 0">
-          <div class="result-card">
-            <h4>Results</h4>
-            <div class="result-item">
-              <span class="label">Maturity Amount:</span>
-              <span class="value">{{ formatCurrency(fdData.result.maturityAmount) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Principal Amount:</span>
-              <span class="value">{{ formatCurrency(fdData.principal) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Total Interest:</span>
-              <span class="value profit">{{ formatCurrency(fdData.result.totalInterest) }}</span>
-            </div>
-          </div>
-        </div> -->
-      </div>
-
-      <!-- EMI Calculator Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'emi'">
-        <h3>EMI Calculator</h3>
-        <div class="form-group">
-          <label>Loan Amount (₹)</label>
-          <input type="number" [(ngModel)]="emiData.loanAmount" (input)="calculateEMI()" placeholder="Enter loan amount"
-            class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Interest Rate (% per annum)</label>
-          <input type="number" [(ngModel)]="emiData.interestRate" (input)="calculateEMI()"
-            placeholder="Enter interest rate" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Loan Tenure (Years)</label>
-          <input type="number" [(ngModel)]="emiData.loanTenure" (input)="calculateEMI()" placeholder="Enter loan tenure"
-            class="form-control">
-        </div>
-
-        <!-- <div class="result-section" *ngIf="emiData.result.emi > 0">
-          <div class="result-card">
-            <h4>Results</h4>
-            <div class="result-item">
-              <span class="label">Monthly EMI:</span>
-              <span class="value highlight">{{ formatCurrency(emiData.result.emi) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Total Amount Payable:</span>
-              <span class="value">{{ formatCurrency(emiData.result.totalAmount) }}</span>
-            </div>
-            <div class="result-item">
-              <span class="label">Total Interest Payable:</span>
-              <span class="value interest">{{ formatCurrency(emiData.result.totalInterest) }}</span>
-            </div>
-          </div>
-        </div> -->
-      </div>
+      <p class="header-sub">Smart tools for SIP · FD · EMI planning</p>
     </div>
   </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab === 'sip'" (click)="setActiveTab('sip')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      SIP Calculator
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'fd'" (click)="setActiveTab('fd')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      FD Calculator
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'emi'" (click)="setActiveTab('emi')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      EMI Calculator
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="calc-body">
+
+    <!-- ===== SIP TAB ===== -->
+    <div class="calc-panel" *ngIf="activeTab === 'sip'">
+
+      <!-- Toggle SIP / Lumpsum -->
+      <div class="mode-toggle">
+        <button class="mode-btn active">SIP</button>
+        <!-- <button class="mode-btn">Lumpsum</button> -->
+      </div>
+
+      <div class="two-col">
+        <!-- Inputs -->
+        <div class="inputs-col">
+
+          <!-- Monthly Investment -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Monthly Investment</label>
+              <div class="value-badge">
+                <span class="rupee">₹</span>
+                <input type="number" [(ngModel)]="sipData.monthlyInvestment" (input)="calculateSIP()" min="500" max="1000000" class="inline-input">
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="500" max="100000" step="500"
+                [(ngModel)]="sipData.monthlyInvestment" (input)="calculateSIP()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((sipData.monthlyInvestment - 500) / 99500) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>₹500</span><span>₹1L</span></div>
+          </div>
+
+          <!-- Expected Return Rate -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Expected Return Rate (p.a)</label>
+              <div class="value-badge green">
+                <input type="number" [(ngModel)]="sipData.annualReturn" (input)="calculateSIP()" min="1" max="30" step="0.1" class="inline-input">
+                <span class="unit">%</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1" max="30" step="0.1"
+                [(ngModel)]="sipData.annualReturn" (input)="calculateSIP()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((sipData.annualReturn - 1) / 29) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>1%</span><span>30%</span></div>
+          </div>
+
+          <!-- Time Period -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Time Period</label>
+              <div class="value-badge green">
+                <input type="number" [(ngModel)]="sipData.timePeriod" (input)="calculateSIP()" min="1" max="40" class="inline-input">
+                <span class="unit">Yr</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1" max="40" step="1"
+                [(ngModel)]="sipData.timePeriod" (input)="calculateSIP()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((sipData.timePeriod - 1) / 39) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>1 Yr</span><span>40 Yr</span></div>
+          </div>
+
+        </div>
+
+        <!-- Chart + Results -->
+        <div class="results-col">
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 200 200">
+              <circle class="donut-bg" cx="100" cy="100" r="80" fill="none" stroke="#f0f0f0" stroke-width="28"/>
+              <!-- Invested amount arc -->
+              <circle class="donut-arc invested" cx="100" cy="100" r="80" fill="none"
+                stroke="#e8e8f5" stroke-width="28"
+                stroke-dasharray="502.65"
+                stroke-dashoffset="0"
+                stroke-linecap="round"
+                transform="rotate(-90 100 100)"/>
+              <!-- Returns arc -->
+              <circle class="donut-arc returns" cx="100" cy="100" r="80" fill="none"
+                stroke="#DD3333" stroke-width="28"
+                [attr.stroke-dasharray]="getDonutDash('sip')"
+                stroke-linecap="round"
+                transform="rotate(-90 100 100)"/>
+              <text x="100" y="95" text-anchor="middle" class="donut-label-main">{{formatCurrencyShort(sipData.result.maturityAmount)}}</text>
+              <text x="100" y="115" text-anchor="middle" class="donut-label-sub">Total Value</text>
+            </svg>
+            <div class="donut-legend">
+              <span class="legend-dot invested-dot"></span><span>Invested amount</span>
+              <span class="legend-dot returns-dot"></span><span>Est. returns</span>
+            </div>
+          </div>
+
+          <div class="result-rows">
+            <div class="result-row">
+              <span class="result-label">Invested amount</span>
+              <span class="result-val">{{formatCurrency(sipData.result.totalInvestment)}}</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Est. returns</span>
+              <span class="result-val green-val">{{formatCurrency(sipData.result.totalReturns)}}</span>
+            </div>
+            <div class="result-row total-row">
+              <span class="result-label">Total value</span>
+              <span class="result-val red-val">{{formatCurrency(sipData.result.maturityAmount)}}</span>
+            </div>
+          </div>
+
+          <!-- <button class="invest-btn">INVEST NOW</button> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FD TAB ===== -->
+    <div class="calc-panel" *ngIf="activeTab === 'fd'">
+
+      <div class="two-col">
+        <div class="inputs-col">
+
+          <!-- Total Investment -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Total Investment</label>
+              <div class="value-badge">
+                <span class="rupee">₹</span>
+                <input type="number" [(ngModel)]="fdData.principal" (input)="calculateFD()" min="1000" max="10000000" class="inline-input">
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1000" max="1000000" step="1000"
+                [(ngModel)]="fdData.principal" (input)="calculateFD()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((fdData.principal - 1000) / 999000) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>₹1K</span><span>₹10L</span></div>
+          </div>
+
+          <!-- Rate of Interest -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Rate of Interest (p.a)</label>
+              <div class="value-badge green">
+                <input type="number" [(ngModel)]="fdData.interestRate" (input)="calculateFD()" min="1" max="15" step="0.1" class="inline-input">
+                <span class="unit">%</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1" max="15" step="0.1"
+                [(ngModel)]="fdData.interestRate" (input)="calculateFD()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((fdData.interestRate - 1) / 14) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>1%</span><span>15%</span></div>
+          </div>
+
+          <!-- Time Period -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Time Period <span class="unit-label">Years</span></label>
+              <div class="value-badge green">
+                <input type="number" [(ngModel)]="fdData.timePeriod" (input)="calculateFD()" min="1" max="10" class="inline-input">
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1" max="10" step="1"
+                [(ngModel)]="fdData.timePeriod" (input)="calculateFD()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((fdData.timePeriod - 1) / 9) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>1 Yr</span><span>10 Yr</span></div>
+          </div>
+
+          <!-- Compounding -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Compounding Frequency</label>
+            </div>
+            <select [(ngModel)]="fdData.compoundingFrequency" (change)="calculateFD()" class="select-control">
+              <option value="1">Annually</option>
+              <option value="2">Semi-annually</option>
+              <option value="4">Quarterly</option>
+              <option value="12">Monthly</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="results-col">
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#f0f0f0" stroke-width="28"/>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#e8e8f5" stroke-width="28"
+                stroke-dasharray="502.65" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#DD3333" stroke-width="28"
+                [attr.stroke-dasharray]="getDonutDash('fd')"
+                stroke-linecap="round" transform="rotate(-90 100 100)"/>
+              <text x="100" y="95" text-anchor="middle" class="donut-label-main">{{formatCurrencyShort(fdData.result.maturityAmount)}}</text>
+              <text x="100" y="115" text-anchor="middle" class="donut-label-sub">Total Value</text>
+            </svg>
+            <div class="donut-legend">
+              <span class="legend-dot invested-dot"></span><span>Total investment</span>
+              <span class="legend-dot returns-dot"></span><span>Total returns</span>
+            </div>
+          </div>
+
+          <div class="result-rows">
+            <div class="result-row">
+              <span class="result-label">Invested amount</span>
+              <span class="result-val">{{formatCurrency(fdData.principal)}}</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Est. returns</span>
+              <span class="result-val green-val">{{formatCurrency(fdData.result.totalInterest)}}</span>
+            </div>
+            <div class="result-row total-row">
+              <span class="result-label">Total value</span>
+              <span class="result-val red-val">{{formatCurrency(fdData.result.maturityAmount)}}</span>
+            </div>
+          </div>
+
+          <!-- <button class="invest-btn">INVEST NOW</button> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EMI TAB ===== -->
+    <div class="calc-panel" *ngIf="activeTab === 'emi'">
+
+      <div class="two-col">
+        <div class="inputs-col">
+
+          <!-- Loan Amount -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Loan Amount</label>
+              <div class="value-badge">
+                <span class="rupee">₹</span>
+                <input type="number" [(ngModel)]="emiData.loanAmount" (input)="calculateEMI()" min="10000" max="10000000" class="inline-input">
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="10000" max="5000000" step="10000"
+                [(ngModel)]="emiData.loanAmount" (input)="calculateEMI()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((emiData.loanAmount - 10000) / 4990000) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>₹10K</span><span>₹50L</span></div>
+          </div>
+
+          <!-- Interest Rate -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Rate of Interest (p.a)</label>
+              <div class="value-badge green">
+                <input type="number" [(ngModel)]="emiData.interestRate" (input)="calculateEMI()" min="1" max="30" step="0.1" class="inline-input">
+                <span class="unit">%</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1" max="30" step="0.1"
+                [(ngModel)]="emiData.interestRate" (input)="calculateEMI()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((emiData.interestRate - 1) / 29) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>1%</span><span>30%</span></div>
+          </div>
+
+          <!-- Loan Tenure -->
+          <div class="field-block">
+            <div class="field-header">
+              <label>Loan Tenure (Years)</label>
+              <div class="value-badge green">
+                <input type="number" [(ngModel)]="emiData.loanTenure" (input)="calculateEMI()" min="1" max="30" class="inline-input">
+                <span class="unit">Yr</span>
+              </div>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" min="1" max="30" step="1"
+                [(ngModel)]="emiData.loanTenure" (input)="calculateEMI()" class="slider">
+              <div class="slider-track-fill" [style.width.%]="((emiData.loanTenure - 1) / 29) * 100"></div>
+            </div>
+            <div class="slider-labels"><span>1 Yr</span><span>30 Yr</span></div>
+          </div>
+
+        </div>
+
+        <div class="results-col">
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#f0f0f0" stroke-width="28"/>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#e8e8f5" stroke-width="28"
+                stroke-dasharray="502.65" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#DD3333" stroke-width="28"
+                [attr.stroke-dasharray]="getDonutDash('emi')"
+                stroke-linecap="round" transform="rotate(-90 100 100)"/>
+              <text x="100" y="95" text-anchor="middle" class="donut-label-main">{{formatCurrencyShort(emiData.result.emi)}}</text>
+              <text x="100" y="115" text-anchor="middle" class="donut-label-sub">Monthly EMI</text>
+            </svg>
+            <div class="donut-legend">
+              <span class="legend-dot invested-dot"></span><span>Principal amount</span>
+              <span class="legend-dot returns-dot"></span><span>Total interest</span>
+            </div>
+          </div>
+
+          <div class="result-rows">
+            <div class="result-row">
+              <span class="result-label">Principal amount</span>
+              <span class="result-val">{{formatCurrency(emiData.loanAmount)}}</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Total interest</span>
+              <span class="result-val red-val">{{formatCurrency(emiData.result.totalInterest)}}</span>
+            </div>
+            <div class="result-row total-row">
+              <span class="result-label">Total amount payable</span>
+              <span class="result-val">{{formatCurrency(emiData.result.totalAmount)}}</span>
+            </div>
+          </div>
+
+          <!-- <button class="invest-btn">APPLY NOW</button> -->
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end calc-body -->
 </div>
