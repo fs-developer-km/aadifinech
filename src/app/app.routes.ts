@@ -28,6 +28,7 @@ import { FinancialConsultancyforCorporatesComponent } from './services/financial
 import { OurMissionComponent } from './services/our-mission/our-mission.component';
 import {authRedirectGuard} from "./core/guards/auth-redirect.guard"
 import { PayNowComponent } from './components/page/pay-now/pay-now.component';
+import { CarrierComponent } from './services/carrier/carrier.component'; 
 
 
 
@@ -69,6 +70,7 @@ export const routes: Routes = [
   { path: 'services/ourEndToEndforeignServices', component: OurEndToEndforeignServicesComponent },
   { path: 'services/bankingDomainExpertConsultency', component: BankingDomainExpertConsultancyComponent },
   { path: 'services/FinancialConsultancyforCorporates', component: FinancialConsultancyforCorporatesComponent },
+  { path: 'services/carrier', component: CarrierComponent },
 
   // =============================
   // 🟧 AUTH

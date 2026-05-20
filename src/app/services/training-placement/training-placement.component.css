@@ -3,6 +3,10 @@
    padding: 0;
    box-sizing: border-box;
  }
+ .training-text {
+  display: block;
+  text-align: left;
+}
 
  body {
    font-family: 'Arial', sans-serif;

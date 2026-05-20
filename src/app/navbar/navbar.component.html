@@ -8,7 +8,7 @@
             <ul>
               <li><i class="fa-solid fa-phone"></i> <a href="tel:+919953656810">+91 99536 56810</a></li>
               <li class="d-none d-xl-inline-block">
-                <i class="fa-solid fa-location-dot"></i> Office No. 301, i-THUM Building, Tower - A, Sector - 62, Noida
+                <i class="fa-solid fa-location-dot"></i> Office No 320, third floor I thum height, secotor 62 noida .
               </li>
               <li>
                 <i class="fa-solid fa-envelope"></i>
@@ -77,10 +77,9 @@
                 <a routerLink="/"
                   style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
 
-                  <img src="/logos/logo1.jpeg" alt="Logo" style="
+                  <img src="/logos/logo444.png" alt="Logo" style="
           height: 90px;
-          width: 90px;
-          object-fit: cover;
+          width: 100%;
           border-radius: 10px;
         ">
 
@@ -129,6 +128,11 @@
                         (mouseleave)="closeDropdown()">
                         <a href="javascript:void(0)">Services</a>
                         <div #dropdown class="mega-dropdown" *ngIf="dropdownOpen">
+
+                          <a routerLink="/services/carrier" (click)="closeDropdown()">
+                            <i class="fas fa-laptop-code me-2" style="color:#DD3333"></i>Carrier
+                          </a>
+
                           <a routerLink="/services/ourMission" (click)="closeDropdown()">
                             <i class="fas fa-hand-holding-usd me-2" style="color:#DD3333"></i>Our Mission
                           </a>
@@ -255,6 +259,10 @@
                 <i class="fas fa-chevron-down float-end"></i>
               </a>
               <ul class="sub-menu animated-submenu" [ngClass]="{'open': mobileSubMenu === 'services'}">
+
+                <li><a routerLink="/services/carrier" (click)="toggleMobileMenu()"><i class="fas fa-laptop-code me-2"
+                      style="color:#DD3333"></i>Carrier</a></li>
+
                 <li><a routerLink="/services/ourMission" (click)="toggleMobileMenu()"><i
                       class="fas fa-hand-holding-usd me-2"></i> Our Mission</a></li>
                 <li><a routerLink="/services/fund-raising" (click)="toggleMobileMenu()"><i

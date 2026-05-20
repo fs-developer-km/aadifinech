@@ -6358,8 +6358,8 @@ ol.wp-block-rss {
     }
 
     .header-logo {
-        padding-top: 20px;
-        padding-bottom: 20px
+        padding-top: 0px;
+        padding-bottom: 0px
     }
 
     .header-layout1 .sticky-wrapper {
@@ -7905,7 +7905,7 @@ ol.wp-block-rss {
 
 @media (max-width: 767px) {
     .header-layout8 .header-logo {
-        padding: 15px
+        padding: 0px
     }
 }
 

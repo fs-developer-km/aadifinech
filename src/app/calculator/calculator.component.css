@@ -224,21 +224,28 @@
 }
 .rupee {
   font-size: 0.8rem;
-  color: var(--text-secondary);
-  font-weight: 600;
+  color: #DD3333;    /* text-secondary tha → red karo */
+  font-weight: 700;
 }
 .unit {
   font-size: 0.8rem;
   color: var(--text-secondary);
   font-weight: 600;
 }
+
+.value-badge.green .inline-input {
+  color: #00b386;
+}
+.value-badge.green .unit {
+  color: #00b386;
+}
 .inline-input {
   width: 80px;
   border: none;
   background: transparent;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 0.95rem;      /* thoda bada */
+  font-weight: 800;        /* 700 → 800 */
+  color: #DD3333;          /* red color — badge ke saath match */
   text-align: right;
   outline: none;
   -moz-appearance: textfield;
@@ -304,10 +311,9 @@
 .slider-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.72rem;
+  font-size: 1.72rem;  /* 1.72rem tha — yahi bug tha */
   color: var(--text-secondary);
 }
-
 /* ── Select ── */
 .select-control {
   width: 100%;
@@ -374,7 +380,11 @@
   display: inline-block;
   flex-shrink: 0;
 }
-.invested-dot { background: #e8e8f5; border: 1.5px solid #c0c0e0; }
+.invested-dot
+ { 
+  background: #00b386;
+   border: 1.5px solid #009972; 
+  }
 .returns-dot  { background: var(--red); }
 
 /* ── Result Rows ── */
