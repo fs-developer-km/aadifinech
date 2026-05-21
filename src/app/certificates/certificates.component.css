@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+.cs-section {
+    padding: 36px 16px 40px;
+    background: #494955;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.cs-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 60% 50% at 10% 0%, rgba(221, 51, 51, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 90% 100%, rgba(21, 101, 192, 0.10) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cs-header {
+    text-align: center;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+}
+
+.cs-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #dd3333;
+    margin-bottom: 10px;
+}
+
+.cs-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #dd3333;
+    display: inline-block;
+    animation: csPulse 1.6s infinite;
+}
+
+@keyframes csPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.9);
+        opacity: .3;
+    }
+}
+
+.cs-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin: 0 0 8px;
+}
+
+.cs-red {
+    color: #dd3333;
+}
+
+.cs-sub {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.38);
+    letter-spacing: .2px;
+}
+
+.cs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 20px;
+    max-width: 740px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── CARD ── */
+.cs-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.cs-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Header area */
+.cs-cert-header {
+    padding: 20px 20px 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.cs-cert-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.cs-seal {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2.5px solid;
+}
+
+.cs-seal svg {
+    width: 26px;
+    height: 26px;
+}
+
+.cs-type-badge {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 11px;
+    border-radius: 20px;
+    color: #fff;
+    align-self: flex-start;
+}
+
+.cs-issuer {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.cs-cert-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.25;
+    position: relative;
+    z-index: 1;
+}
+
+/* Watermark */
+.cs-watermark {
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    opacity: 0.04;
+    pointer-events: none;
+}
+
+.cs-watermark svg {
+    width: 80px;
+    height: 80px;
+}
+
+/* Dashed divider */
+.cs-divider {
+    height: 1px;
+    background: repeating-linear-gradient(90deg, #ddd 0, #ddd 6px, transparent 6px, transparent 12px);
+    margin: 0 20px;
+}
+
+/* Body */
+.cs-cert-body {
+    padding: 16px 20px;
+}
+
+.cs-reg-field {
+    background: #f7f7f9;
+    border-radius: 8px;
+    padding: 9px 11px;
+    margin-bottom: 10px;
+}
+
+.cs-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.cs-field {
+    background: #f7f7f9;
+    border-radius: 8px;
+    padding: 9px 11px;
+}
+
+.cs-field-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 3px;
+}
+
+.cs-field-value {
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: #222;
+    word-break: break-all;
+}
+
+.cs-reg-field .cs-field-value {
+    font-size: 13px;
+}
+
+/* Status */
+.cs-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cs-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+    flex-shrink: 0;
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .4;
+    }
+}
+
+.cs-status-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: #16a34a;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.cs-status-line {
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+/* Footer */
+.cs-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px 16px;
+}
+
+.cs-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity .2s;
+}
+
+.cs-view-btn:hover {
+    opacity: .88;
+}
+
+.cs-authority {
+    font-size: 10.5px;
+    color: #bbb;
+    text-align: right;
+    line-height: 1.5;
+}
+
+/* Modal — unchanged from your original, paste it as-is */
+
+/* ══════ MODAL ══════ */
+.cs-modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.cs-modal {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+}
+
+.cs-modal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  flex-shrink: 0;
+}
+
+.cs-modal-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-modal-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.cs-modal-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cs-modal-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-newtab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  border-radius: 7px;
+  padding: 6px 12px;
+  text-decoration: none;
+  transition: background 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.cs-newtab-btn:hover {
+  background: rgba(255,255,255,0.32);
+}
+
+.cs-close-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 7px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.cs-close-btn:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.cs-pdf-container {
+  flex: 1;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+.cs-pdf-frame {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
+  display: block;
+}

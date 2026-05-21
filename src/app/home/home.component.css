@@ -1240,3 +1240,210 @@ font-family: "Poppins", sans-serif;
     border-radius: 14px;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* ─── Gold Coin FAB ─────────────────────────────────────────── */
+
+/* Existing .wa-fab ko replace karo */
+.wa-fab {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  animation: coinFloat 3s ease-in-out infinite;
+  transition: transform 0.35s cubic-bezier(.34, 1.56, .64, 1);
+  position: relative;
+  z-index: 1;
+  box-shadow: none;  /* remove old red shadow */
+}
+
+.wa-fab:hover {
+  transform: scale(1.13) translateY(-3px);
+  animation-play-state: paused;
+  background: transparent;
+}
+
+.wa-fab.open {
+  animation: none;
+  transform: rotate(180deg) scale(1.05);
+  background: transparent;
+}
+
+@keyframes coinFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ─── Coin Body ─────────────────────────────────────────────── */
+.coin-body {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #f5c842 0deg,   #fde97a 30deg,  #c9920a 60deg,
+    #f5c842 90deg,  #fde97a 130deg, #e0a818 160deg,
+    #f5c842 200deg, #fde97a 240deg, #c9920a 270deg,
+    #f5c842 310deg, #fde97a 340deg, #c9920a 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 0 #a87200,
+    0 6px 16px rgba(198, 140, 0, 0.55),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine reflection */
+.coin-body::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  width: 22px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+  pointer-events: none;
+}
+
+/* ─── Coin Face Content ─────────────────────────────────────── */
+.coin-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.coin-rupee {
+  font-size: 22px;
+  font-weight: 800;
+  color: #7a4f00;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.coin-text {
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #7a4f00;
+  text-transform: uppercase;
+}
+
+.coin-close {
+  font-size: 22px;
+  font-weight: 700;
+  color: #7a4f00;
+  line-height: 1;
+}
+
+/* ─── Pulse Ring (gold override) ────────────────────────────── */
+.wa-pulse-ring {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2.5px solid #f5c842;
+  animation: coinPulse 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes coinPulse {
+  0%   { transform: scale(1);    opacity: 0.8; }
+  100% { transform: scale(1.75); opacity: 0; }
+}
+
+/* ─── Tooltip ───────────────────────────────────────────────── */
+.wa-tooltip {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  background: #1a1a2e;
+  color: #fde97a;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.25s ease;
+  pointer-events: none;
+  border: 1px solid rgba(245, 200, 66, 0.3);
+}
+
+.wa-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  background: #1a1a2e;
+  border-right: 1px solid rgba(245, 200, 66, 0.3);
+  border-bottom: 1px solid rgba(245, 200, 66, 0.3);
+  transform: rotate(45deg);
+}
+
+.wa-fab-wrapper:hover .wa-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Header Gold Theme override ────────────────────────────── */
+.wa-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-bottom: 2px solid #f5c842;
+}
+
+.wa-header-avatar span {
+  background: conic-gradient(
+    #f5c842 0deg, #fde97a 60deg, #c9920a 120deg,
+    #f5c842 180deg, #fde97a 240deg, #c9920a 300deg, #f5c842 360deg
+  );
+  color: #7a4f00;
+  box-shadow: 0 2px 8px rgba(245, 200, 66, 0.4);
+}
+
+.wa-online-dot {
+  border-color: #1a1a2e; /* match new header bg */
+}
+
+.wa-header-info h4 {
+  color: #fde97a;
+}
+
+.wa-status {
+  color: rgba(253, 233, 122, 0.65);
+}
+
+.wa-close-btn {
+  color: rgba(253, 233, 122, 0.8);
+}
+
+.wa-close-btn:hover {
+  color: #fde97a;
+}

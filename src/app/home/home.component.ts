@@ -12,6 +12,7 @@ import { CalculatorComponent } from '../calculator/calculator.component';
 import { LogoSliderComponent } from '../logo-slider/logo-slider.component';
 import { ServiceSliderComponent } from '../service-slider/service-slider.component';
 import { Meta, Title } from '@angular/platform-browser';
+import { CertificatesComponent } from '../certificates/certificates.component';
 
 
 interface servicesx {
@@ -45,7 +46,7 @@ interface FlowNode {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HomeSliderComponent, SlickCarouselModule, ReactiveFormsModule, CommonModule, CarouselModule, SlickCarouselModule, RouterModule, FormsModule, CalculatorComponent, LogoSliderComponent, ServiceSliderComponent],
+  imports: [HomeSliderComponent, SlickCarouselModule, ReactiveFormsModule, CommonModule, CarouselModule, SlickCarouselModule, RouterModule, FormsModule, CalculatorComponent, LogoSliderComponent, ServiceSliderComponent,CertificatesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

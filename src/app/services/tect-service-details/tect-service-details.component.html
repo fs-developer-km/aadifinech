@@ -1,0 +1,143 @@
+<!-- Breadcrumb -->
+<div class="tsd-breadcrumb">
+  <div class="container">
+    <span><a routerLink="/">Home</a></span>
+    <span class="sep">›</span>
+    <span><a routerLink="/tech-services">Tech Services</a></span>
+    <span class="sep">›</span>
+    <span>{{ currentService.title }}</span>
+  </div>
+</div>
+
+<!-- Main Details Page -->
+<section class="tsd-section">
+  <div class="container">
+    <div class="tsd-grid">
+
+      <!-- LEFT: Service Content -->
+      <div class="tsd-content">
+        <div class="tsd-icon-wrap">
+          <span class="tsd-icon">{{ currentService.icon }}</span>
+        </div>
+        <h1 class="tsd-title">{{ currentService.title }}</h1>
+        <p class="tsd-subtitle">{{ currentService.subtitle }}</p>
+        <p class="tsd-desc">{{ currentService.description }}</p>
+
+        <div class="tsd-highlights">
+          <h3 class="tsd-hl-title">What We Offer</h3>
+          <ul class="tsd-hl-list">
+            <li *ngFor="let item of currentService.highlights">
+              <span class="tsd-check">✓</span> {{ item }}
+            </li>
+          </ul>
+        </div>
+
+        <a routerLink="/services/tech-services" class="tsd-back-btn">← Back to All Services</a>
+      </div>
+
+      <!-- RIGHT: Application Form -->
+      <div class="tsd-form-wrap">
+        <div class="tsd-form-header">
+          <h2 class="tsd-form-title">Apply / Enquire</h2>
+          <p class="tsd-form-sub">Fill in your details and we'll get back to you</p>
+        </div>
+
+        <div *ngIf="submitSuccess" class="tsd-success">
+          ✅ Your application has been submitted successfully!
+        </div>
+
+        <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" novalidate>
+
+          <!-- Full Name -->
+          <div class="tsd-field">
+            <label>Full Name <span>*</span></label>
+            <input type="text" formControlName="fullName" placeholder="Your full name"
+              [class.is-invalid]="submitted && f['fullName'].errors">
+            <div class="tsd-error" *ngIf="submitted && f['fullName'].errors">
+              <span *ngIf="f['fullName'].errors?.['required']">Full name is required</span>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="tsd-field">
+            <label>Email <span>*</span></label>
+            <input type="email" formControlName="email" placeholder="you@email.com"
+              [class.is-invalid]="submitted && f['email'].errors">
+            <div class="tsd-error" *ngIf="submitted && f['email'].errors">
+              <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+              <span *ngIf="f['email'].errors?.['email']">Enter a valid email</span>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="tsd-field">
+            <label>Contact Number <span>*</span></label>
+            <input type="tel" formControlName="contact" placeholder="10-digit mobile number"
+              [class.is-invalid]="submitted && f['contact'].errors">
+            <div class="tsd-error" *ngIf="submitted && f['contact'].errors">
+              <span *ngIf="f['contact'].errors?.['required']">Contact is required</span>
+              <span *ngIf="f['contact'].errors?.['pattern']">Enter a valid 10-digit number</span>
+            </div>
+          </div>
+
+          <!-- Role -->
+          <div class="tsd-field">
+            <label>Role Applying For <span>*</span></label>
+            <select formControlName="role" [class.is-invalid]="submitted && f['role'].errors">
+              <option value="">— Select Role —</option>
+              <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+            </select>
+            <div class="tsd-error" *ngIf="submitted && f['role'].errors">Role is required</div>
+          </div>
+
+          <!-- Experience -->
+          <div class="tsd-field">
+            <label>Experience <span>*</span></label>
+            <select formControlName="experience" [class.is-invalid]="submitted && f['experience'].errors">
+              <option value="">— Select Experience —</option>
+              <option *ngFor="let e of experienceLevels" [value]="e">{{ e }}</option>
+            </select>
+            <div class="tsd-error" *ngIf="submitted && f['experience'].errors">Experience is required</div>
+          </div>
+
+          <!-- Preferred Location -->
+          <div class="tsd-field">
+            <label>Preferred Location <span>*</span></label>
+            <input type="text" formControlName="preferredLocation" placeholder="e.g. Delhi, Remote"
+              [class.is-invalid]="submitted && f['preferredLocation'].errors">
+            <div class="tsd-error" *ngIf="submitted && f['preferredLocation'].errors">Location is required</div>
+          </div>
+
+          <!-- Notice Period -->
+          <div class="tsd-field">
+            <label>Notice Period <span>*</span></label>
+            <input type="text" formControlName="noticePeriod" placeholder="e.g. Immediate, 30 days"
+              [class.is-invalid]="submitted && f['noticePeriod'].errors">
+            <div class="tsd-error" *ngIf="submitted && f['noticePeriod'].errors">Notice period is required</div>
+          </div>
+
+          <!-- LinkedIn / Portfolio -->
+          <div class="tsd-field">
+            <label>LinkedIn / Portfolio Link</label>
+            <input type="url" formControlName="linkedinPortfolio" placeholder="https://linkedin.com/in/yourprofile">
+          </div>
+
+          <!-- Profile Summary -->
+          <div class="tsd-field">
+            <label>Brief Profile Summary <span>*</span></label>
+            <textarea formControlName="profileSummary" rows="3" placeholder="Tell us about yourself, your skills and what you bring..."
+              [class.is-invalid]="submitted && f['profileSummary'].errors"></textarea>
+            <div class="tsd-error" *ngIf="submitted && f['profileSummary'].errors">
+              <span *ngIf="f['profileSummary'].errors?.['required']">Summary is required</span>
+              <span *ngIf="f['profileSummary'].errors?.['minlength']">Minimum 20 characters</span>
+            </div>
+          </div>
+
+          <button type="submit" class="tsd-submit-btn">Submit Application</button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>

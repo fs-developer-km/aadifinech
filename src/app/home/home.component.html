@@ -175,8 +175,7 @@
             </div>
           </div>
           <div class="img1"><img class="tilt-active" src="/img/team/converted-image.jpg
-" alt="About"
-              style="width: 480px; height: auto;"></div>
+" alt="About" style="width: 480px; height: auto;"></div>
         </div>
       </div>
       <div class="col-xl-5">
@@ -187,10 +186,11 @@
         <p class="mt-n1 mb-30 alignment">At Aadi Fintech, we offer highly specialized Banking Domain Expert Consultancy
           services,
           led by Mr. Raj Sharma—a renowned banking strategist with over 22 years of experience in India’s top banks and
-          a featured expert for McKinsey & Company  Trusted Fintech Consultancy & Loan Solutions   Aadi Fintech provides loan restructuring services,
-  CIBIL score improvement, business <br> financing,
-  internships and placement support.</p>
-          
+          a featured expert for McKinsey & Company Trusted Fintech Consultancy & Loan Solutions Aadi Fintech provides
+          loan restructuring services,
+          CIBIL score improvement, business <br> financing,
+          internships and placement support.</p>
+
         <div class="row justify-content-between">
           <div class="col-xxl-4 col-xl-3 col-lg-3 col-sm-5 order-sm-2 align-self-end">
             <div class="about-client-box mb-sm-0 mb-5">
@@ -225,13 +225,21 @@
 
 
 
+
+<!-- certificate steate -->
+
+<app-certificates></app-certificates>
+
+<!-- certificate end  -->
+
+
 <!-- payment code end -->
 
 <!-- demate account open link here start -->
 
 <!-- demat-section.component.html -->
 
-<section class="demat-section">
+<section class="demat-section mt-4">
   <div class="container">
     <div class="demat-card">
 
@@ -373,18 +381,16 @@
       <!-- Image Column -->
       <div class="col-lg-6 col-12 order-1 order-lg-1">
         <div style="width: 100%; height: 100%; min-height: 250px; overflow: hidden;">
-          <img 
-            src="/img/team/team111.jpg" 
-            alt="img" 
-            class="d-block" 
+          <img src="/img/team/team111.jpg" alt="img" class="d-block"
             style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
         </div>
       </div>
-      
+
       <!-- Content & Button Column -->
       <div class="col-lg-6 col-12 order-2 order-lg-2 d-flex align-items-center justify-content-center">
         <div class="w-100 text-center text-lg-start px-3 py-4 px-md-5 py-md-5">
-          <h2 class="text-white mb-3 mb-md-4 fw-bold" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">Where Protection Meets Convenience</h2>
+          <h2 class="text-white mb-3 mb-md-4 fw-bold" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">Where Protection
+            Meets Convenience</h2>
           <a routerLink="/contact" class="th-btn style3 btn btn-light px-3 px-md-4 py-2 py-md-3">
             Contact Us
             <i class="fas fa-arrow-right ms-2"></i>
@@ -569,48 +575,40 @@
 <section class="contact-sec-2" style="background-color: #dd3333;">
   <div class="container-fluid p-0">
     <div class="row g-0 align-items-stretch">
-      
+
       <!-- Left Side - Image -->
       <div class="col-lg-7 col-12 order-1 order-lg-1">
-        <div style="width: 100%; height: 100%; min-height: auto; max-height: 600px; overflow: hidden; position: relative;">
-          <img 
-            src="/img/team/DSC00245.jpg" 
-            alt="Contact Thumb" 
-            class="d-block"
+        <div
+          style="width: 100%; height: 100%; min-height: auto; max-height: 600px; overflow: hidden; position: relative;">
+          <img src="/img/team/DSC00245.jpg" alt="Contact Thumb" class="d-block"
             style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
         </div>
       </div>
-      
+
       <!-- Right Side - Form Content -->
       <div class="col-lg-5 col-12 order-2 order-lg-2">
         <div class="p-4 p-md-5" style="background-color: white; min-height: auto; max-height: 600px; overflow-y: auto;">
-          
+
           <div class="title-area mb-4">
             <span class="sub-title" style="color: #dd3333; font-weight: 600;">Free Consultation</span>
-            <h2 class="sec-title text-dark mb-0" style="font-size: clamp(1.5rem, 3vw, 2rem);">Get Financial Assistance Now</h2>
+            <h2 class="sec-title text-dark mb-0" style="font-size: clamp(1.5rem, 3vw, 2rem);">Get Financial Assistance
+              Now</h2>
           </div>
 
           <form class="contact-form2">
-            
+
             <!-- Tabs -->
             <ul class="insurance-tab nav nav-pills mb-4" role="tablist" style="gap: 8px; flex-wrap: wrap;">
               <li class="nav-item" role="presentation">
-                <button 
-                  type="button"
-                  class="nav-link btn btn-sm" 
-                  [ngClass]="{active: activeTab === 'loan'}" 
-                  (click)="onTabClick('loan')"
-                  [style.background-color]="activeTab === 'loan' ? '#dd3333' : '#f0f0f0'"
+                <button type="button" class="nav-link btn btn-sm" [ngClass]="{active: activeTab === 'loan'}"
+                  (click)="onTabClick('loan')" [style.background-color]="activeTab === 'loan' ? '#dd3333' : '#f0f0f0'"
                   [style.color]="activeTab === 'loan' ? 'white' : '#333'"
                   style="border: none; padding: 8px 12px; font-size: 13px;">
                   <i class="fa-solid fa-building-columns"></i> Business Loan
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button 
-                  type="button"
-                  class="nav-link btn btn-sm" 
-                  [ngClass]="{active: activeTab === 'discounting'}" 
+                <button type="button" class="nav-link btn btn-sm" [ngClass]="{active: activeTab === 'discounting'}"
                   (click)="onTabClick('discounting')"
                   [style.background-color]="activeTab === 'discounting' ? '#dd3333' : '#f0f0f0'"
                   [style.color]="activeTab === 'discounting' ? 'white' : '#333'"
@@ -619,10 +617,7 @@
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button 
-                  type="button"
-                  class="nav-link btn btn-sm" 
-                  [ngClass]="{active: activeTab === 'funding'}" 
+                <button type="button" class="nav-link btn btn-sm" [ngClass]="{active: activeTab === 'funding'}"
                   (click)="onTabClick('funding')"
                   [style.background-color]="activeTab === 'funding' ? '#dd3333' : '#f0f0f0'"
                   [style.color]="activeTab === 'funding' ? 'white' : '#333'"
@@ -631,10 +626,7 @@
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button 
-                  type="button"
-                  class="nav-link btn btn-sm" 
-                  [ngClass]="{active: activeTab === 'compliance'}" 
+                <button type="button" class="nav-link btn btn-sm" [ngClass]="{active: activeTab === 'compliance'}"
                   (click)="onTabClick('compliance')"
                   [style.background-color]="activeTab === 'compliance' ? '#dd3333' : '#f0f0f0'"
                   [style.color]="activeTab === 'compliance' ? 'white' : '#333'"
@@ -650,32 +642,22 @@
             </h5>
 
             <div class="tab-content">
-              
+
               <!-- Business Loan Form -->
               <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'loan' }">
                 <form [formGroup]="businessLoanForm" (ngSubmit)="sendBusinessLoanToWhatsApp()">
                   <div class="row">
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        formControlName="name"
-                        placeholder="Full Name"
+                      <input type="text" class="form-control" formControlName="name" placeholder="Full Name"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="email" 
-                        class="form-control" 
-                        formControlName="email"
-                        placeholder="Email Address"
+                      <input type="email" class="form-control" formControlName="email" placeholder="Email Address"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                   </div>
                   <div class="mb-3">
-                    <select 
-                      class="form-select" 
-                      formControlName="service"
+                    <select class="form-select" formControlName="service"
                       style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                       <option value="" hidden>Select Loan Type</option>
                       <option value="SME Loan">SME Loan</option>
@@ -684,9 +666,7 @@
                     </select>
                   </div>
                   <div class="text-center text-lg-start">
-                    <button 
-                      type="submit" 
-                      class="btn px-4 py-2"
+                    <button type="submit" class="btn px-4 py-2"
                       style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
                       Request Quote <i class="far fa-arrow-right ms-2"></i>
                     </button>
@@ -703,26 +683,16 @@
                 <form [formGroup]="discountingForm" (ngSubmit)="sendDiscountingToWhatsApp()">
                   <div class="row">
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        formControlName="name"
-                        placeholder="Full Name"
+                      <input type="text" class="form-control" formControlName="name" placeholder="Full Name"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="email" 
-                        class="form-control" 
-                        formControlName="email"
-                        placeholder="Email Address"
+                      <input type="email" class="form-control" formControlName="email" placeholder="Email Address"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                   </div>
                   <div class="mb-3">
-                    <select 
-                      formControlName="discountingType" 
-                      class="form-select"
+                    <select formControlName="discountingType" class="form-select"
                       style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                       <option value="" hidden>Select Invoice Type</option>
                       <option value="Trade Invoice">Trade Invoice</option>
@@ -730,9 +700,7 @@
                     </select>
                   </div>
                   <div class="text-center text-lg-start">
-                    <button 
-                      type="submit" 
-                      class="btn px-4 py-2"
+                    <button type="submit" class="btn px-4 py-2"
                       style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
                       Request Quote <i class="far fa-arrow-right ms-2"></i>
                     </button>
@@ -749,26 +717,16 @@
                 <form [formGroup]="fundingForm" (ngSubmit)="sendFundingToWhatsApp()">
                   <div class="row">
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        formControlName="name"
-                        placeholder="Full Name"
+                      <input type="text" class="form-control" formControlName="name" placeholder="Full Name"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="email" 
-                        class="form-control" 
-                        formControlName="email"
-                        placeholder="Email Address"
+                      <input type="email" class="form-control" formControlName="email" placeholder="Email Address"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                   </div>
                   <div class="mb-3">
-                    <select 
-                      formControlName="fundingType" 
-                      class="form-select"
+                    <select formControlName="fundingType" class="form-select"
                       style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                       <option value="" hidden>Select Funding Option</option>
                       <option value="Equity Funding">Equity Funding</option>
@@ -777,9 +735,7 @@
                     </select>
                   </div>
                   <div class="text-center text-lg-start">
-                    <button 
-                      type="submit" 
-                      class="btn px-4 py-2"
+                    <button type="submit" class="btn px-4 py-2"
                       style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
                       Request Quote <i class="far fa-arrow-right ms-2"></i>
                     </button>
@@ -796,26 +752,16 @@
                 <form [formGroup]="complianceForm" (ngSubmit)="sendComplianceToWhatsApp()">
                   <div class="row">
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        formControlName="name"
-                        placeholder="Full Name"
+                      <input type="text" class="form-control" formControlName="name" placeholder="Full Name"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                     <div class="col-lg-6 mb-3">
-                      <input 
-                        type="email" 
-                        class="form-control" 
-                        formControlName="email"
-                        placeholder="Email Address"
+                      <input type="email" class="form-control" formControlName="email" placeholder="Email Address"
                         style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                     </div>
                   </div>
                   <div class="mb-3">
-                    <select 
-                      formControlName="compliance" 
-                      class="form-select"
+                    <select formControlName="compliance" class="form-select"
                       style="border: 1px solid #ddd; padding: 10px; font-size: 14px;">
                       <option value="" hidden>Select Compliance Type</option>
                       <option value="RERA">RERA Compliance</option>
@@ -824,9 +770,7 @@
                     </select>
                   </div>
                   <div class="text-center text-lg-start">
-                    <button 
-                      type="submit" 
-                      class="btn px-4 py-2"
+                    <button type="submit" class="btn px-4 py-2"
                       style="background-color: #dd3333; color: white; border: none; font-weight: 600; font-size: 14px;">
                       Request Quote <i class="far fa-arrow-right ms-2"></i>
                     </button>
@@ -843,7 +787,7 @@
 
         </div>
       </div>
-      
+
     </div>
   </div>
 </section>
@@ -1114,9 +1058,9 @@
 
 
 
-    <!-- chat boat  -->
+<!-- chat boat  -->
 
-    <!-- whatsapp-chatbot.component.html -->
+<!-- whatsapp-chatbot.component.html -->
 
 <!-- Floating Button -->
 <div class="wa-fab-wrapper">
@@ -1128,14 +1072,18 @@
   <div class="wa-badge" *ngIf="!isOpen && unreadCount > 0">{{ unreadCount }}</div>
 
   <!-- FAB Button -->
-  <button class="wa-fab" (click)="toggleChat()" [class.open]="isOpen" aria-label="Chat with us on WhatsApp">
-    <span class="wa-fab-icon" *ngIf="!isOpen">
-      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-    </span>
-    <span class="wa-fab-close" *ngIf="isOpen">✕</span>
-  </button>
+ <button class="wa-fab" (click)="toggleChat()" [class.open]="isOpen" aria-label="Chat with us">
+  <div class="coin-body">
+    <div class="coin-face" *ngIf="!isOpen">
+      <span class="coin-rupee">₹</span>
+      <span class="coin-text">FINTECH</span>
+    </div>
+    <span class="coin-close" *ngIf="isOpen">✕</span>
+  </div>
+</button>
+
+<!-- Tooltip add karo FAB ke baad -->
+<div class="wa-tooltip">💬 Chat with us!</div>
 
   <!-- Chat Popup -->
   <div class="wa-chatbox" [class.visible]="isOpen">
@@ -1180,11 +1128,7 @@
 
     <!-- Quick Reply Buttons -->
     <div class="wa-quick-replies" *ngIf="currentOptions.length > 0 && !isTyping">
-      <button
-        *ngFor="let opt of currentOptions"
-        class="wa-quick-btn"
-        (click)="handleOption(opt)"
-      >
+      <button *ngFor="let opt of currentOptions" class="wa-quick-btn" (click)="handleOption(opt)">
         {{ opt.label }}
       </button>
     </div>
@@ -1192,21 +1136,19 @@
     <!-- Input Area -->
     <div class="wa-footer">
       <div class="wa-input-wrap">
-        <input
-          type="text"
-          class="wa-input"
-          placeholder="Type a message..."
-          [(ngModel)]="userInput"
-          (keyup.enter)="sendCustomMessage()"
-        />
+        <input type="text" class="wa-input" placeholder="Type a message..." [(ngModel)]="userInput"
+          (keyup.enter)="sendCustomMessage()" />
         <button class="wa-send-btn" (click)="sendCustomMessage()" [disabled]="!userInput.trim()">
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
           </svg>
         </button>
       </div>
       <p class="wa-powered">
-        <svg viewBox="0 0 24 24" fill="#25D366" width="12" height="12"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <svg viewBox="0 0 24 24" fill="#25D366" width="12" height="12">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
         Powered by WhatsApp
       </p>
     </div>

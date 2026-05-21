@@ -29,6 +29,7 @@ import { OurMissionComponent } from './services/our-mission/our-mission.componen
 import {authRedirectGuard} from "./core/guards/auth-redirect.guard"
 import { PayNowComponent } from './components/page/pay-now/pay-now.component';
 import { CarrierComponent } from './services/carrier/carrier.component'; 
+import { TectServiceDetailsComponent } from './services/tect-service-details/tect-service-details.component';
 
 
 
@@ -59,6 +60,7 @@ export const routes: Routes = [
   { path: 'services/training-placement', component: TrainingPlacementComponent },
   { path: 'services/credit-rating', component: CreditRatingComponent },
   { path: 'services/tech-services', component: TechServicesComponent },
+  { path: 'services/tech-service-details', component: TectServiceDetailsComponent },
   { path: 'services/digital-marketing', component: DigitalMarketingComponent },
   { path: 'services/loanForEveryIndian', component: LoanForEveryIndianComponent },
   { path: 'services/realState', component: RealStateComponent },
