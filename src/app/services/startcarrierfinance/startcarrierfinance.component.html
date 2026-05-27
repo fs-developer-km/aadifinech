@@ -1,0 +1,280 @@
+<main>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <p class="eyebrow">Placement-led finance training for careers in India</p>
+      <h1>Build Your Future in Finance</h1>
+      <p class="hindi-tagline">Finance Career Mein Apna Future Banao</p>
+      <p class="hero-subtitle">Guaranteed Placement in Banks, FinTech & Financial Institutions</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" (click)="applyProgram('12th Pass')">Apply Now (12th Pass)</button>
+        <button class="btn btn-secondary" (click)="applyProgram('Graduate')">Apply Now (Graduate)</button>
+      </div>
+      <div class="hero-stats" aria-label="Program highlights">
+        <span><strong>3</strong> career tracks</span>
+        <span><strong>8+</strong> role pathways</span>
+        <span><strong>100%</strong> placement support</span>
+      </div>
+    </div>
+    <div class="hero-panel" aria-label="Career outcome preview">
+      <div class="panel-top">
+        <span class="status-dot"></span>
+        <span>Placement Pipeline</span>
+      </div>
+      <div class="salary-card">
+        <p>Target Roles</p>
+        <h2>Banking + FinTech</h2>
+        <span>CASA, Loans, Wealth, Trading, Advisory</span>
+      </div>
+      <ul class="pipeline-list">
+        <li><i class="fa-solid fa-user-check"></i> Register & counselling</li>
+        <li><i class="fa-solid fa-chalkboard-user"></i> Practical finance training</li>
+        <li><i class="fa-solid fa-building-columns"></i> Bank/NBFC interviews</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Programs Section -->
+  <section class="section overview" id="programs">
+    <div class="section-heading">
+      <p class="eyebrow">Program Overview</p>
+      <h2>Our Training Programs</h2>
+      <p>Structured finance career pathways for 12th pass students and graduates, designed around each learner's current level.</p>
+    </div>
+    <div class="category-grid">
+      <article class="category-card" *ngFor="let program of programs">
+        <div class="card-icon"><i [class]="program.icon"></i></div>
+        <h3>{{ program.title }}</h3>
+        <p>{{ program.description }}</p>
+        <ul>
+          <li *ngFor="let track of program.tracks">{{ track }}</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Tracks Section -->
+  <section class="section tracks" id="tracks">
+    <div class="section-heading">
+      <p class="eyebrow">Career Tracks</p>
+      <h2>Choose Your Finance Track</h2>
+      <p>Select your qualification and compare the most suitable track.</p>
+    </div>
+    <div class="track-tabs" role="tablist" aria-label="Program categories">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'twelve'"
+        type="button" 
+        role="tab" 
+        [attr.aria-selected]="activeTab === 'twelve'"
+        (click)="setTab('twelve')">
+        12th Pass Tracks
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'graduate'"
+        type="button" 
+        role="tab" 
+        [attr.aria-selected]="activeTab === 'graduate'"
+        (click)="setTab('graduate')">
+        Graduate Tracks
+      </button>
+    </div>
+
+    <!-- 12th Pass Tracks Panel -->
+    <div class="track-panel" [class.active]="activeTab === 'twelve'" id="twelve" role="tabpanel">
+      <article class="track-card" [class.popular]="track.popular" *ngFor="let track of twelfthTracks">
+        <span *ngIf="track.popular" class="badge">Most Popular</span>
+        <span class="track-number">{{ track.number }}</span>
+        <h3>{{ track.title }}</h3>
+        <div class="track-meta">
+          <span>{{ track.duration }}</span>
+          <span>Fees: {{ track.fees }}</span>
+        </div>
+        <p><strong>Training:</strong> {{ track.training }}</p>
+        <p><strong>Outcome:</strong> {{ track.outcome }}</p>
+        <p *ngIf="track.certification"><strong>Certification:</strong> {{ track.certification }}</p>
+        <p><strong>Roles:</strong> {{ track.roles }}</p>
+      </article>
+    </div>
+
+    <!-- Graduate Tracks Panel -->
+    <div class="track-panel" [class.active]="activeTab === 'graduate'" id="graduate" role="tabpanel">
+      <article class="track-card" [class.popular]="track.popular" *ngFor="let track of graduateTracks">
+        <span *ngIf="track.popular" class="badge">Most Popular</span>
+        <span class="track-number">{{ track.number }}</span>
+        <h3>{{ track.title }}</h3>
+        <div class="track-meta">
+          <span>{{ track.duration }}</span>
+          <span>Fees: {{ track.fees }}</span>
+        </div>
+        <p><strong>Training:</strong> {{ track.training }}</p>
+        <p><strong>Placement:</strong> {{ track.placement }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Placement Roles Section -->
+  <section class="section roles" id="roles">
+    <div class="section-heading">
+      <p class="eyebrow">Placement Roles</p>
+      <h2>Real Job Paths in the Finance Industry</h2>
+    </div>
+    <div class="role-grid">
+      <article class="role-card" *ngFor="let role of roles">
+        <i [class]="role.icon"></i>
+        <h3>{{ role.title }}</h3>
+        <p>{{ role.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="section why">
+    <div class="section-heading">
+      <p class="eyebrow">Why Choose Us</p>
+      <h2>Training Connected to the Job Market</h2>
+    </div>
+    <div class="feature-grid">
+      <article class="feature-box" *ngFor="let feature of features">
+        <i [class]="feature.icon"></i>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Steps Section -->
+  <section class="section steps">
+    <div class="section-heading">
+      <p class="eyebrow">How It Works</p>
+      <h2>Step By Step Placement Journey</h2>
+    </div>
+    <div class="stepper">
+      <article class="step" *ngFor="let step of steps">
+        <span>{{ step.number }}</span>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section testimonials">
+    <div class="section-heading">
+      <p class="eyebrow">Student Stories</p>
+      <h2>Student Success Stories</h2>
+    </div>
+    <div class="testimonial-grid">
+      <article class="testimonial-card" *ngFor="let testimonial of testimonials">
+        <div class="avatar">{{ testimonial.avatar }}</div>
+        <h3>{{ testimonial.name }}</h3>
+        <span>{{ testimonial.program }}</span>
+        <p>{{ testimonial.text }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq" id="faq">
+    <div class="section-heading">
+      <p class="eyebrow">FAQ</p>
+      <h2>Common Questions</h2>
+    </div>
+    <div class="faq-list">
+      <article class="faq-item" *ngFor="let faq of faqs; let i = index" [class.open]="isFaqOpen(i)">
+        <button 
+          type="button" 
+          [attr.aria-expanded]="isFaqOpen(i)"
+          (click)="toggleFaq(i)">
+          {{ faq.question }}
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <p *ngIf="isFaqOpen(i)">{{ faq.answer }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Apply Section -->
+  <section class="section apply" id="apply">
+    <div class="apply-copy">
+      <p class="eyebrow">Limited Seats</p>
+      <h2 style="color: #000;">Apply Now — Seats Are Limited!</h2>
+      <p style="color: #000;">After you submit the form, our counselling team will contact you with details about the next batch, fees, and placement pathway.</p>
+    </div>
+    <form class="apply-form" (ngSubmit)="onSubmit()" #applicationForm="ngForm" >
+      <div class="form-row">
+        <label for="name" style="color: #000;">Full Name</label>
+        <input 
+          id="name" 
+          name="name" 
+          type="text" 
+          placeholder="Your full name"
+          [(ngModel)]="formData.name"
+          required>
+      </div>
+      <div class="form-row">
+        <label for="phone" style="color: #000;">Phone Number</label>
+        <input 
+          id="phone" 
+          name="phone" 
+          type="tel" 
+          placeholder="10-digit mobile number"
+          [(ngModel)]="formData.phone"
+          pattern="[0-9]{10}"
+          required>
+      </div>
+      <div class="form-row">
+        <label for="email" style="color: #000;">Email</label>
+        <input 
+          id="email" 
+          name="email" 
+          type="email" 
+          placeholder="you@example.com"
+          [(ngModel)]="formData.email"
+          required>
+      </div>
+      <div class="form-row">
+        <label for="city" style="color: #000;">City</label>
+        <input 
+          id="city" 
+          name="city" 
+          type="text" 
+          placeholder="Your city"
+          [(ngModel)]="formData.city"
+          required>
+      </div>
+      <div class="form-row">
+        <label for="qualification" style="color: #000;">Qualification</label>
+        <select 
+          id="qualification" 
+          name="qualification"
+          [(ngModel)]="formData.qualification"
+          required>
+          <option value="">Select qualification</option>
+          <option>12th Pass</option>
+          <option>Graduate</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="interest" style="color: #000;">Program Interest</label>
+        <select 
+          id="interest" 
+          name="interest"
+          [(ngModel)]="formData.interest"
+          required>
+          <option value="">Select program</option>
+          <option>3 Month</option>
+          <option>6 Month</option>
+          <option>3 Year</option>
+        </select>
+      </div>
+      <button class="btn btn-primary form-submit" type="submit">
+        <i class="fa-brands fa-whatsapp"></i> Send via WhatsApp
+      </button>
+      <p class="form-message" [class.error]="isFormError" role="status" aria-live="polite">
+        {{ formMessage }}
+      </p>
+    </form>
+  </section>
+</main>

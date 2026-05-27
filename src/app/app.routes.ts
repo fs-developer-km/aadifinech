@@ -30,6 +30,7 @@ import {authRedirectGuard} from "./core/guards/auth-redirect.guard"
 import { PayNowComponent } from './components/page/pay-now/pay-now.component';
 import { CarrierComponent } from './services/carrier/carrier.component'; 
 import { TectServiceDetailsComponent } from './services/tect-service-details/tect-service-details.component';
+import { StartcarrierfinanceComponent } from './services/startcarrierfinance/startcarrierfinance.component';
 
 
 
@@ -73,6 +74,7 @@ export const routes: Routes = [
   { path: 'services/bankingDomainExpertConsultency', component: BankingDomainExpertConsultancyComponent },
   { path: 'services/FinancialConsultancyforCorporates', component: FinancialConsultancyforCorporatesComponent },
   { path: 'services/carrier', component: CarrierComponent },
+  { path: 'services/satrtfinance', component: StartcarrierfinanceComponent },
 
   // =============================
   // 🟧 AUTH
