@@ -67,7 +67,7 @@ export class PopupFormComponent {
       return;
     }
 
-    const whatsappNumber = '+919720349178';
+    const whatsappNumber = '+919953656810';
     const text = `Hello, I want more information about the "${this.serviceName}" service.\n\nName: ${this.name}\nEmail: ${this.email}\nMobile: ${this.mobile}\nMessage: ${this.message || 'No additional message'}`;
     const encodedText = encodeURIComponent(text);
     const url = `https://wa.me/${whatsappNumber}?text=${encodedText}`;

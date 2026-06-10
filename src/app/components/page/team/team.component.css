@@ -6,7 +6,7 @@
 
 .team-card .team-img {
   width: 100%;
-  height: 500px; /* Fixed height for all images */
+  height: 450px; /* default desktop height - visually balanced */
   overflow: hidden;
   border-radius: 10px;
   position: relative;
@@ -15,8 +15,8 @@
 .team-card .team-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Image crop hoke fit hogi, cut nahi hogi */
-  object-position: center; /* Center se crop hoga */
+  object-fit: cover; /* Image crops, doesn't stretch */
+  object-position: center top; /* Focuses on faces/upper body */
   border: 2px solid #DD3333;
   border-radius: 10px;
   transition: transform 0.3s ease;
@@ -29,48 +29,72 @@
 
 /* Team Content */
 .team-card .team-content {
-  padding: 20px;
+  padding: 20px 15px;
   text-align: center;
   background: white;
   border-radius: 0 0 10px 10px;
+  border-bottom: 2px solid rgba(221, 51, 51, 0.1);
 }
 
 .team-card .team-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #DD3333;
-  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
 }
 
-/* Responsive - Mobile */
+/* Member Designation */
+.team-card .team-desig {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #DD3333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+/* Member Description (Responsive) */
+.team-card .team-desc {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+/* --- Responsive Adjustments --- */
+
+/* Mobile Devices */
 @media (max-width: 767px) {
   .team-card .team-img {
-    height: 500px; /* Mobile pe chhoti height */
+    height: 380px; /* Mobile layout optimization to avoid extra vertical scrolling */
   }
   
   .team-card .team-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+  
+  .team-card .team-desc {
+    font-size: 0.85rem;
   }
 }
 
-/* Responsive - Tablet */
+/* Tablets */
 @media (min-width: 768px) and (max-width: 991px) {
   .team-card .team-img {
-    height: 500px;
+    height: 400px;
   }
 }
 
-/* Responsive - Large Screen */
+/* Large Screens */
 @media (min-width: 1200px) {
   .team-card .team-img {
-    height: 500x; /* Badi screen pe thodi badi height */
+    height: 460px; /* Fixed standard size on large screens */
   }
 }
 
-
-
-
-/* Team Group Photos Section */
+/* --- Team Group Photos Section --- */
 .team-group-card {
   position: relative;
   overflow: hidden;
@@ -120,7 +144,6 @@
   text-align: center;
 }
 
-/* Responsive */
 @media (max-width: 767px) {
   .group-img-wrap {
     height: 280px;

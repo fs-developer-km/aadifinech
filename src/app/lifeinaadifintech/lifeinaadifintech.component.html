@@ -1,0 +1,76 @@
+<section class="life-gallery-section py-5">
+  <div class="container">
+    
+    <!-- Section Header (Professional & Centered) -->
+    <div class="row mb-5 justify-content-center text-center">
+      <div class="col-lg-8 col-md-10">
+        <span class="text-uppercase badge-category mb-2 d-inline-block">Inside Aadi Fintech</span>
+        <h2 class="section-title">Life at Aadi Fintech</h2>
+        <div class="title-separator mx-auto mb-3"></div>
+        <p class="section-subtitle text-muted">
+          Explore our vibrant work culture, mentorship programs, team walks, and memorable milestones that define our daily journey.
+        </p>
+      </div>
+    </div>
+
+    <!-- Filter Buttons (Responsive Button Group) -->
+    <div class="row mb-5">
+      <div class="col-12 d-flex justify-content-center flex-wrap gap-2">
+        <button 
+          (click)="setCategory('all')" 
+          class="btn filter-btn" 
+          [class.active]="selectedCategory === 'all'">
+          All Moments
+        </button>
+        <button 
+          (click)="setCategory('internship')" 
+          class="btn filter-btn" 
+          [class.active]="selectedCategory === 'internship'">
+          Internship & Training
+        </button>
+        <button 
+          (click)="setCategory('walk')" 
+          class="btn filter-btn" 
+          [class.active]="selectedCategory === 'walk'">
+          Team Interaction (Walking)
+        </button>
+        <button 
+          (click)="setCategory('group')" 
+          class="btn filter-btn" 
+          [class.active]="selectedCategory === 'group'">
+          Group Photos
+        </button>
+      </div>
+    </div>
+
+    <!-- Photos Grid (Responsive Bootstrap Grid) -->
+    <div class="row g-4">
+      <!-- Angular 17+ Modern Control Flow Loop -->
+      @for (photo of filteredPhotos; track photo.url) {
+        <div class="col-lg-4 col-md-6 col-sm-12 gallery-card-col">
+          <div class="gallery-card">
+            <!-- Image Wrapper with Zoom & Details Overlay -->
+            <div class="gallery-img-wrapper">
+              <img [src]="photo.url" [alt]="photo.alt" class="img-fluid gallery-img" loading="lazy">
+              
+              <!-- Hover Overlay Detail Card -->
+              <div class="gallery-overlay">
+                <div class="overlay-content">
+                  <span class="badge bg-danger mb-2 text-uppercase fs-7">{{ photo.category }}</span>
+                  <h4 class="overlay-title">{{ photo.title }}</h4>
+                  <p class="overlay-desc">{{ photo.description }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <!-- Empty fall-back view -->
+        <div class="col-12 text-center py-5">
+          <p class="text-muted">No images found in this category.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

@@ -31,6 +31,7 @@ import { PayNowComponent } from './components/page/pay-now/pay-now.component';
 import { CarrierComponent } from './services/carrier/carrier.component'; 
 import { TectServiceDetailsComponent } from './services/tect-service-details/tect-service-details.component';
 import { StartcarrierfinanceComponent } from './services/startcarrierfinance/startcarrierfinance.component';
+import { LifeinaadifintechComponent } from './lifeinaadifintech/lifeinaadifintech.component';
 
 
 
@@ -51,6 +52,7 @@ export const routes: Routes = [
   // PUBLIC PARTNER PAGE (Blog)
   { path: 'partner-page', component: BlogPageComponent },
   { path: 'blogDetails', component: BlogDetailsComponent },
+  { path: 'lifeinaadifintech',component:LifeinaadifintechComponent},
 
   { path: 'contact', component: ContactUsComponent },
 
@@ -136,6 +138,6 @@ export const routes: Routes = [
   // =============================
   // 🚫 Wildcard
   // =============================
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 
 ];
