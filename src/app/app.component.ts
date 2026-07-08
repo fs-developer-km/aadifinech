@@ -3,14 +3,14 @@ import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
-// import { UserEnquiryComponent } from './components/user-enquiry/user-enquiry.component';
+import { UserEnquiryComponent } from './components/user-enquiry/user-enquiry.component';
 import { CommonModule } from '@angular/common';
 import { CookiesPopupComponent } from "./cookies-popup/cookies-popup.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent, FooterComponent, CommonModule],
+  imports: [RouterOutlet, RouterModule, NavbarComponent, FooterComponent, CommonModule,UserEnquiryComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

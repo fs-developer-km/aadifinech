@@ -4,11 +4,11 @@
 <app-footer *ngIf="!isAdminRoute()"></app-footer>
 
 <!-- Scroll to Top Button -->
-<button class="scroll-to-top" (click)="scrollToTop()" [class.show]="isScrollButtonVisible">
+<!-- <button class="scroll-to-top" (click)="scrollToTop()" [class.show]="isScrollButtonVisible">
   <i class="fas fa-arrow-up"></i>
-</button>
+</button> -->
 
-<!-- <app-user-enquiry *ngIf="showPopup"></app-user-enquiry> -->
+<app-user-enquiry *ngIf="showPopup"></app-user-enquiry>
 
 <!-- WhatsApp Floating Button -->
 <!-- <a href="https://wa.me/9953656810" target="_blank" class="floating-btn whatsapp-btn" aria-label="Chat on WhatsApp">
@@ -16,12 +16,13 @@
 </a> -->
 
 <!-- Call Floating Button -->
-<a 
+<!-- <a 
   *ngIf="!isAdminRoute()"
   href="tel:9953656810"
   class="floating-btn call-btn"
   aria-label="Call Now"
   (click)="handleCallClick($event)">
   <i class="fas fa-phone-alt"></i>
-</a>
+</a> -->
+
 

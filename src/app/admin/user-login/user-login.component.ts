@@ -58,6 +58,8 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   // private deleteUserUrl = 'https://api.aadifintech.com/api/auth/delete-user';
   private deleteUserUrl = 'https://api.aadifintech.com/api/auth/delete-user';
 
+  
+
   constructor(
     private userService: AuthService,
     private visitorDataService: PageTrackerService,
@@ -493,4 +495,156 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       });
     }, 100);
   }
+
+
+
+  // ===== EDIT MODAL STATE (class properties me add karo) =====
+showEditModal = false;
+loadingEditDetails = false;
+savingEdit = false;
+changePassword = false;
+editUserId: string | null = null;
+editUserRole: string = '';
+
+editForm: any = {
+  name: '',
+  mobile: '',
+  accountStatus: 'Active',
+  department: '',
+  designation: '',
+  employeeCode: '',
+  companyName: '',
+  businessType: '',
+  commissionType: '',
+  commissionValue: null,
+  gstNumber: '',
+  address: '',
+  newPassword: '',
+  confirmPassword: ''
+};
+
+private userProfileUrl = 'https://api.aadifintech.com/api/auth/user/profile';
+private updateUserUrl = 'https://api.aadifintech.com/api/auth/update-user';
+
+// ===== EDIT MODAL METHODS (class me add karo) =====
+
+openEditModal(userId: string): void {
+  this.loadingEditDetails = true;
+  this.showEditModal = true;
+  this.changePassword = false;
+  this.editUserId = userId;
+
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  this.http.get<{ success: boolean; data: any }>(`${this.userProfileUrl}/${userId}`, { headers })
+    .subscribe({
+      next: (res) => {
+        if (res.success && res.data) {
+          const u = res.data;
+          this.editUserRole = u.role || 'user';
+          this.editForm = {
+            name: u.name || '',
+            mobile: u.mobile || '',
+            accountStatus: u.accountStatus || 'Active',
+            department: u.department || '',
+            designation: u.designation || '',
+            employeeCode: u.employeeCode || '',
+            companyName: u.companyName || '',
+            businessType: u.businessType || '',
+            commissionType: u.commissionType || '',
+            commissionValue: u.commissionValue || null,
+            gstNumber: u.gstNumber || '',
+            address: u.address || '',
+            newPassword: '',
+            confirmPassword: ''
+          };
+        }
+        this.loadingEditDetails = false;
+      },
+      error: (err) => {
+        console.error('Error loading user details:', err);
+        this.loadingEditDetails = false;
+        this.showEditModal = false;
+        this.showToastMessage('Failed to load user details', 'error');
+      }
+    });
+}
+
+closeEditModal(): void {
+  this.showEditModal = false;
+  this.editUserId = null;
+  this.editUserRole = '';
+  this.changePassword = false;
+}
+
+toggleChangePassword(): void {
+  this.changePassword = !this.changePassword;
+  if (!this.changePassword) {
+    this.editForm.newPassword = '';
+    this.editForm.confirmPassword = '';
+  }
+}
+
+saveEditUser(): void {
+  if (!this.editUserId) return;
+
+  if (this.changePassword) {
+    if (!this.editForm.newPassword || this.editForm.newPassword.length < 6) {
+      this.showToastMessage('Password must be at least 6 characters', 'error');
+      return;
+    }
+    if (this.editForm.newPassword !== this.editForm.confirmPassword) {
+      this.showToastMessage('Passwords do not match', 'error');
+      return;
+    }
+  }
+
+  this.savingEdit = true;
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  const payload: any = {
+    name: this.editForm.name,
+    mobile: this.editForm.mobile,
+    accountStatus: this.editForm.accountStatus
+  };
+
+  if (this.editUserRole === 'employee') {
+    payload.department = this.editForm.department;
+    payload.designation = this.editForm.designation;
+    payload.employeeCode = this.editForm.employeeCode;
+  }
+
+  if (this.editUserRole === 'partner') {
+    payload.companyName = this.editForm.companyName;
+    payload.businessType = this.editForm.businessType;
+    payload.commissionType = this.editForm.commissionType;
+    payload.commissionValue = this.editForm.commissionValue;
+    payload.gstNumber = this.editForm.gstNumber;
+    payload.address = this.editForm.address;
+  }
+
+  if (this.changePassword) {
+    payload.newPassword = this.editForm.newPassword;
+  }
+
+  this.http.put(`${this.updateUserUrl}/${this.editUserId}`, payload, { headers })
+    .subscribe({
+      next: () => {
+        this.savingEdit = false;
+        this.showToastMessage('User updated successfully!', 'success');
+        this.closeEditModal();
+        this.loadUserData(false);
+      },
+      error: (err) => {
+        console.error('Error updating user:', err);
+        this.savingEdit = false;
+        this.showToastMessage(err.error?.msg || 'Failed to update user', 'error');
+      }
+    });
+}
+
+
+
 }

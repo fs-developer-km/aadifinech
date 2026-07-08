@@ -980,6 +980,7 @@ selectedLang: 'hi' | 'en' | null = null;
   // Collected user data for final WhatsApp message
   private userData: { [key: string]: string } = {};
   private currentStep = 'welcome';
+  private selectedPath: string[] = []; 
  
   // ─── Conversation Flow ───────────────────────────────────────
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2196,13 +2197,13 @@ Anything else you'd like to know?`,
     }
   }
  
-  toggleChat(): void {
-    this.isOpen = !this.isOpen;
-    if (this.isOpen) {
-      this.unreadCount = 0;
-      setTimeout(() => this.scrollToBottom(), 100);
-    }
+toggleChat(): void {
+  this.isOpen = !this.isOpen;
+  if (this.isOpen) {
+    this.unreadCount = 0;
+    setTimeout(() => this.scrollToBottom(), 100);
   }
+}
  
   private getTime(): string {
     return new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
@@ -2246,6 +2247,18 @@ async handleOption(opt: Option): Promise<void> {
   // Language track karo
   if (opt.value === 'hi') this.selectedLang = 'hi';
   if (opt.value === 'en') this.selectedLang = 'en';
+
+  // ✅ NEW — Path tracking logic
+  if (opt.next === 'welcome_hi' || opt.next === 'welcome_en') {
+    // Main menu pe wapas aaye — path reset karo
+    this.selectedPath = [];
+  } else if (opt.value === 'back') {
+    // Back gaye ek level upar — last selection hatao
+    this.selectedPath.pop();
+  } else if (!['consult', 'wa', 'home'].includes(opt.value)) {
+    // Koi meaningful selection — path me add karo
+    this.selectedPath.push(opt.label);
+  }
 
   // Demat redirect dono languages ke liye
   if (opt.next === 'demat_redirect_hi' || opt.next === 'demat_redirect_en') {
@@ -2318,25 +2331,32 @@ if (this.currentStep === `collect_phone_${lang}`) {
   ]);
 }
  
-  private sendToWhatsApp(): void {
-    const name = this.userData['name'] || 'Not provided';
-    const phone = this.userData['phone'] || 'Not provided';
-    const service = this.userData['service'] || 'General Inquiry';
-    const time = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
- 
-    const message = `🤖 *New Chatbot Lead — Aadi Fintech*
- 
+private sendToWhatsApp(): void {
+  const name = this.userData['name'] || 'Not provided';
+  const phone = this.userData['phone'] || 'Not provided';
+  const time = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+  // ✅ NEW — poora selection trail ek readable string me
+  const lang = this.selectedLang === 'en' ? 'en' : 'hi';
+  const fallbackText = lang === 'en' ? 'General Inquiry' : 'सामान्य जानकारी';
+  const serviceTrail = this.selectedPath.length > 0
+    ? this.selectedPath.join(' → ')
+    : fallbackText;
+
+  const message = `🤖 *New Chatbot Lead — Aadi Fintech*
+
 👤 *Name:* ${name}
 📱 *Phone:* ${phone}
-💼 *Interested In:* ${service}
+💼 *Interested In:* ${serviceTrail}
+🌐 *Language:* ${lang === 'en' ? 'English' : 'Hindi'}
 🕒 *Time:* ${time}
- 
+
 📣 _Lead came via website chatbot. Please respond ASAP!_ 🚀`;
- 
-    const encodedMsg = encodeURIComponent(message);
-    const url = `https://wa.me/${this.WHATSAPP_NUMBER}?text=${encodedMsg}`;
-    window.open(url, '_blank');
-  }
+
+  const encodedMsg = encodeURIComponent(message);
+  const url = `https://wa.me/${this.WHATSAPP_NUMBER}?text=${encodedMsg}`;
+  window.open(url, '_blank');
+}
 
 
 }

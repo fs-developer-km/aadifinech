@@ -166,13 +166,28 @@
             </td>
 
             <!-- Actions -->
-            <td class="table-data-cell">
+
+            <!-- Actions -->
+<td class="table-data-cell">
+  <div class="action-buttons-cell">
+    <button class="edit-btn" (click)="openEditModal(user.userId)" title="Edit User">
+      <i class="fas fa-pen"></i>
+    </button>
+    <button class="delete-btn" (click)="openDeleteModal(user.userId, user.userName)"
+      [disabled]="deletingUserId === user.userId" title="Delete User">
+      <i *ngIf="deletingUserId !== user.userId" class="fas fa-trash-alt"></i>
+      <i *ngIf="deletingUserId === user.userId" class="fas fa-spinner fa-spin"></i>
+    </button>
+  </div>
+</td>
+
+            <!-- <td class="table-data-cell">
               <button class="delete-btn" (click)="openDeleteModal(user.userId, user.userName)"
                 [disabled]="deletingUserId === user.userId" title="Delete User">
                 <i *ngIf="deletingUserId !== user.userId" class="fas fa-trash-alt"></i>
                 <i *ngIf="deletingUserId === user.userId" class="fas fa-spinner fa-spin"></i>
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -202,6 +217,141 @@
       </div>
     </div>
   </div>
+
+
+
+  <!-- Edit User Modal -->
+<div class="delete-modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="edit-modal" (click)="$event.stopPropagation()">
+    <div class="edit-modal-header">
+      <div>
+        <h3 class="modal-title">Edit User</h3>
+        <span class="edit-modal-subtitle" *ngIf="editUserRole">{{ editUserRole | titlecase }} Account</span>
+      </div>
+      <button class="edit-close-btn" (click)="closeEditModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="edit-modal-body">
+      <div *ngIf="loadingEditDetails" class="edit-loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Loading user details...</span>
+      </div>
+
+      <form *ngIf="!loadingEditDetails" class="edit-form">
+
+        <div class="form-section-title">Basic Information</div>
+        <div class="edit-form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-input" [(ngModel)]="editForm.name" name="editName">
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="text" class="form-input" [(ngModel)]="editForm.mobile" name="editMobile">
+          </div>
+          <div class="form-group">
+            <label>Account Status</label>
+            <select class="form-input" [(ngModel)]="editForm.accountStatus" name="editStatus">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Employee-specific fields -->
+        <ng-container *ngIf="editUserRole === 'employee'">
+          <div class="form-section-title">Employee Details</div>
+          <div class="edit-form-grid">
+            <div class="form-group">
+              <label>Employee Code</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.employeeCode" name="editEmpCode">
+            </div>
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.department" name="editDept">
+            </div>
+            <div class="form-group">
+              <label>Designation</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.designation" name="editDesig">
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Partner-specific fields -->
+        <ng-container *ngIf="editUserRole === 'partner'">
+          <div class="form-section-title">Partner Details</div>
+          <div class="edit-form-grid">
+            <div class="form-group">
+              <label>Company Name</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.companyName" name="editCompany">
+            </div>
+            <div class="form-group">
+              <label>Business Type</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.businessType" name="editBizType">
+            </div>
+            <div class="form-group">
+              <label>Commission Type</label>
+              <select class="form-input" [(ngModel)]="editForm.commissionType" name="editCommType">
+                <option value="">Select</option>
+                <option value="fixed">Fixed</option>
+                <option value="percent">Percent</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Commission Value</label>
+              <input type="number" class="form-input" [(ngModel)]="editForm.commissionValue" name="editCommValue">
+            </div>
+            <div class="form-group">
+              <label>GST Number</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.gstNumber" name="editGst">
+            </div>
+            <div class="form-group full-width">
+              <label>Address</label>
+              <input type="text" class="form-input" [(ngModel)]="editForm.address" name="editAddress">
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Password Section -->
+        <div class="form-section-title password-toggle-row">
+          <span>Change Password</span>
+          <label class="toggle-switch">
+            <input type="checkbox" [checked]="changePassword" (change)="toggleChangePassword()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="edit-form-grid" *ngIf="changePassword">
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" class="form-input" [(ngModel)]="editForm.newPassword" name="editNewPass"
+              placeholder="Enter new password">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" class="form-input" [(ngModel)]="editForm.confirmPassword" name="editConfirmPass"
+              placeholder="Re-enter new password">
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="edit-modal-footer">
+      <button class="modal-btn cancel-btn" (click)="closeEditModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="modal-btn save-btn" (click)="saveEditUser()" [disabled]="savingEdit || loadingEditDetails">
+        <i class="fas" [ngClass]="savingEdit ? 'fa-spinner fa-spin' : 'fa-save'"></i>
+        {{ savingEdit ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+</div>
+
 
   <!-- Empty State -->
   <div class="empty-state" *ngIf="getPaginatedUsers().length === 0">
