@@ -1070,13 +1070,32 @@
   <div class="wa-badge" *ngIf="!isOpen && unreadCount > 0">{{ unreadCount }}</div>
 
   <!-- FAB Button -->
- <button class="wa-fab" (click)="toggleChat()" [class.open]="isOpen" aria-label="Chat with us">
+ <!-- <button class="wa-fab" (click)="toggleChat()" [class.open]="isOpen" aria-label="Chat with us">
   <div class="coin-body">
     <div class="coin-face" *ngIf="!isOpen">
       <span class="coin-rupee">₹</span>
       <span class="coin-text">FINTECH</span>
     </div>
     <span class="coin-close" *ngIf="isOpen">✕</span>
+  </div>
+</button> -->
+
+<button class="wa-fab" (click)="toggleChat()" [class.open]="isOpen" aria-label="Chat with us">
+  <div class="bot-body">
+    <svg *ngIf="!isOpen" class="bot-bubble-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="92" height="92" rx="18" fill="#f5f6f7"/>
+      <path d="M50 14C29.5 14 13 28.6 13 46.5C13 58 20 68 30.5 73.5L26 88L43 79.5C45.3 79.8 47.6 80 50 80C70.5 80 87 65.4 87 47.5C87 29.6 70.5 14 50 14Z" fill="#4a90d9"/>
+      <rect x="32" y="42" width="12" height="16" rx="6" fill="#c7ccd1"/>
+      <rect x="56" y="42" width="12" height="16" rx="6" fill="#c7ccd1"/>
+      <rect x="33" y="34" width="34" height="34" rx="16" fill="#c7ccd1"/>
+      <circle cx="50" cy="27" r="4.5" fill="#c7ccd1"/>
+      <rect x="47.5" y="18" width="5" height="10" rx="2.5" fill="#c7ccd1"/>
+      <rect x="39" y="40" width="22" height="20" rx="9" fill="#1e2733"/>
+      <circle cx="45.5" cy="49.5" r="3" fill="#4a90d9"/>
+      <circle cx="54.5" cy="49.5" r="3" fill="#4a90d9"/>
+      <path d="M44.5 55.5C46.2 57.2 48.8 58 50 58C51.2 58 53.8 57.2 55.5 55.5" stroke="#4a90d9" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="bot-close" *ngIf="isOpen">✕</span>
   </div>
 </button>
 

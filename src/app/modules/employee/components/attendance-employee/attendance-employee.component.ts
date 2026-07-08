@@ -60,7 +60,7 @@ interface LeaveRequest {
 })
 export class AttendanceEmployeeComponent implements OnInit{
   private apiUrl = 'https://api.aadifintech.com/api/attendance';
-  // private apiUrl = 'http://localhost:5000/api/attendance';
+  // private apiUrl = 'https://api.aadifintech.com/api/attendance';
   
   // Current state
   todayAttendance: Attendance | null = null;

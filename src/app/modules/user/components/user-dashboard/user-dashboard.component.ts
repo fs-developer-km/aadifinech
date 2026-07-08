@@ -28,7 +28,7 @@ export class UserDashboardComponent implements OnInit {
   currentTime = new Date();
 
   // ✅ Update your API base URL here
-  // private apiUrl = 'http://localhost:5000/api/auth';
+  // private apiUrl = 'https://api.aadifintech.com/api/auth';
   private apiUrl = 'https://api.aadifintech.com/api/auth';
 
   // ✅ Updated Contact details

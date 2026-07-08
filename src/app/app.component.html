@@ -1,5 +1,5 @@
 <app-navbar *ngIf="!isAdminRoute()"></app-navbar>
-<app-cookies-popup></app-cookies-popup>
+<!-- <app-cookies-popup></app-cookies-popup> -->
 <router-outlet></router-outlet>
 <app-footer *ngIf="!isAdminRoute()"></app-footer>
 
@@ -8,7 +8,7 @@
   <i class="fas fa-arrow-up"></i>
 </button>
 
-<app-user-enquiry *ngIf="showPopup"></app-user-enquiry>
+<!-- <app-user-enquiry *ngIf="showPopup"></app-user-enquiry> -->
 
 <!-- WhatsApp Floating Button -->
 <!-- <a href="https://wa.me/9953656810" target="_blank" class="floating-btn whatsapp-btn" aria-label="Chat on WhatsApp">
@@ -17,6 +17,7 @@
 
 <!-- Call Floating Button -->
 <a 
+  *ngIf="!isAdminRoute()"
   href="tel:9953656810"
   class="floating-btn call-btn"
   aria-label="Call Now"

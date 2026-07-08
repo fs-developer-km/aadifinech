@@ -33,8 +33,8 @@ selectedEmployee: string = '';
 selectedManager: string = '';
   
   // API Base URL
+  // private apiUrl = 'https://api.aadifintech.com/api/auth';
   private apiUrl = 'https://api.aadifintech.com/api/auth';
-  // private apiUrl = 'http://localhost:5000/api/auth';
     // private apiUrl: 'https://aadifintech-backend.onrender.com/api'  // when deployed (e.g. AWS)
 
 
@@ -139,7 +139,7 @@ loadEmployeesDropdown() {
     if (this.employeeForm.allowedPermissions.length > 0) payload.allowedPermissions = this.employeeForm.allowedPermissions;
 
     // API Call with Authorization Header
-    this.http.post(`${this.apiUrl}/create-employee`, payload, { headers: this.getHeaders() }).subscribe({
+    this.http.post(`${this.apiUrl}/employees`, payload, { headers: this.getHeaders() }).subscribe({
       next: (response: any) => {
         this.isLoading = false;
         this.showSuccessPopup = true;

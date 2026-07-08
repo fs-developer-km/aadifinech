@@ -473,3 +473,16 @@
     border: none;
     display: block;
 }
+
+.cs-no-click {
+    cursor: default;
+}
+
+.cs-no-click:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.cs-card-footer--single {
+    justify-content: flex-end;
+}

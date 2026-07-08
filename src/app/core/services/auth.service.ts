@@ -78,9 +78,9 @@ export interface OTPResponse {
 export class AuthService {
 
   private userKey = 'loggedInUser';
-  private apiUrl = `${environment.apiBaseUrl}/auth`;
+  // private apiUrl = `${environment.apiBaseUrl}/auth`;
 
-  //  private apiUrl = 'http://localhost:5000/api/auth';
+   private apiUrl = 'https://api.aadifintech.com/api/auth';
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
@@ -256,8 +256,8 @@ export class AuthService {
   // ================================================================
   // 🔥 GET ALL USERS LIST (already in your code)
   // ================================================================
+  // private apiUrls = 'https://api.aadifintech.com/api/auth/getUser';
   private apiUrls = 'https://api.aadifintech.com/api/auth/getUser';
-  // private apiUrls = 'http://localhost:5000/api/auth/getUser';
 
 
 

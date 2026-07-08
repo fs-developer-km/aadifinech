@@ -66,7 +66,7 @@ export class PartnerleadComponent implements OnInit {
   ngOnInit(): void {
     this.fetchPartners();
   }
-  // this.http.get<ApiResponse>('http://localhost:5000/api/partner/partners')
+  // this.http.get<ApiResponse>('https://api.aadifintech.com/api/partner/partners')
 
   fetchPartners() {
     this.isLoading = true;
@@ -250,7 +250,7 @@ getTime(dateStr: string): string {
       return;
     }
 
-    // const url = `http://localhost:5000/api/partner/partners/${this.partnerToUpdate._id}`;
+    // const url = `https://api.aadifintech.com/api/partner/partners/${this.partnerToUpdate._id}`;
     const url = `https://api.aadifintech.com/api/partner/partners/${this.partnerToUpdate._id}`;
 
     const body = {
@@ -288,7 +288,7 @@ getTime(dateStr: string): string {
   confirmDeleteAction() {
     if (!this.partnerToDelete) return;
 
-    // const url = `http://localhost:5000/api/partner/partners/${this.partnerToDelete._id}`;
+    // const url = `https://api.aadifintech.com/api/partner/partners/${this.partnerToDelete._id}`;
     const url = `https://api.aadifintech.com/api/partner/partners/${this.partnerToDelete._id}`;
 
     this.http.delete(url).subscribe({

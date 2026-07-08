@@ -66,7 +66,7 @@ export class BlogPageComponent {
     
     const payload = { mobile: this.formData.mobile.trim() };
 
-    // this.http.post('http://localhost:5000/api/partner/send-otp', payload)
+    // this.http.post('https://api.aadifintech.com/api/partner/send-otp', payload)
     this.http.post('https://api.aadifintech.com/api/partner/send-otp', payload)
       .subscribe({
         next: (res: any) => {
@@ -110,7 +110,7 @@ export class BlogPageComponent {
       otp: otp
     };
 
-    // this.http.post('http://localhost:5000/api/partner/verify-register', payload)
+    // this.http.post('https://api.aadifintech.com/api/partner/verify-register', payload)
     this.http.post('https://api.aadifintech.com/api/partner/verify-register', payload)
       .subscribe({
         next: (res: any) => {
@@ -139,7 +139,7 @@ export class BlogPageComponent {
 
     const payload = { mobile: this.formData.mobile.trim() };
 
-    // this.http.post('http://localhost:5000/api/partner/resend-otp', payload)
+    // this.http.post('https://api.aadifintech.com/api/partner/resend-otp', payload)
     this.http.post('https://api.aadifintech.com/api/partner/resend-otp', payload)
       .subscribe({
         next: (res: any) => {
@@ -288,4 +288,17 @@ export class BlogPageComponent {
     this.canResend = false;
     this.resendTimer = 60;
   }
+
+  openWhatsApp() {
+  const message = `Hello Aadi Fintech,
+
+I am interested in becoming a partner with Aadi Fintech.
+
+Please share more details about the partnership program.
+
+Thank you.`;
+
+  const url = `https://wa.me/919953656810?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
 }

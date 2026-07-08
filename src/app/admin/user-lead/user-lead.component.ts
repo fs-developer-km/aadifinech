@@ -2,9 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { PageTrackerService } from '../../core/services/page-tracker.service';
+
+interface AssignmentHistoryItem {
+  employeeId: string;
+  employeeName: string;
+  assignedDate: string;
+  status: 'pending' | 'completed';
+  completedDate?: string;
+}
 
 interface LeadRecord {
   _id?: string;
@@ -17,10 +24,11 @@ interface LeadRecord {
   leadSource: string;
   leadStatus?: 'New' | 'Contacted' | 'Qualified' | 'Converted';
   notes: string;
-  assignTo?: Employee | null;  // ✅ SIRF YE RAKH, Employee type ka
+  assignTo?: Employee | null;
   assignedDate?: string;
-  // loader flag
-
+  status?: 'pending' | 'success';
+  jobStatus?: 'pending' | 'completed';
+  assignmentHistory?: AssignmentHistoryItem[];
 }
 
 interface Employee {
@@ -39,6 +47,7 @@ interface Employee {
 export class UserLeadComponent implements OnInit {
   showForm = false;
   isLoading = false;
+  isRefreshing = false; // ✅ manual refresh button ke liye
   message = '';
   messageType = '';
   isDeleting: boolean = false;
@@ -57,11 +66,7 @@ export class UserLeadComponent implements OnInit {
   searchQuery: string = '';
   sortBy: string = 'date';
   apiUrl = 'https://api.aadifintech.com/api/lead/list';
-  // apiUrl = 'http://localhost:5000/api/lead/list';
   employeeApiUrl = 'https://api.aadifintech.com/api/auth/employees';
-  // employeeApiUrl = 'http://localhost:5000/api/auth/employees';
-  refreshInterval = 5000;
-  private refreshSub?: Subscription;
 
   // Pagination
   currentPage: number = 1;
@@ -72,6 +77,9 @@ export class UserLeadComponent implements OnInit {
   showSuccessPopup = false;
   successMessage = '';
 
+  // Accordion
+  expandedLeadId: string | null = null;
+
   // Delete Modal
   showDeleteConfirm = false;
   leadToDelete: string | null = null;
@@ -79,13 +87,15 @@ export class UserLeadComponent implements OnInit {
   private isDragging = false;
   private startX = 0;
   private scrollLeft = 0;
+  private tableScrollBound = false;
 
   constructor(private http: HttpClient, private pagetrackerService: PageTrackerService) { }
 
   ngOnInit(): void {
     this.fetchLeads();
     this.fetchEmployees();
-     this.initTableScroll(); 
+    this.initTableScroll();
+    // ❌ Auto-refresh/polling hata diya — ab sirf manual refresh button se data update hoga
   }
 
   submitLead() {
@@ -99,7 +109,6 @@ export class UserLeadComponent implements OnInit {
     this.message = '';
 
     const apiUrl = 'https://api.aadifintech.com/api/lead/create';
-    // const apiUrl = 'http://localhost:5000/api/lead/create';
 
     this.http.post(apiUrl, this.newLeadForm).subscribe({
       next: (res: any) => {
@@ -123,53 +132,92 @@ export class UserLeadComponent implements OnInit {
     });
   }
 
-  fetchLeads(): void {
-    this.isLoading = true;
+  // ✅ Ek hi function — showLoader=true pe bada loader, false pe sirf refresh icon spin hota hai
+  fetchLeads(showLoader: boolean = true): void {
+    if (showLoader) {
+      this.isLoading = true;
+    } else {
+      this.isRefreshing = true;
+    }
 
     const token = localStorage.getItem('token');
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    // ✅ Cache-busting headers + timestamp query param, taaki browser 304/stale response na de
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache'
+    });
 
-    this.http.get<{ success: boolean; leads: LeadRecord[] }>(this.apiUrl, { headers })
+    const url = `${this.apiUrl}?_=${Date.now()}`;
+
+    this.http.get<{ success: boolean; leads: any[] }>(url, { headers })
       .subscribe({
         next: (res) => {
-          console.log("leads records", res);
-
           if (res.success && res.leads) {
-            this.leadsData = res.leads.map((lead, index) => ({
-              ...lead,
-              leadStatus: lead.leadStatus || 'New',
-              leadId: lead.leadId || `#LEAD-${String(index + 1).padStart(3, '0')}`,
-              assignedDate: lead.assignedDate || (lead.assignTo ? this.getCurrentDate() : '')
-            }));
+            this.leadsData = this.mapLeadsResponse(res.leads);
             this.pagetrackerService.updateTotalLeads(this.leadsData.length);
-            this.initTableScroll();
           }
           this.isLoading = false;
+          this.isRefreshing = false;
         },
         error: (err) => {
           console.error('Error fetching leads:', err);
           this.isLoading = false;
+          this.isRefreshing = false;
         }
       });
   }
 
+  // ✅ Refresh button isko call karega
+  refreshLeads(): void {
+    this.fetchLeads(false);
+  }
+
+  // ✅ Backend response -> UI-friendly LeadRecord[]
+private mapLeadsResponse(rawLeads: any[]): LeadRecord[] {
+  return rawLeads.map((lead, index) => {
+    const backendStatus = lead.status; // 'pending' | 'success'
+    const jobStatus: 'pending' | 'completed' | undefined = lead.assignTo
+      ? (backendStatus === 'success' ? 'completed' : 'pending')
+      : undefined;
+
+    const assignedDate = lead.assignedDate || (lead.assignTo ? this.getCurrentDate() : '');
+
+    // Backend history chronological order me deta hai (oldest first) — UI ke liye newest first chahiye
+    const assignmentHistory: AssignmentHistoryItem[] = (lead.assignmentHistory || [])
+      .map((h: any) => ({
+        employeeId: h.employee?._id || h.employee || '',
+        employeeName: h.employeeName || h.employee?.name || 'Employee',
+        assignedDate: h.assignedDate,
+        status: h.status,
+        completedDate: h.completedDate
+      }))
+      .reverse();
+
+    return {
+      ...lead,
+      leadStatus: lead.leadStatus || 'New',
+      leadId: lead.leadId || `#LEAD-${String(index + 1).padStart(3, '0')}`,
+      assignedDate,
+      jobStatus,
+      assignmentHistory
+    };
+  });
+}
 
   fetchEmployees(): void {
-  const token = localStorage.getItem('token');
-
+    const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get<{ success: boolean; employees: Employee[] }>(this.employeeApiUrl, {headers}).subscribe({
+    this.http.get<{ success: boolean; employees: Employee[] }>(this.employeeApiUrl, { headers }).subscribe({
       next: (res) => {
         if (res.success && res.employees) {
           this.employees = res.employees;
-          console.log("emplpoyess",this.employees);
         }
       },
       error: (err) => {
         console.error('Error fetching employees:', err);
-        // Fallback demo data
         this.employees = [
           { _id: '1', name: 'Rajesh Kumar', email: 'rajesh@company.com' },
           { _id: '2', name: 'Priya Sharma', email: 'priya@company.com' },
@@ -179,43 +227,65 @@ export class UserLeadComponent implements OnInit {
     });
   }
 
-  assignLead(leadId: string, employeeId: string): void {
-    if (!employeeId) return;
-
-    this.assigningLeadId = leadId;
-    const assignUrl = `https://api.aadifintech.com/api/lead/assign/${leadId}`;
-    // const assignUrl = `http://localhost:5000/api/lead/assign/${leadId}`;
-
-    const currentDate = this.getCurrentDate();
-
-    this.http.put(assignUrl, { employeeId }).subscribe({
-      next: (res: any) => {
-        if (res.success && res.lead) {
-          // ✅ Backend response se directly assignTo le raha hai (populated)
-          this.leadsData = this.leadsData.map(lead =>
-            lead._id === leadId
-              ? {
-                ...lead,
-                assignTo: res.lead.assignTo,  // ✅ Ye populated employee object hai
-                assignedDate: currentDate
-              }
-              : lead
-          );
-
-          this.successMessage = `Lead successfully assigned to ${res.lead.assignTo?.name || 'employee'}!`;
-          console.log("Lead assigned successfully", this.successMessage);
-
-          this.showSuccessPopup = true;
-          setTimeout(() => this.showSuccessPopup = false, 3000);
-        }
-        this.assigningLeadId = null;
-      },
-      error: (err) => {
-        console.error('Error assigning lead:', err);
-        this.assigningLeadId = null;
-      }
-    });
+  toggleExpand(leadId: string): void {
+    this.expandedLeadId = this.expandedLeadId === leadId ? null : leadId;
   }
+
+assignLead(leadId: string, employeeId: string): void {
+  if (!employeeId) return;
+
+  this.assigningLeadId = leadId;
+  const assignUrl = `https://api.aadifintech.com/api/lead/assign/${leadId}`;
+
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  this.http.put(assignUrl, { employeeId }, { headers }).subscribe({
+    next: (res: any) => {
+      this.assigningLeadId = null;
+
+      if (res.success) {
+        this.successMessage = `Lead successfully assigned to ${res.lead?.assignTo?.name || 'employee'}!`;
+        this.showSuccessPopup = true;
+        setTimeout(() => this.showSuccessPopup = false, 3000);
+
+        // ✅ Backend se fresh data lo — ab poori history bhi backend se hi aayegi
+        this.fetchLeads(false);
+      }
+    },
+    error: (err) => {
+      console.error('Error assigning lead:', err);
+      this.assigningLeadId = null;
+      alert('Lead assign karne me error aayi. Console check karo.');
+    }
+  });
+}
+
+
+markLeadComplete(leadId: string): void {
+  const completeUrl = `https://api.aadifintech.com/api/lead/update-status/${leadId}`;
+
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+  this.http.put(completeUrl, { status: 'success' }, { headers }).subscribe({
+    next: (res: any) => {
+      this.successMessage = 'Lead marked as completed!';
+      this.showSuccessPopup = true;
+      setTimeout(() => this.showSuccessPopup = false, 3000);
+
+      // ✅ Backend se fresh data lo
+      this.fetchLeads(false);
+    },
+    error: (err) => {
+      console.error('Error marking lead complete:', err);
+      alert('Status update failed. Check karo ki role allowed hai (admin ya assigned employee).');
+    }
+  });
+}
 
   getCurrentDate(): string {
     const now = new Date();
@@ -235,108 +305,29 @@ export class UserLeadComponent implements OnInit {
       printWindow.document.write(`
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { 
-              font-family: Arial, sans-serif; 
-              padding: 30px; 
-              background: #fff;
-            }
-            .header {
-              text-align: center;
-              margin-bottom: 30px;
-              padding-bottom: 20px;
-              border-bottom: 3px solid #dd3333;
-            }
-            h1 { 
-              color: #dd3333; 
-              font-size: 28px;
-              margin-bottom: 10px;
-            }
-            .report-info {
-              color: #666;
-              font-size: 14px;
-              margin-top: 8px;
-            }
-            .stats-row {
-              display: flex;
-              justify-content: center;
-              gap: 30px;
-              margin-top: 15px;
-            }
-            .stat-item {
-              background: #f5f5f5;
-              padding: 10px 20px;
-              border-radius: 8px;
-              font-weight: 600;
-            }
-            table { 
-              width: 100%; 
-              border-collapse: collapse; 
-              margin-top: 20px;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-            th, td { 
-              border: 1px solid #ddd; 
-              padding: 14px 12px; 
-              text-align: left; 
-              font-size: 13px;
-            }
-            th { 
-              background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%);
-              color: white; 
-              font-weight: 600;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-            }
-            tr:nth-child(even) { 
-              background: #f9f9f9; 
-            }
-            tr:hover {
-              background: #f5f5f5;
-            }
-            .assigned-row {
-              background: #e8f5e9 !important;
-            }
-            .assigned-badge {
-              display: inline-block;
-              background: #10b981;
-              color: white;
-              padding: 4px 10px;
-              border-radius: 6px;
-              font-size: 11px;
-              font-weight: 600;
-            }
-            .footer { 
-              margin-top: 40px; 
-              padding-top: 20px;
-              border-top: 2px solid #e0e0e0;
-              text-align: center; 
-              color: #999; 
-              font-size: 12px;
-            }
-            .source-badge {
-              display: inline-block;
-              background: rgba(221, 51, 51, 0.1);
-              color: #dd3333;
-              padding: 4px 10px;
-              border-radius: 6px;
-              font-size: 11px;
-              font-weight: 600;
-            }
-            @media print {
-              body { padding: 15px; }
-              .no-print { display: none; }
-            }
+            body { font-family: Arial, sans-serif; padding: 30px; background: #fff; }
+            .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #dd3333; }
+            h1 { color: #dd3333; font-size: 28px; margin-bottom: 10px; }
+            .report-info { color: #666; font-size: 14px; margin-top: 8px; }
+            .stats-row { display: flex; justify-content: center; gap: 30px; margin-top: 15px; }
+            .stat-item { background: #f5f5f5; padding: 10px 20px; border-radius: 8px; font-weight: 600; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+            th, td { border: 1px solid #ddd; padding: 14px 12px; text-align: left; font-size: 13px; }
+            th { background: linear-gradient(135deg, #dd3333 0%, #ff4444 100%); color: white; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+            tr:nth-child(even) { background: #f9f9f9; }
+            tr:hover { background: #f5f5f5; }
+            .assigned-row { background: #e8f5e9 !important; }
+            .assigned-badge { display: inline-block; background: #10b981; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+            .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0; text-align: center; color: #999; font-size: 12px; }
+            .source-badge { display: inline-block; background: rgba(221, 51, 51, 0.1); color: #dd3333; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+            @media print { body { padding: 15px; } .no-print { display: none; } }
           </style>
         `);
       printWindow.document.write('</head><body>');
       printWindow.document.write('<div class="header">');
       printWindow.document.write('<h1>📊 Leads Management Report</h1>');
       printWindow.document.write('<p class="report-info">Generated on: ' + new Date().toLocaleString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
       }) + '</p>');
       printWindow.document.write('<div class="stats-row">');
       printWindow.document.write('<div class="stat-item">Total Leads: ' + this.getTotalLeads() + '</div>');
@@ -349,9 +340,7 @@ export class UserLeadComponent implements OnInit {
       printWindow.document.write('</body></html>');
       printWindow.document.close();
 
-      setTimeout(() => {
-        printWindow.print();
-      }, 250);
+      setTimeout(() => { printWindow.print(); }, 250);
     }
   }
 
@@ -368,7 +357,6 @@ export class UserLeadComponent implements OnInit {
       const assignedClass = lead.assignTo ? 'assigned-row' : '';
       tableHTML += `<tr class="${assignedClass}">`;
 
-      // Lead Details
       tableHTML += '<td>';
       tableHTML += `<strong>${lead.leadName}</strong><br>`;
       tableHTML += `📞 ${lead.leadPhone}`;
@@ -377,17 +365,10 @@ export class UserLeadComponent implements OnInit {
       }
       tableHTML += '</td>';
 
-      // Date & Time
       tableHTML += `<td>${lead.submittedDate}<br><small style="color:#999"></small></td>`;
-      // tableHTML += `<td>${lead.submittedDate}<br><small style="color:#999">${lead.submittedTime}</small></td>`;
-
-      // Source
       tableHTML += `<td><span class="source-badge">${lead.leadSource}</span></td>`;
-
-      // Notes
       tableHTML += `<td>${lead.notes || '-'}</td>`;
 
-      // Assignment
       tableHTML += '<td>';
       if (lead.assignTo) {
         tableHTML += `<span class="assigned-badge">✓ ${lead.assignTo.name}</span>`;
@@ -473,7 +454,6 @@ export class UserLeadComponent implements OnInit {
     });
   }
 
-  // Pagination Methods
   getPaginatedLeads(): LeadRecord[] {
     const sorted = this.sortLeadsData();
     const startIndex = (this.currentPage - 1) * this.leadsPerPage;
@@ -508,7 +488,6 @@ export class UserLeadComponent implements OnInit {
     this.showForm = !this.showForm;
   }
 
-  // Delete Modal Methods
   openDeleteConfirm(leadId: string): void {
     this.leadToDelete = leadId;
     this.showDeleteConfirm = true;
@@ -528,9 +507,8 @@ export class UserLeadComponent implements OnInit {
 
   deleteLead(leadId: string): void {
     const deleteUrl = `https://api.aadifintech.com/api/lead/delete/${leadId}`;
-    // const deleteUrl = `http://localhost:5000/api/lead/delete/${leadId}`;
 
-    this.isDeleting = true;   // loader ON
+    this.isDeleting = true;
     const token = localStorage.getItem('token');
 
     const headers = {
@@ -547,7 +525,6 @@ export class UserLeadComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting lead:', err);
-
         if (err.status === 403) {
           alert('❌ Only admins can delete leads!');
         } else {
@@ -557,13 +534,9 @@ export class UserLeadComponent implements OnInit {
     });
   }
 
-
-  // excel export function
-
   exportToExcel(): void {
     const data = this.sortLeadsData();
 
-    // Excel data prepare karo
     const excelData = data.map(lead => ({
       'Lead Name': lead.leadName,
       'Phone': lead.leadPhone,
@@ -573,10 +546,10 @@ export class UserLeadComponent implements OnInit {
       'Source': lead.leadSource,
       'Notes': lead.notes || '-',
       'Assigned To': lead.assignTo ? lead.assignTo.name : 'Not Assigned',
-      'Assigned Date': lead.assignedDate || '-'
+      'Assigned Date': lead.assignedDate || '-',
+      'Job Status': lead.jobStatus || '-'
     }));
 
-    // CSV format me convert karo
     const headers = Object.keys(excelData[0]).join(',');
     const rows = excelData.map(row =>
       Object.values(row).map(val => `"${val}"`).join(',')
@@ -584,7 +557,6 @@ export class UserLeadComponent implements OnInit {
 
     const csv = `${headers}\n${rows}`;
 
-    // Download trigger karo
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -598,64 +570,53 @@ export class UserLeadComponent implements OnInit {
     document.body.removeChild(link);
   }
 
-
-  // get todat leads
-
-  // getTodayLeads(): number {
-  //   const today = new Date();
-  //   const todayStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
-
-  //   return this.leadsData.filter(lead => lead.submittedDate === todayStr).length;
-  // }
-
-
-  // function for scroll table anywhere
   initTableScroll(): void {
-  setTimeout(() => {
-    const tableScroll = document.querySelector('.table-scroll') as HTMLElement;
-    
-    if (tableScroll) {
-      // Mouse drag scroll
-      tableScroll.addEventListener('mousedown', (e) => {
-        this.isDragging = true;
-        this.startX = e.pageX - tableScroll.offsetLeft;
-        this.scrollLeft = tableScroll.scrollLeft;
-        tableScroll.style.cursor = 'grabbing';
-      });
+    if (this.tableScrollBound) return;
+    this.tableScrollBound = true;
 
-      tableScroll.addEventListener('mouseleave', () => {
-        this.isDragging = false;
-        tableScroll.style.cursor = 'grab';
-      });
+    setTimeout(() => {
+      const tableScroll = document.querySelector('.table-scroll') as HTMLElement;
 
-      tableScroll.addEventListener('mouseup', () => {
-        this.isDragging = false;
-        tableScroll.style.cursor = 'grab';
-      });
+      if (tableScroll) {
+        tableScroll.addEventListener('mousedown', (e) => {
+          this.isDragging = true;
+          this.startX = e.pageX - tableScroll.offsetLeft;
+          this.scrollLeft = tableScroll.scrollLeft;
+          tableScroll.style.cursor = 'grabbing';
+        });
 
-      tableScroll.addEventListener('mousemove', (e) => {
-        if (!this.isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - tableScroll.offsetLeft;
-        const walk = (x - this.startX) * 2; // Scroll speed
-        tableScroll.scrollLeft = this.scrollLeft - walk;
-      });
+        tableScroll.addEventListener('mouseleave', () => {
+          this.isDragging = false;
+          tableScroll.style.cursor = 'grab';
+        });
 
-      // Touch scroll for mobile
-      let touchStartX = 0;
-      let touchScrollLeft = 0;
+        tableScroll.addEventListener('mouseup', () => {
+          this.isDragging = false;
+          tableScroll.style.cursor = 'grab';
+        });
 
-      tableScroll.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].pageX - tableScroll.offsetLeft;
-        touchScrollLeft = tableScroll.scrollLeft;
-      });
+        tableScroll.addEventListener('mousemove', (e) => {
+          if (!this.isDragging) return;
+          e.preventDefault();
+          const x = e.pageX - tableScroll.offsetLeft;
+          const walk = (x - this.startX) * 2;
+          tableScroll.scrollLeft = this.scrollLeft - walk;
+        });
 
-      tableScroll.addEventListener('touchmove', (e) => {
-        const x = e.touches[0].pageX - tableScroll.offsetLeft;
-        const walk = (x - touchStartX) * 2;
-        tableScroll.scrollLeft = touchScrollLeft - walk;
-      });
-    }
-  }, 100);
-}
+        let touchStartX = 0;
+        let touchScrollLeft = 0;
+
+        tableScroll.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].pageX - tableScroll.offsetLeft;
+          touchScrollLeft = tableScroll.scrollLeft;
+        });
+
+        tableScroll.addEventListener('touchmove', (e) => {
+          const x = e.touches[0].pageX - tableScroll.offsetLeft;
+          const walk = (x - touchStartX) * 2;
+          tableScroll.scrollLeft = touchScrollLeft - walk;
+        });
+      }
+    }, 100);
+  }
 }

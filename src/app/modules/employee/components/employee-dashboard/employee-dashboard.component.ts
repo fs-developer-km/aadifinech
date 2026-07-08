@@ -108,11 +108,11 @@ export class EmployeeDashboardComponent {
   loading: boolean = false;
 
   private apiUrl = 'https://api.aadifintech.com/api/lead/list';
-  // private apiUrl = 'http://localhost:5000/api/lead/list';
+  // private apiUrl = 'https://api.aadifintech.com/api/lead/list';
   
   // ==================== NEW: ATTENDANCE API URL ====================
   private attendanceApiUrl = 'https://api.aadifintech.com/api/attendance';
-  // private attendanceApiUrl = 'http://localhost:5000/api/attendance';
+  // private attendanceApiUrl = 'https://api.aadifintech.com/api/attendance';
 
   // Lead Statistics
   totalLeads = 45;

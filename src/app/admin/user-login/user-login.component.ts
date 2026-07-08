@@ -55,7 +55,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   private scrollLeft = 0;
 
   // API URLs
-  // private deleteUserUrl = 'http://localhost:5000/api/auth/delete-user';
+  // private deleteUserUrl = 'https://api.aadifintech.com/api/auth/delete-user';
   private deleteUserUrl = 'https://api.aadifintech.com/api/auth/delete-user';
 
   constructor(

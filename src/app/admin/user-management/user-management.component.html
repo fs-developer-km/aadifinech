@@ -128,13 +128,30 @@
         </div>
 
         <!-- Reporting To (Optional) -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="emp-reporting">
             Reporting To
           </label>
           <input type="text" id="emp-reporting" name="reportingTo" [(ngModel)]="employeeForm.reportingTo"
             placeholder="Manager/Admin ID (optional)" class="form-input">
-        </div>
+        </div> -->
+
+        <!-- Reporting To (Optional Dropdown) -->
+<div class="form-group">
+  <label for="emp-reporting">
+    Reporting To
+  </label>
+  <select id="emp-reporting" name="reportingTo" [(ngModel)]="employeeForm.reportingTo" class="form-input">
+    <option value="">Select Manager/Admin</option>
+    <option *ngFor="let emp of employees" [value]="emp._id">
+      {{ emp.name }} <span *ngIf="emp.designation">- {{ emp.designation }}</span>
+    </option>
+  </select>
+  <small class="input-hint">
+    <i class="fas fa-info-circle"></i>
+    Select the manager or admin this employee reports to
+  </small>
+</div>
 
 
 

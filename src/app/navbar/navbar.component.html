@@ -116,7 +116,7 @@
                             Team
                           </a>
                           <a routerLink="/lifeinaadifintech">
-                           <i class="fas fa-users me-2" style="margin-right: 6px;"></i>
+                            <i class="fas fa-users me-2" style="margin-right: 6px;"></i>
                             Life At Aadifintech
                           </a>
 
@@ -218,8 +218,8 @@
 
                       <!-- 🔥 Login on Right -->
                       <li class="login-item">
-                        <a (click)="openLogin() " class="login-btn"
-                          style="color: #fff !important; cursor: pointer; font-weight: bold;">
+                        <a (click)="openLogin()" style="cursor:pointer"
+                          class="login-btn" style="color: #fff !important; cursor: pointer; font-weight: bold;">
                           <i class="fa-solid fa-right-to-bracket me-2"></i> Login
                         </a>
                       </li>
@@ -320,16 +320,17 @@
             </li>
 
             <li><a routerLink="/team" (click)="toggleMobileMenu()"><i class="fas fa-users me-2"></i> Team</a></li>
-            <li><a routerLink="/lifeinaadifintech" (click)="toggleMobileMenu()"><i class="fas fa-users me-2"></i> Life At Aadifintech</a></li>
+            <li><a routerLink="/lifeinaadifintech" (click)="toggleMobileMenu()"><i class="fas fa-users me-2"></i> Life
+                At Aadifintech</a></li>
             <li><a routerLink="/partner-page" (click)="toggleMobileMenu()"><i class="fas fa-handshake me-2"></i> Become
                 Partner</a></li>
             <li><a routerLink="/contact" (click)="toggleMobileMenu()"><i class="fas fa-envelope me-2"></i> Contact</a>
             </li>
 
             <li class="login-item" style="border:2px solid #DD3333 !important;">
-              <a (click)="openLogin()">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                <span class="ms-2">Login</span>
+              <a href="https://crm.aadifintech.com/login" target="_blank" rel="noopener noreferrer" class="login-btn"
+                style=" cursor: pointer; font-weight: bold;">
+                <i class="fa-solid fa-right-to-bracket me-2"></i> Login
               </a>
             </li>
 

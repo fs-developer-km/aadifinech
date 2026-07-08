@@ -43,7 +43,7 @@ interface Conveyance {
 })
 export class ConveyanceComponent implements OnInit {
   // API Configuration
-  // private apiUrl = 'http://localhost:5000/api'; // Change as per your backend
+  // private apiUrl = 'https://api.aadifintech.com/api'; // Change as per your backend
   private apiUrl = 'https://api.aadifintech.com/api'; // Change as per your backend
   private token = localStorage.getItem('token') || '';
   

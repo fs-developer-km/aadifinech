@@ -58,7 +58,7 @@ _id: string;
   ]
 })
 export class AdminIncentiveComponent implements OnInit {
-  // private apiUrl = 'http://localhost:5000/api';
+  // private apiUrl = 'https://api.aadifintech.com/api';
   private apiUrl = 'https://api.aadifintech.com/api';
   private token = localStorage.getItem('token') || '';
   

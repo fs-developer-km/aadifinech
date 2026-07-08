@@ -64,7 +64,7 @@ interface LeaveRequest {
 export class AttendanceDetailsComponent implements OnInit {
   private apiUrl = 'https://api.aadifintech.com/api/attendance/admin';
   // private apiUrl = 'https://aadifintech-backend.onrender.com/api/attendance/admin';
-  // private apiUrl = 'http://localhost:5000/api/attendance/admin';
+  // private apiUrl = 'https://api.aadifintech.com/api/attendance/admin';
   
   // Current state
   activeTab = 'today'; // today, reports, leaves, manual, statistics
@@ -117,6 +117,9 @@ export class AttendanceDetailsComponent implements OnInit {
   isSubmitting = false;
   showSuccessModal = false;
   successMessage = '';
+
+  monthlyReportEmployeeId = ''; // ✅ specific employee filter ke liye
+monthlyReportSummary: any = null; // ✅ totalEmployees, workingDays etc
 
   constructor(private http: HttpClient) {}
 
@@ -241,29 +244,41 @@ export class AttendanceDetailsComponent implements OnInit {
 
   // ==================== MONTHLY REPORT ====================
   
-  loadMonthlyReport() {
-    this.isLoading = true;
-    const params = {
-      month: this.selectedMonth.toString(),
-      year: this.selectedYear.toString()
-    };
+loadMonthlyReport() {
+  this.isLoading = true;
+  const params: any = {
+    month: this.selectedMonth.toString(),
+    year: this.selectedYear.toString()
+  };
 
-    this.http.get<any>(`${this.apiUrl}/monthly-report`, {
-      ...this.getHeaders(),
-      params
-    }).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.monthlyReport = response.report;
-        }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading monthly report:', error);
-        this.isLoading = false;
-      }
-    });
+  if (this.monthlyReportEmployeeId) {
+    params.employeeId = this.monthlyReportEmployeeId;
   }
+
+  this.http.get<any>(`${this.apiUrl}/monthly-report`, {
+    ...this.getHeaders(),
+    params
+  }).subscribe({
+    next: (response) => {
+      if (response.success) {
+        this.monthlyReport = response.report;
+        this.monthlyReportSummary = {
+          workingDays: response.workingDays,
+          totalEmployees: response.totalEmployees
+        };
+      }
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Error loading monthly report:', error);
+      this.isLoading = false;
+    }
+  });
+}
+
+onMonthlyEmployeeFilterChange(): void {
+  this.loadMonthlyReport();
+}
 
   changeReportMonth(delta: number) {
     this.selectedMonth += delta;

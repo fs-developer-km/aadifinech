@@ -57,52 +57,49 @@
       </div>
 
       <!-- GST Card -->
-      <div class="cs-card" (click)="open(2)">
-        <div class="cs-cert-header" style="background:linear-gradient(135deg,#fef0f0 0%,#fff5f5 100%)">
-          <div class="cs-cert-top">
-            <div class="cs-seal" style="background:#fdeaea;border-color:#dd3333;color:#dd3333">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/>
-                <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <span class="cs-type-badge" style="background:#dd3333">GST · Registered</span>
-          </div>
-          <div class="cs-issuer" style="color:#dd3333">GST Network</div>
-          <div class="cs-cert-name">GST Registration</div>
-          <div class="cs-watermark">
-            <svg viewBox="0 0 80 80" fill="none">
-              <circle cx="40" cy="40" r="36" stroke="#dd3333" stroke-width="2"/>
-              <circle cx="40" cy="40" r="28" stroke="#dd3333" stroke-width="1"/>
-              <text x="40" y="37" text-anchor="middle" font-size="7" fill="#dd3333" font-weight="700">GOVT</text>
-              <text x="40" y="47" text-anchor="middle" font-size="7" fill="#dd3333" font-weight="700">OF INDIA</text>
-            </svg>
-          </div>
-        </div>
-        <div class="cs-divider"></div>
-        <div class="cs-cert-body">
-          <div class="cs-reg-field">
-            <div class="cs-field-label">GSTIN</div>
-            <div class="cs-field-value" style="color:#dd3333">09ACHFA9348J1ZV</div>
-          </div>
-          <div class="cs-fields">
-            <div class="cs-field"><div class="cs-field-label">Issued On</div><div class="cs-field-value">19 Jan 2026</div></div>
-            <div class="cs-field"><div class="cs-field-label">State</div><div class="cs-field-value">09 · UP</div></div>
-          </div>
-          <div class="cs-status">
-            <span class="cs-status-dot"></span>
-            <span class="cs-status-text">Verified & Active</span>
-            <span class="cs-status-line"></span>
-          </div>
-        </div>
-        <div class="cs-card-footer">
-          <button class="cs-view-btn" style="background:#dd3333">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View
-          </button>
-          <div class="cs-authority">Govt. of India</div>
-        </div>
+  <!-- GST Card -->
+<div class="cs-card cs-no-click">
+  <div class="cs-cert-header" style="background:linear-gradient(135deg,#fef0f0 0%,#fff5f5 100%)">
+    <div class="cs-cert-top">
+      <div class="cs-seal" style="background:#fdeaea;border-color:#dd3333;color:#dd3333">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/>
+          <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
+      <span class="cs-type-badge" style="background:#dd3333">GST · Registered</span>
+    </div>
+    <div class="cs-issuer" style="color:#dd3333">GST Network</div>
+    <div class="cs-cert-name">GST Registration</div>
+    <div class="cs-watermark">
+      <svg viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="36" stroke="#dd3333" stroke-width="2"/>
+        <circle cx="40" cy="40" r="28" stroke="#dd3333" stroke-width="1"/>
+        <text x="40" y="37" text-anchor="middle" font-size="7" fill="#dd3333" font-weight="700">GOVT</text>
+        <text x="40" y="47" text-anchor="middle" font-size="7" fill="#dd3333" font-weight="700">OF INDIA</text>
+      </svg>
+    </div>
+  </div>
+  <div class="cs-divider"></div>
+  <div class="cs-cert-body">
+    <div class="cs-reg-field">
+      <div class="cs-field-label">GSTIN</div>
+      <div class="cs-field-value" style="color:#dd3333">09ACHFA9348J1ZV</div>
+    </div>
+    <div class="cs-fields">
+      <div class="cs-field"><div class="cs-field-label">Issued On</div><div class="cs-field-value">19 Jan 2026</div></div>
+      <div class="cs-field"><div class="cs-field-label">State</div><div class="cs-field-value">09 · UP</div></div>
+    </div>
+    <div class="cs-status">
+      <span class="cs-status-dot"></span>
+      <span class="cs-status-text">Verified & Active</span>
+      <span class="cs-status-line"></span>
+    </div>
+  </div>
+  <div class="cs-card-footer cs-card-footer--single">
+    <div class="cs-authority">Govt. of India</div>
+  </div>
+</div>
 
       <!-- Image Certificate 3 -->
       <div class="cs-card cs-img-card" (click)="openImg(3)">
@@ -213,7 +210,7 @@
     </div>
     <div class="cs-pdf-container">
       <iframe *ngIf="activeId === 1" src="certificates/AADI_FINTECH_Udyam_Registration_Certificate.pdf" class="cs-pdf-frame" type="application/pdf"></iframe>
-      <iframe *ngIf="activeId === 2" src="certificates/UP_GST_AADIFINTECH.pdf" class="cs-pdf-frame" type="application/pdf"></iframe>
+      <!-- <iframe *ngIf="activeId === 2" src="certificates/UP_GST_AADIFINTECH.pdf" class="cs-pdf-frame" type="application/pdf"></iframe> -->
     </div>
   </div>
 </div>

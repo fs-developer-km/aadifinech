@@ -28,13 +28,7 @@ export class LifeinaadifintechComponent {
       title: 'Mentorship & Training',
       description: 'Preparing the next generation of fintech experts with real-world exposure.'
     },
-    {
-      url: 'img/team/new222.jpeg',
-      alt: 'Interns Presentation',
-      category: 'internship',
-      title: 'Intern Showcase',
-      description: 'Our brilliant interns presenting their digital finance innovations.'
-    },
+  
     {
       url: 'img/team/new333.jpeg',
       alt: 'Interns Presentation',

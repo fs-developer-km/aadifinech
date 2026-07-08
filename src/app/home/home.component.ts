@@ -54,7 +54,7 @@ export class HomeComponent {
   link: any;
   @ViewChild('slickModal') slickModal!: SlickCarouselComponent;
    @ViewChild('chatBody') chatBody!: ElementRef;
-    private readonly WHATSAPP_NUMBER = '918299007927';
+    private readonly WHATSAPP_NUMBER = '919953656890';
 
 selectedLang: 'hi' | 'en' | null = null;
 
@@ -982,369 +982,654 @@ selectedLang: 'hi' | 'en' | null = null;
   private currentStep = 'welcome';
  
   // ─── Conversation Flow ───────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// REPLACE ONLY the `private flow` object inside HomeComponent with this block.
+// Everything else in home.component.ts stays exactly the same.
+// ─────────────────────────────────────────────────────────────────────────────
+
 private flow: { [key: string]: FlowNode } = {
 
+  // ── STEP 1 : Language Select ──────────────────────────────────────────────
   language_select: {
     message: `🌐 <b>Welcome to Aadi Fintech!</b><br><br>Please choose your preferred language:<br><br>अपनी भाषा चुनें:`,
     options: [
-      { label: '🇮🇳 हिंदी', value: 'hi', next: 'welcome_hi' },
+      { label: '🇮🇳 हिंदी',   value: 'hi', next: 'welcome_hi' },
       { label: '🇬🇧 English', value: 'en', next: 'welcome_en' },
     ]
   },
 
-  // ── HINDI FLOW ──────────────────────────────────────────
-  welcome_hi: {
+
+  // ══════════════════════════════════════════════════════════════════════════
+  //  HINDI FLOW
+  // ══════════════════════════════════════════════════════════════════════════
+
+welcome_hi: {
     message: `👋 <b>नमस्ते! Aadi Fintech में आपका स्वागत है।</b><br><br>
-मेरा नाम <b>Aadi</b> है — आपका virtual financial assistant! 🏦<br><br>
-आज मैं आपकी क्या मदद कर सकता हूँ?`,
+मैं हूँ <b>Aadi</b> — आपका virtual financial assistant! 🏦<br><br>
+आज मैं आपकी क्या सहायता कर सकता हूँ?`,
     options: [
-      { label: '💰 लोन & फंडिंग', value: 'loan', next: 'loan_menu_hi' },
-      { label: '📊 क्रेडिट & CIBIL', value: 'credit', next: 'credit_menu_hi' },
-      { label: '🏢 बिज़नेस सर्विसेज़', value: 'business', next: 'business_menu_hi' },
-      { label: '📈 इन्वेस्टमेंट & वेल्थ', value: 'wealth', next: 'wealth_menu_hi' },
-      { label: '🎓 ट्रेनिंग & प्लेसमेंट', value: 'training', next: 'training_menu_hi' },
-      { label: '📞 सीधे Consultant से बात', value: 'contact', next: 'collect_name_hi' },
+      { label: '📈 Investment',       value: 'investment', next: 'investment_menu_hi' },
+      { label: '🛡️ Insurance',        value: 'insurance',  next: 'insurance_menu_hi'  },
+      { label: '💰 Loans',            value: 'loans',      next: 'loans_menu_hi'      },
+      { label: '🎓 Career & Finance Training', value: 'career', next: 'career_menu_hi' },
+      { label: '📞 Connect With Us',  value: 'connect',    next: 'connect_menu_hi'    },
     ]
   },
 
-  loan_menu_hi: {
-    message: `💰 <b>लोन & फंडिंग सॉल्यूशंस</b><br><br>हम इनमें expert हैं। आप कौन सा लोन ढूंढ रहे हैं?`,
+  // ── INVESTMENT (Hindi) ────────────────────────────────────────────────────
+  investment_menu_hi: {
+    message: `📈 <b>Investment सर्विसेज़</b><br><br>आप किस Investment सर्विस में रुचि रखते हैं?`,
     options: [
-      { label: '🏭 बिज़नेस / SME लोन', value: 'sme', next: 'loan_sme_hi' },
-      { label: '💼 वर्किंग कैपिटल लोन', value: 'wc', next: 'loan_wc_hi' },
-      { label: '🏗️ मशीनरी / प्रोजेक्ट लोन', value: 'proj', next: 'loan_proj_hi' },
-      { label: '📄 बिल डिस्काउंटिंग', value: 'bill', next: 'loan_bill_hi' },
-      { label: '🌍 एक्सपोर्ट फाइनेंस', value: 'export', next: 'loan_export_hi' },
-      { label: '⬅️ वापस जाएं', value: 'back', next: 'welcome_hi' },
+      { label: '📊 Demat Account',             value: 'demat',      next: 'inv_demat_hi'      },
+      { label: '💹 Trading Account',           value: 'trading',    next: 'inv_trading_hi'    },
+      { label: '📋 Investment Advisory',       value: 'advisory',   next: 'inv_advisory_hi'   },
+      { label: '🏦 Mutual Funds',              value: 'mf',         next: 'inv_mf_hi'         },
+      { label: '📅 SIP Investment',            value: 'sip',        next: 'inv_sip_hi'        },
+      { label: '🚀 IPO Services',              value: 'ipo',        next: 'inv_ipo_hi'        },
+      { label: '💼 Portfolio Management',      value: 'portfolio',  next: 'inv_portfolio_hi'  },
+      { label: '🎯 Retirement Planning',       value: 'retirement', next: 'inv_retirement_hi' },
+      { label: '💡 Wealth Creation Solutions', value: 'wealth',     next: 'inv_wealth_hi'     },
+      { label: '⬅️ वापस जाएं',                value: 'back',       next: 'welcome_hi'        },
     ]
   },
 
-  loan_sme_hi: {
-    message: `🏭 <b>बिज़नेस / SME लोन</b><br><br>
-हम आपको <b>₹10 लाख से ₹50 करोड़</b> तक के business loans दिलाते हैं।<br><br>
-✅ Competitive interest rates<br>
-✅ Minimal documentation<br>
-✅ Quick approval — 3-7 working days<br>
-✅ Collateral & non-collateral दोनों options`,
+  inv_demat_hi: {
+    message: `📊 <b>Demat Account</b><br><br>
+Aadi Fintech के साथ अपना Demat Account खोलें:<br><br>
+✅ <b>Free Demat Account</b> — Zero opening & maintenance charges<br>
+✅ Paperless KYC — मिनटों में complete<br>
+✅ Equity, F&O, Currency, Commodity — सब एक जगह<br>
+✅ Advanced trading platform with real-time data<br>
+✅ Expert guidance हर step पर`,
     options: [
       { label: '📋 Free Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ लोन मेनू', value: 'back', next: 'loan_menu_hi' },
+      { label: '⬅️ Investment मेनू',            value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_trading_hi: {
+    message: `💹 <b>Trading Account</b><br><br>
+Professional trading के लिए best platform:<br><br>
+✅ Equity & Derivatives trading<br>
+✅ Intraday & positional दोनों strategies<br>
+✅ Real-time market data & charts<br>
+✅ Mobile + desktop trading app<br>
+✅ Research reports & expert tips`,
+    options: [
+      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',       value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_advisory_hi: {
+    message: `📋 <b>Investment Advisory</b><br><br>
+Expert financial advisors आपकी wealth बढ़ाने में मदद करेंगे:<br><br>
+✅ Personalized investment planning<br>
+✅ Risk profiling & asset allocation<br>
+✅ Tax-efficient investment strategies<br>
+✅ Regular portfolio review<br>
+✅ Goal-based investment planning`,
+    options: [
+      { label: '📋 Free Advisory Session बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',                value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_mf_hi: {
+    message: `🏦 <b>Mutual Funds</b><br><br>
+Mutual Funds में smart investment करें:<br><br>
+✅ 1000+ mutual fund schemes<br>
+✅ Direct & regular plans दोनों available<br>
+✅ Equity, Debt, Hybrid funds<br>
+✅ ELSS for tax saving<br>
+✅ Zero commission direct plans`,
+    options: [
+      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',       value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_sip_hi: {
+    message: `📅 <b>SIP Investment</b><br><br>
+Systematic Investment Plan — छोटी राशि से बड़ी wealth बनाएं:<br><br>
+✅ ₹500/month से शुरू करें<br>
+✅ Rupee cost averaging का फायदा<br>
+✅ Long-term wealth creation<br>
+✅ Auto-debit सुविधा<br>
+✅ Pause / stop anytime`,
+    options: [
+      { label: '📋 SIP Start करें',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू', value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_ipo_hi: {
+    message: `🚀 <b>IPO Services</b><br><br>
+नई companies में early-stage investment का मौका:<br><br>
+✅ Upcoming IPO alerts<br>
+✅ IPO analysis & recommendations<br>
+✅ Seamless online IPO application<br>
+✅ ASBA & UPI application support<br>
+✅ Grey market premium tracking`,
+    options: [
+      { label: '📋 IPO Advisory बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',       value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_portfolio_hi: {
+    message: `💼 <b>Portfolio Management</b><br><br>
+Professional portfolio management services:<br><br>
+✅ Customized investment portfolio<br>
+✅ Regular rebalancing<br>
+✅ Risk-adjusted returns<br>
+✅ Dedicated relationship manager<br>
+✅ Monthly performance reports`,
+    options: [
+      { label: '📋 Portfolio Review बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',           value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_retirement_hi: {
+    message: `🎯 <b>Retirement Planning</b><br><br>
+आज से plan करें, कल को secure बनाएं:<br><br>
+✅ Retirement corpus calculation<br>
+✅ NPS (National Pension System) advisory<br>
+✅ Annuity & pension products<br>
+✅ Senior citizen investment plans<br>
+✅ Tax-efficient retirement strategy`,
+    options: [
+      { label: '📋 Retirement Plan बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',          value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  inv_wealth_hi: {
+    message: `💡 <b>Wealth Creation Solutions</b><br><br>
+Long-term financial freedom के लिए smart strategies:<br><br>
+✅ Goal-based wealth planning<br>
+✅ Multi-asset diversification<br>
+✅ Tax & estate planning<br>
+✅ HNI & ultra-HNI solutions<br>
+✅ Quarterly wealth review`,
+    options: [
+      { label: '📋 Wealth Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Investment मेनू',              value: 'back',    next: 'investment_menu_hi' },
+    ]
+  },
+
+  // ── INSURANCE (Hindi) ─────────────────────────────────────────────────────
+  insurance_menu_hi: {
+    message: `🛡️ <b>Insurance सर्विसेज़</b><br><br>
+सही insurance से खुद को और अपने परिवार को सुरक्षित रखें। आपको किस insurance में रुचि है?`,
+    options: [
+      { label: '❤️ Life Insurance',              value: 'life',     next: 'ins_life_hi'     },
+      { label: '🏥 Health Insurance',            value: 'health',   next: 'ins_health_hi'   },
+      { label: '🛡️ Term Insurance',             value: 'term',     next: 'ins_term_hi'     },
+      { label: '🚗 Motor Insurance',             value: 'motor',    next: 'ins_motor_hi'    },
+      { label: '🛵 Two-Wheeler Insurance',       value: 'bike',     next: 'ins_bike_hi'     },
+      { label: '✈️ Travel Insurance',            value: 'travel',   next: 'ins_travel_hi'   },
+      { label: '🏠 Home Insurance',              value: 'home',     next: 'ins_home_hi'     },
+      { label: '🩺 Personal Accident Insurance', value: 'accident', next: 'ins_accident_hi' },
+      { label: '🎯 Retirement/Pension Plans',    value: 'pension',  next: 'ins_pension_hi'  },
+      { label: '⬅️ वापस जाएं',                  value: 'back',     next: 'welcome_hi'      },
+    ]
+  },
+
+  ins_life_hi: {
+    message: `❤️ <b>Life Insurance</b><br><br>
+अपने परिवार का भविष्य सुरक्षित करें:<br><br>
+✅ Whole life & endowment plans<br>
+✅ ULIP (Unit Linked Insurance Plans)<br>
+✅ Money-back policies<br>
+✅ Child future security plans<br>
+✅ Best premium rates comparison`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_health_hi: {
+    message: `🏥 <b>Health Insurance</b><br><br>
+Medical expenses से चिंता मुक्त रहें:<br><br>
+✅ Individual & family floater plans<br>
+✅ Cashless hospitalisation network<br>
+✅ Critical illness cover<br>
+✅ Senior citizen health plans<br>
+✅ Top-up & super top-up plans`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_term_hi: {
+    message: `🛡️ <b>Term Insurance</b><br><br>
+सबसे किफायती life cover:<br><br>
+✅ High sum assured at low premium<br>
+✅ ₹1 Crore+ cover available<br>
+✅ Death benefit + critical illness rider<br>
+✅ Online instant policy<br>
+✅ 30-day free-look period`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_motor_hi: {
+    message: `🚗 <b>Motor Insurance</b><br><br>
+अपनी car को हर situation में protect करें:<br><br>
+✅ Third-party & comprehensive cover<br>
+✅ Instant online renewal<br>
+✅ Cashless garage network 5000+<br>
+✅ Zero depreciation add-on<br>
+✅ 24x7 roadside assistance`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_bike_hi: {
+    message: `🛵 <b>Two-Wheeler Insurance</b><br><br>
+अपनी bike/scooter की सुरक्षा करें:<br><br>
+✅ Third-party (mandatory) cover<br>
+✅ Own damage cover<br>
+✅ Personal accident cover for rider<br>
+✅ Instant renewal online<br>
+✅ No-claim bonus protection`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_travel_hi: {
+    message: `✈️ <b>Travel Insurance</b><br><br>
+Domestic या international — हर trip secure करें:<br><br>
+✅ Flight delay & cancellation cover<br>
+✅ Medical emergency abroad<br>
+✅ Lost baggage & passport cover<br>
+✅ Trip cancellation cover<br>
+✅ Adventure sports cover available`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_home_hi: {
+    message: `🏠 <b>Home Insurance</b><br><br>
+अपने घर और सामान को protect करें:<br><br>
+✅ Structure & content cover<br>
+✅ Fire, flood, earthquake protection<br>
+✅ Burglary & theft cover<br>
+✅ Tenant & landlord policies<br>
+✅ Affordable annual premiums`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_accident_hi: {
+    message: `🩺 <b>Personal Accident Insurance</b><br><br>
+दुर्घटना में financial support पाएं:<br><br>
+✅ Accidental death benefit<br>
+✅ Permanent disability cover<br>
+✅ Temporary disability income<br>
+✅ Hospital cash benefit<br>
+✅ Low premium, high cover`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  ins_pension_hi: {
+    message: `🎯 <b>Retirement / Pension Plans</b><br><br>
+Retirement के बाद भी regular income पाएं:<br><br>
+✅ Guaranteed pension plans<br>
+✅ Deferred & immediate annuity options<br>
+✅ NPS integration possible<br>
+✅ Tax benefits under 80CCC<br>
+✅ Joint life annuity option`,
+    options: [
+      { label: '📋 Free Quote लें',   value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Insurance मेनू', value: 'back',    next: 'insurance_menu_hi' },
+    ]
+  },
+
+  // ── LOANS (Hindi) ─────────────────────────────────────────────────────────
+  loans_menu_hi: {
+    message: `💰 <b>Loan सर्विसेज़</b><br><br>
+आपको किस प्रकार का Loan चाहिए?`,
+    options: [
+      { label: '👤 Personal Loan',                 value: 'personal',  next: 'loan_personal_hi'  },
+      { label: '🏠 Home Loan',                     value: 'home',      next: 'loan_home_hi'      },
+      { label: '🏭 Business Loan',                 value: 'business',  next: 'loan_business_hi'  },
+      { label: '🔐 Loan Against Security',         value: 'security',  next: 'loan_security_hi'  },
+      { label: '🏗️ Loan Against Property',        value: 'property',  next: 'loan_property_hi'  },
+      { label: '🚘 Vehicle Loan',                  value: 'vehicle',   next: 'loan_vehicle_hi'   },
+      { label: '💼 Working Capital Loan',          value: 'wc',        next: 'loan_wc_hi'        },
+      { label: '🏢 MSME Loan',                     value: 'msme',      next: 'loan_msme_hi'      },
+      { label: '⬅️ वापस जाएं',                    value: 'back',      next: 'welcome_hi'        },
+    ]
+  },
+
+  loan_personal_hi: {
+    message: `👤 <b>Personal Loan</b><br><br>
+किसी भी जरूरत के लिए instant personal loan:<br><br>
+✅ ₹50,000 से ₹40 लाख तक<br>
+✅ No collateral required<br>
+✅ Approval in 24-48 hours<br>
+✅ Flexible tenure 12-60 months<br>
+✅ Minimal documentation`,
+    options: [
+      { label: '📋 Apply Now',       value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू',      value: 'back',    next: 'loans_menu_hi' },
+    ]
+  },
+
+  loan_home_hi: {
+    message: `🏠 <b>Home Loan</b><br><br>
+अपने सपनों का घर बनाएं Aadi Fintech के साथ:<br><br>
+✅ ₹5 लाख से ₹10 करोड़ तक<br>
+✅ Competitive interest rates<br>
+✅ Up to 30 years tenure<br>
+✅ Balance transfer facility<br>
+✅ Top-up loan available`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
+    ]
+  },
+
+  loan_business_hi: {
+    message: `🏭 <b>Business Loan</b><br><br>
+Secured & Unsecured दोनों options उपलब्ध:<br><br>
+✅ ₹1 लाख से ₹50 करोड़ तक<br>
+✅ Collateral & non-collateral दोनों<br>
+✅ Quick approval in 3-7 working days<br>
+✅ SME, MSME, startup — सभी eligible<br>
+✅ Flexible repayment options`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
+    ]
+  },
+
+  loan_security_hi: {
+    message: `🔐 <b>Loan Against Security</b><br><br>
+अपनी investments को collateral बनाकर instant loan पाएं:<br><br>
+✅ Loan against shares / mutual funds<br>
+✅ Loan against FD / bonds<br>
+✅ Low interest rates<br>
+✅ No prepayment charges<br>
+✅ Overdraft facility available`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
+    ]
+  },
+
+  loan_property_hi: {
+    message: `🏗️ <b>Loan Against Property</b><br><br>
+अपनी property की value unlock करें:<br><br>
+✅ Residential & commercial दोनों<br>
+✅ Up to 70% of property value<br>
+✅ Loan up to ₹25 Crore<br>
+✅ Tenure up to 15 years<br>
+✅ Balance transfer facility`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
+    ]
+  },
+
+  loan_vehicle_hi: {
+    message: `🚘 <b>Vehicle Loan</b><br><br>
+New या used vehicle के लिए easy financing:<br><br>
+✅ Car, bike, commercial vehicle — सभी<br>
+✅ Up to 100% on-road price funding<br>
+✅ Low EMI options<br>
+✅ Quick approval<br>
+✅ Attractive interest rates`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
     ]
   },
 
   loan_wc_hi: {
-    message: `💼 <b>वर्किंग कैपिटल लोन</b><br><br>
-Business के दिन-प्रतिदिन के खर्चों के लिए instant working capital:<br><br>
+    message: `💼 <b>Working Capital Loan</b><br><br>
+Business की रोज़मर्रा की जरूरतें पूरी करें:<br><br>
 ✅ CC / OD limit enhancement<br>
-✅ Invoice financing available<br>
-✅ Flexible repayment terms<br>
-✅ Turnover-based limit`,
+✅ Invoice financing<br>
+✅ Flexible revolving credit<br>
+✅ Turnover-based eligibility<br>
+✅ Fast disbursement`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ लोन मेनू', value: 'back', next: 'loan_menu_hi' },
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
     ]
   },
 
-  loan_proj_hi: {
-    message: `🏗️ <b>मशीनरी / प्रोजेक्ट लोन</b><br><br>
-नए equipment या project के लिए funding:<br><br>
-✅ Term loans upto 7 years<br>
-✅ Bank + NBFC दोनों options<br>
-✅ Subsidy-linked loans available<br>
-✅ MSME registered businesses preferred`,
+  loan_msme_hi: {
+    message: `🏢 <b>MSME Loan</b><br><br>
+Micro, Small & Medium Enterprises के लिए special funding:<br><br>
+✅ Government-backed MSME schemes<br>
+✅ MUDRA loan up to ₹10 lakh<br>
+✅ CGTMSE collateral-free loans<br>
+✅ Subsidy-linked loan options<br>
+✅ Priority sector lending benefits`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ लोन मेनू', value: 'back', next: 'loan_menu_hi' },
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Loan मेनू', value: 'back',    next: 'loans_menu_hi' },
     ]
   },
 
-  loan_bill_hi: {
-    message: `📄 <b>बिल डिस्काउंटिंग सॉल्यूशंस</b><br><br>
-अपने invoices को instant cash में convert करें:<br><br>
-✅ Trade invoice discounting<br>
-✅ Purchase order financing<br>
-✅ 80-90% invoice value instantly<br>
-✅ B2B & B2G दोनों accepted`,
+// ── CAREER & FINANCE TRAINING (Hindi) ─────────────────────────────────────
+  career_menu_hi: {
+    message: `🎓 <b>Career & Finance Training</b><br><br>
+Banking, FinTech aur Financial Institutions mein <b>guaranteed placement assistance</b> के साथ अपना finance career शुरू करें!<br><br>
+आप किस category में हैं?`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ लोन मेनू', value: 'back', next: 'loan_menu_hi' },
+      { label: '📘 12th Pass Students', value: 'twelve',   next: 'career_twelve_hi' },
+      { label: '🎓 Graduate Students',  value: 'graduate', next: 'career_graduate_hi' },
+      { label: '💼 Placement Roles देखें', value: 'roles', next: 'career_roles_hi' },
+      { label: '⬅️ वापस जाएं',          value: 'back',     next: 'welcome_hi' },
     ]
   },
 
-  loan_export_hi: {
-    message: `🌍 <b>एक्सपोर्ट बिल डिस्काउंटिंग</b><br><br>
-Export invoices पर तुरंत funding पाएं:<br><br>
-✅ Pre & post shipment financing<br>
-✅ Letter of Credit (LC) discounting<br>
-✅ Foreign currency loans<br>
-✅ RBI compliant process`,
+  career_twelve_hi: {
+    message: `📘 <b>12th Pass Students के लिए Tracks</b><br><br>
+<b>1️⃣ Starter Program — 3 Months (₹2,000)</b><br>
+Basic banking operations, finance fundamentals, customer handling, KYC & documentation.<br>
+✅ Guaranteed placement — Bank Sales, CASA, Loan BDM, Aadi Fintech<br><br>
+<b>2️⃣ Professional Program — 6 Months (₹3,000)</b> ⭐ Most Popular<br>
+Advanced finance, wealth management, securities, trading basics, investment advisory.<br>
+✅ Better position & higher salary — Wealth CP, Securities, Trading Associate<br><br>
+<b>3️⃣ Elite Program — 3 Years (₹4,000)</b><br>
+Complete banking & finance mastery + Skill India Government Certificate.<br>
+✅ Senior roles — Branch Manager, Credit Officer, Investment Manager`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ लोन मेनू', value: 'back', next: 'loan_menu_hi' },
+      { label: '📋 Apply Now (12th Pass)', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Career मेनू',           value: 'back',    next: 'career_menu_hi' },
     ]
   },
 
-  credit_menu_hi: {
-    message: `📊 <b>क्रेडिट & CIBIL सर्विसेज़</b><br><br>
-आपका credit score आपकी financial reputation है। हम इसे बेहतर बनाते हैं!`,
+  career_graduate_hi: {
+    message: `🎓 <b>Graduate Students के लिए Tracks</b><br><br>
+<b>1️⃣ Graduate Starter — 3 Months (₹2,000)</b><br>
+Banking operations + finance + practical exposure Day 1 से।<br>
+✅ Bank roles, BDM, CASA, Aadi Fintech, Loan roles<br><br>
+<b>2️⃣ Graduate Professional — 6 Months (₹3,000)</b> ⭐ Most Popular<br>
+Wealth management, CP roles, securities, trading, investment training।<br>
+✅ Mid-senior roles in private banks & NBFCs<br><br>
+<b>3️⃣ Graduate Elite — 3 Years (₹4,000)</b><br>
+Complete banker training + Skill India certification।<br>
+✅ Relationship Manager, Credit Manager, Branch Manager roles`,
     options: [
-      { label: '📉 CIBIL Score सुधारें', value: 'cibil', next: 'credit_cibil_hi' },
-      { label: '🏆 क्रेडिट रेटिंग Advisory', value: 'rating', next: 'credit_rating_hi' },
-      { label: '🔧 लोन रिस्ट्रक्चरिंग', value: 'restructure', next: 'credit_restructure_hi' },
-      { label: '⬅️ वापस जाएं', value: 'back', next: 'welcome_hi' },
+      { label: '📋 Apply Now (Graduate)', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Career मेनू',          value: 'back',    next: 'career_menu_hi' },
     ]
   },
 
-  credit_cibil_hi: {
-    message: `📉 <b>CIBIL Score सुधार</b><br><br>
-खराब CIBIL score से loan reject हो रहा है? हम fix करेंगे!<br><br>
-✅ Free CIBIL analysis<br>
-✅ Bureau records में error rectification<br>
-✅ Step-by-step improvement plan<br>
-✅ Score 600 → 750+ — 6 महीनों में संभव<br>
-✅ 500+ cases successfully improved`,
+  career_roles_hi: {
+    message: `💼 <b>Real Job Paths Finance Industry में</b><br><br>
+✅ Bank Sales Executive<br>
+✅ Loan BDM<br>
+✅ Aadi Fintech Associate<br>
+✅ Wealth CP<br>
+✅ CASA Executive<br>
+✅ Securities Dealer<br>
+✅ Trading Associate<br>
+✅ Investment Advisor<br><br>
+Training + Interview prep + Hiring partner coordination — सब कुछ included! 🎯`,
     options: [
-      { label: '📋 Free Analysis बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ क्रेडिट मेनू', value: 'back', next: 'credit_menu_hi' },
+      { label: '📋 Apply करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Career मेनू', value: 'back',   next: 'career_menu_hi' },
     ]
   },
 
-  credit_rating_hi: {
-    message: `🏆 <b>क्रेडिट रेटिंग Advisory</b><br><br>
-Corporate credit rating बेहतर करो, बेहतर rates पाओ:<br><br>
-✅ CRISIL / ICRA / CARE rating advisory<br>
-✅ Bank rating improvement strategy<br>
-✅ Financial statement optimization<br>
-✅ Lender presentation support`,
+
+  // ── CAREER & FINANCE TRAINING (English) ───────────────────────────────────
+  career_menu_en: {
+    message: `🎓 <b>Career & Finance Training</b><br><br>
+Build your finance career with <b>guaranteed placement assistance</b> in Banks, FinTech & Financial Institutions!<br><br>
+Which category are you in?`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ क्रेडिट मेनू', value: 'back', next: 'credit_menu_hi' },
+      { label: '📘 12th Pass Students', value: 'twelve',   next: 'career_twelve_en' },
+      { label: '🎓 Graduate Students',  value: 'graduate', next: 'career_graduate_en' },
+      { label: '💼 View Placement Roles', value: 'roles', next: 'career_roles_en' },
+      { label: '⬅️ Go Back',            value: 'back',     next: 'welcome_en' },
     ]
   },
 
-  credit_restructure_hi: {
-    message: `🔧 <b>लोन रिस्ट्रक्चरिंग सर्विसेज़</b><br><br>
-EMI का बोझ कम करो, financial health restore करो:<br><br>
-✅ NPA / bad loan resolution<br>
-✅ OTS (One Time Settlement) advisory<br>
-✅ Interest rate renegotiation<br>
-✅ Bank negotiation support<br>
-✅ RBI SARFAESI guidance`,
+  career_twelve_en: {
+    message: `📘 <b>Tracks for 12th Pass Students</b><br><br>
+<b>1️⃣ Starter Program — 3 Months (₹2,000)</b><br>
+Basic banking operations, finance fundamentals, customer handling, KYC & documentation.<br>
+✅ Guaranteed placement — Bank Sales, CASA, Loan BDM, Aadi Fintech<br><br>
+<b>2️⃣ Professional Program — 6 Months (₹3,000)</b> ⭐ Most Popular<br>
+Advanced finance, wealth management, securities, trading basics, investment advisory.<br>
+✅ Better position & higher salary — Wealth CP, Securities, Trading Associate<br><br>
+<b>3️⃣ Elite Program — 3 Years (₹4,000)</b><br>
+Complete banking & finance mastery + Skill India Government Certificate.<br>
+✅ Senior roles — Branch Manager, Credit Officer, Investment Manager`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ क्रेडिट मेनू', value: 'back', next: 'credit_menu_hi' },
+      { label: '📋 Apply Now (12th Pass)', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Career Menu',           value: 'back',    next: 'career_menu_en' },
     ]
   },
 
-  business_menu_hi: {
-    message: `🏢 <b>बिज़नेस सर्विसेज़</b><br><br>
-Aadi Fintech आपके business को 360° support देता है।`,
+  career_graduate_en: {
+    message: `🎓 <b>Tracks for Graduate Students</b><br><br>
+<b>1️⃣ Graduate Starter — 3 Months (₹2,000)</b><br>
+Banking operations + finance + practical exposure from Day 1.<br>
+✅ Bank roles, BDM, CASA, Aadi Fintech, Loan roles<br><br>
+<b>2️⃣ Graduate Professional — 6 Months (₹3,000)</b> ⭐ Most Popular<br>
+Wealth management, CP roles, securities, trading, investment training.<br>
+✅ Mid-senior roles in private banks & NBFCs<br><br>
+<b>3️⃣ Graduate Elite — 3 Years (₹4,000)</b><br>
+Complete banker training + Skill India certification.<br>
+✅ Relationship Manager, Credit Manager, Branch Manager roles`,
     options: [
-      { label: '🏦 Banking Consultancy', value: 'banking', next: 'biz_banking_hi' },
-      { label: '⚖️ Compliance Advisory', value: 'compliance', next: 'biz_compliance_hi' },
-      { label: '🏠 Real Estate Advisory', value: 'realestate', next: 'biz_realestate_hi' },
-      { label: '💻 Tech सर्विसेज़', value: 'tech', next: 'biz_tech_hi' },
-      { label: '📣 Digital Marketing', value: 'digital', next: 'biz_digital_hi' },
-      { label: '⬅️ वापस जाएं', value: 'back', next: 'welcome_hi' },
+      { label: '📋 Apply Now (Graduate)', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Career Menu',          value: 'back',    next: 'career_menu_en' },
     ]
   },
 
-  biz_banking_hi: {
-    message: `🏦 <b>Banking Domain Expert Consultancy</b><br><br>
-<b>Mr. Raj Sharma</b> — Ex-McKinsey, 22+ साल का banking experience:<br><br>
-✅ Interest cost optimization<br>
-✅ CC/OD limit enhancement<br>
-✅ Bank relationship management<br>
-✅ Strategic banking restructuring<br><br>
-<i>"Lower Interest, Higher Limits, Better Financial Health"</i>`,
+  career_roles_en: {
+    message: `💼 <b>Real Job Paths in the Finance Industry</b><br><br>
+✅ Bank Sales Executive<br>
+✅ Loan BDM<br>
+✅ Aadi Fintech Associate<br>
+✅ Wealth CP<br>
+✅ CASA Executive<br>
+✅ Securities Dealer<br>
+✅ Trading Associate<br>
+✅ Investment Advisor<br><br>
+Training + Interview prep + Hiring partner coordination — all included! 🎯`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ बिज़नेस मेनू', value: 'back', next: 'business_menu_hi' },
+      { label: '📋 Apply Now', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Career Menu', value: 'back',  next: 'career_menu_en' },
     ]
   },
 
-  biz_compliance_hi: {
-    message: `⚖️ <b>Compliance Advisory</b><br><br>
-Business को legally compliant रखें:<br><br>
-✅ RERA compliance<br>
-✅ Company Law advisory<br>
-✅ GST & tax compliance<br>
-✅ RBI regulatory guidance`,
+  // ── CONNECT WITH US (Hindi) ───────────────────────────────────────────────
+  connect_menu_hi: {
+    message: `📞 <b>Connect With Us</b><br><br>
+हमसे कैसे connect करना चाहते हैं?`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ बिज़नेस मेनू', value: 'back', next: 'business_menu_hi' },
+      { label: '💬 WhatsApp Chat',       value: 'whatsapp', next: 'connect_whatsapp_hi' },
+      { label: '📲 Request a Callback',  value: 'callback', next: 'collect_name_hi'     },
+      { label: '📧 Email Support',       value: 'email',    next: 'connect_email_hi'    },
+      { label: '🏢 Visit Office',        value: 'office',   next: 'connect_office_hi'   },
+      { label: '⬅️ वापस जाएं',          value: 'back',     next: 'welcome_hi'          },
     ]
   },
 
-  biz_realestate_hi: {
-    message: `🏠 <b>Real Estate Advisory</b><br><br>
-Property investment में सही decision करें:<br><br>
-✅ Property financing guidance<br>
-✅ RERA-compliant projects only<br>
-✅ Loan against property<br>
-✅ Commercial & residential दोनों`,
+  connect_whatsapp_hi: {
+    message: `💬 <b>WhatsApp Chat</b><br><br>
+हमारे expert से directly WhatsApp पर बात करें!<br><br>
+📱 <b>+91 99536 56810</b><br><br>
+हम typically <b>instant reply</b> करते हैं।`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ बिज़नेस मेनू', value: 'back', next: 'business_menu_hi' },
+      { label: '💬 WhatsApp पर Chat करें', value: 'wa',   next: 'collect_name_hi' },
+      { label: '⬅️ Connect मेनू',          value: 'back', next: 'connect_menu_hi' },
     ]
   },
 
-  biz_tech_hi: {
-    message: `💻 <b>Tech सर्विसेज़</b><br><br>
-Modern technology से business को scale करें:<br><br>
-✅ CRM implementation<br>
-✅ Digital tools setup<br>
-✅ Fintech software consulting<br>
-✅ Process automation`,
+  connect_email_hi: {
+    message: `📧 <b>Email Support</b><br><br>
+📩 हमें email करें:<br>
+<b>customer.care@aadifintech.com</b><br><br>
+हम <b>24 घंटे के अंदर</b> आपके email का जवाब देते हैं।`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ बिज़नेस मेनू', value: 'back', next: 'business_menu_hi' },
+      { label: '📋 Callback Request करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Connect मेनू',          value: 'back',    next: 'connect_menu_hi' },
     ]
   },
 
-  biz_digital_hi: {
-    message: `📣 <b>Digital Marketing</b><br><br>
-अपने brand को online strong बनाओ:<br><br>
-✅ SEO & content marketing<br>
-✅ Social media management<br>
-✅ Lead generation campaigns<br>
-✅ Google & Meta ads`,
+  connect_office_hi: {
+    message: `🏢 <b>Visit Our Office</b><br><br>
+📍 <b>Address:</b><br>
+i-THUM Building, Tower-A,<br>
+Sector-62, Noida,<br>
+Uttar Pradesh — 201301<br><br>
+🕐 <b>Office Hours:</b> Mon–Fri, 09:00 AM – 05:00 PM`,
     options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ बिज़नेस मेनू', value: 'back', next: 'business_menu_hi' },
+      { label: '📋 Appointment बुक करें', value: 'consult', next: 'collect_name_hi' },
+      { label: '⬅️ Connect मेनू',         value: 'back',    next: 'connect_menu_hi' },
     ]
   },
 
-  wealth_menu_hi: {
-    message: `📈 <b>इन्वेस्टमेंट & वेल्थ मैनेजमेंट</b><br><br>
-अपनी wealth smartly grow करें। कौन सी service चाहिए?`,
-    options: [
-      { label: '📊 वेल्थ मैनेजमेंट', value: 'wealth', next: 'wealth_detail_hi' },
-      { label: '📈 IIFL Demat Account', value: 'demat', next: 'wealth_demat_hi' },
-      { label: '🌐 Foreign Services', value: 'foreign', next: 'wealth_foreign_hi' },
-      { label: '⬅️ वापस जाएं', value: 'back', next: 'welcome_hi' },
-    ]
-  },
-
-  wealth_detail_hi: {
-    message: `📊 <b>वेल्थ मैनेजमेंट</b><br><br>
-Personalized wealth solutions:<br><br>
-✅ Portfolio management<br>
-✅ Mutual fund advisory<br>
-✅ Fixed deposit optimization<br>
-✅ Tax-efficient investment planning`,
-    options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ वेल्थ मेनू', value: 'back', next: 'wealth_menu_hi' },
-    ]
-  },
-
-  wealth_demat_hi: {
-    message: `📈 <b>IIFL Demat & Trading Account</b><br><br>
-✅ <b>Free Demat Account</b> — कोई charges नहीं<br>
-✅ Paperless KYC — मिनटों में<br>
-✅ Equity, F&O, Currency, Commodity<br>
-✅ Advanced trading platform<br><br>
-<b>Powered by IIFL Capital</b> 🏦`,
-    options: [
-      { label: '🔗 Account खोलें', value: 'demat_open', next: 'demat_redirect_hi' },
-      { label: '📋 पहले Consultation', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ वेल्थ मेनू', value: 'back', next: 'wealth_menu_hi' },
-    ]
-  },
-
-  demat_redirect_hi: {
-    message: `✅ IIFL Capital का link आपके लिए open हो रहा है!<br><br>
-कोई भी सवाल हो तो हम यहाँ हैं। 😊`,
-    options: [
-      { label: '🏠 Main Menu', value: 'home', next: 'welcome_hi' },
-      { label: '📞 Expert से बात करें', value: 'consult', next: 'collect_name_hi' },
-    ]
-  },
-
-  wealth_foreign_hi: {
-    message: `🌐 <b>End-to-End Foreign Services</b><br><br>
-✅ Foreign currency loans<br>
-✅ FEMA compliance advisory<br>
-✅ NRI banking solutions<br>
-✅ Import/Export financing`,
-    options: [
-      { label: '📋 Consultation बुक करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ वेल्थ मेनू', value: 'back', next: 'wealth_menu_hi' },
-    ]
-  },
-
-  training_menu_hi: {
-    message: `🎓 <b>ट्रेनिंग & प्लेसमेंट सर्विसेज़</b><br><br>
-Fintech/Banking में अपना career बनाओ। क्या चाहिए?`,
-    options: [
-      { label: '🎓 Internship Program', value: 'intern', next: 'training_intern_hi' },
-      { label: '💼 Job Placement', value: 'job', next: 'training_job_hi' },
-      { label: '📚 Banking Domain Training', value: 'course', next: 'training_course_hi' },
-      { label: '⬅️ वापस जाएं', value: 'back', next: 'welcome_hi' },
-    ]
-  },
-
-  training_intern_hi: {
-    message: `🎓 <b>Internship Program</b><br><br>
-Aadi Fintech के साथ internship करें:<br><br>
-✅ Paid internship opportunities<br>
-✅ Live project experience<br>
-✅ Certificate + recommendation letter<br>
-✅ PPO (Pre-Placement Offer) के chances`,
-    options: [
-      { label: '📋 अभी Apply करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ ट्रेनिंग मेनू', value: 'back', next: 'training_menu_hi' },
-    ]
-  },
-
-  training_job_hi: {
-    message: `💼 <b>Job Placement सर्विसेज़</b><br><br>
-हमारा placement network बहुत strong है:<br><br>
-✅ Banking & NBFC placements<br>
-✅ Resume & interview preparation<br>
-✅ 500+ successful placements<br>
-✅ Freshers से experienced — सभी welcome`,
-    options: [
-      { label: '📋 Register करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ ट्रेनिंग मेनू', value: 'back', next: 'training_menu_hi' },
-    ]
-  },
-
-  training_course_hi: {
-    message: `📚 <b>Banking Domain Training</b><br><br>
-Mr. Raj Sharma के साथ सीखें:<br><br>
-✅ Credit analysis & appraisal<br>
-✅ MSME banking operations<br>
-✅ Loan documentation<br>
-✅ Online + offline batches available`,
-    options: [
-      { label: '📋 Enroll करें', value: 'consult', next: 'collect_name_hi' },
-      { label: '⬅️ ट्रेनिंग मेनू', value: 'back', next: 'training_menu_hi' },
-    ]
-  },
-
+  // ── LEAD COLLECTION (Hindi) ───────────────────────────────────────────────
   collect_name_hi: {
-    message: `📋 <b>Free Consultation बुक करें</b><br><br>
-हम आपको expert से connect करेंगे! 🎯<br><br>
-पहले अपना <b>नाम</b> बताएं:`,
+    message: `📋 <b>बेहतरीन! हम आपकी मदद करेंगे।</b><br><br>
+हमारे Financial Expert जल्द आपसे contact करेंगे। 🎯<br><br>
+पहले कृपया अपना <b>नाम</b> बताएं:`,
     options: []
   },
 
   collect_phone_hi: {
-    message: `👍 शुक्रिया! अब अपना <b>WhatsApp नंबर</b> share करें (10 digit):`,
+    message: `👍 धन्यवाद! अब अपना <b>WhatsApp नंबर</b> share करें (10 अंक):`,
     options: []
   },
 
-  collect_service_hi: {
-    message: `📌 आप मुख्यतः किस service के बारे में जानना चाहते हैं?`,
+collect_service_hi: {
+    message: `📌 आप मुख्यतः किस service के बारे में बात करना चाहते हैं?`,
     options: [
-      { label: '💰 लोन/फंडिंग', value: 'Loan/Funding', next: 'send_whatsapp_hi' },
-      { label: '📊 CIBIL/क्रेडिट', value: 'CIBIL/Credit Rating', next: 'send_whatsapp_hi' },
-      { label: '🏢 Business Consultancy', value: 'Business Consultancy', next: 'send_whatsapp_hi' },
-      { label: '📈 Investment/Wealth', value: 'Investment/Wealth', next: 'send_whatsapp_hi' },
-      { label: '🎓 Training/Placement', value: 'Training/Placement', next: 'send_whatsapp_hi' },
-      { label: '🔄 अन्य / General Query', value: 'General Query', next: 'send_whatsapp_hi' },
+      { label: '📈 Investment',     value: 'Investment',     next: 'send_whatsapp_hi' },
+      { label: '🛡️ Insurance',     value: 'Insurance',      next: 'send_whatsapp_hi' },
+      { label: '💰 Loan',          value: 'Loan',           next: 'send_whatsapp_hi' },
+      { label: '🎓 Career Training', value: 'Career Training', next: 'send_whatsapp_hi' },
+      { label: '🔄 General Query', value: 'General Query',  next: 'send_whatsapp_hi' },
     ]
   },
 
@@ -1357,350 +1642,502 @@ WhatsApp पर हमारी team से directly connect हो रहे �
   },
 
   final_message_hi: {
-    message: `🎉 <b>Congratulations! आपका request submit हो गया।</b><br><br>
-हमारी team <b>24 घंटे के अंदर</b> आपसे contact करेगी।<br><br>
+    message: `🎉 <b>आपका request submit हो गया!</b><br><br>
+हमारे Financial Expert <b>जल्द ही</b> आपसे contact करेंगे।<br><br>
+<b>Aadi Fintech</b> को choose करने के लिए धन्यवाद! 🙏<br><br>
 कुछ और जानना है?`,
     options: [
-      { label: '🏠 Main Menu', value: 'home', next: 'welcome_hi' },
-      { label: '✕ Chat बंद करें', value: 'close', next: 'close' },
+      { label: '🏠 Main Menu',   value: 'home',  next: 'welcome_hi' },
+      { label: '✕ Chat बंद करें', value: 'close', next: 'close'      },
     ]
   },
 
-  // ── ENGLISH FLOW ────────────────────────────────────────
-  welcome_en: {
+
+  // ══════════════════════════════════════════════════════════════════════════
+  //  ENGLISH FLOW
+  // ══════════════════════════════════════════════════════════════════════════
+
+welcome_en: {
     message: `👋 <b>Welcome to Aadi Fintech!</b><br><br>
 I'm <b>Aadi</b> — your virtual financial assistant! 🏦<br><br>
-How can I help you today?`,
+How can I assist you today?`,
     options: [
-      { label: '💰 Loan & Funding', value: 'loan', next: 'loan_menu_en' },
-      { label: '📊 Credit & CIBIL', value: 'credit', next: 'credit_menu_en' },
-      { label: '🏢 Business Services', value: 'business', next: 'business_menu_en' },
-      { label: '📈 Investment & Wealth', value: 'wealth', next: 'wealth_menu_en' },
-      { label: '🎓 Training & Placement', value: 'training', next: 'training_menu_en' },
-      { label: '📞 Talk to a Consultant', value: 'contact', next: 'collect_name_en' },
+      { label: '📈 Investment',      value: 'investment', next: 'investment_menu_en' },
+      { label: '🛡️ Insurance',       value: 'insurance',  next: 'insurance_menu_en'  },
+      { label: '💰 Loans',           value: 'loans',      next: 'loans_menu_en'      },
+      { label: '🎓 Career & Finance Training', value: 'career', next: 'career_menu_en' },
+      { label: '📞 Connect With Us', value: 'connect',    next: 'connect_menu_en'    },
     ]
   },
 
-  loan_menu_en: {
-    message: `💰 <b>Loan & Funding Solutions</b><br><br>We're experts in this space. What type of loan are you looking for?`,
+  // ── INVESTMENT (English) ──────────────────────────────────────────────────
+  investment_menu_en: {
+    message: `📈 <b>Investment Services</b><br><br>Which investment service are you interested in?`,
     options: [
-      { label: '🏭 Business / SME Loan', value: 'sme', next: 'loan_sme_en' },
-      { label: '💼 Working Capital Loan', value: 'wc', next: 'loan_wc_en' },
-      { label: '🏗️ Machinery / Project Loan', value: 'proj', next: 'loan_proj_en' },
-      { label: '📄 Bill Discounting', value: 'bill', next: 'loan_bill_en' },
-      { label: '🌍 Export Finance', value: 'export', next: 'loan_export_en' },
-      { label: '⬅️ Go Back', value: 'back', next: 'welcome_en' },
+      { label: '📊 Demat Account',             value: 'demat',      next: 'inv_demat_en'      },
+      { label: '💹 Trading Account',           value: 'trading',    next: 'inv_trading_en'    },
+      { label: '📋 Investment Advisory',       value: 'advisory',   next: 'inv_advisory_en'   },
+      { label: '🏦 Mutual Funds',              value: 'mf',         next: 'inv_mf_en'         },
+      { label: '📅 SIP Investment',            value: 'sip',        next: 'inv_sip_en'        },
+      { label: '🚀 IPO Services',              value: 'ipo',        next: 'inv_ipo_en'        },
+      { label: '💼 Portfolio Management',      value: 'portfolio',  next: 'inv_portfolio_en'  },
+      { label: '🎯 Retirement Planning',       value: 'retirement', next: 'inv_retirement_en' },
+      { label: '💡 Wealth Creation Solutions', value: 'wealth',     next: 'inv_wealth_en'     },
+      { label: '⬅️ Go Back',                  value: 'back',       next: 'welcome_en'        },
     ]
   },
 
-  loan_sme_en: {
-    message: `🏭 <b>Business / SME Loan</b><br><br>
-We help you secure business loans from <b>₹10 Lakh to ₹50 Crore</b>.<br><br>
-✅ Competitive interest rates<br>
-✅ Minimal documentation<br>
-✅ Quick approval — 3-7 working days<br>
-✅ Collateral & non-collateral options`,
+  inv_demat_en: {
+    message: `📊 <b>Demat Account</b><br><br>
+Open your Demat Account with Aadi Fintech:<br><br>
+✅ <b>Free Demat Account</b> — Zero opening & maintenance charges<br>
+✅ Paperless KYC — completed in minutes<br>
+✅ Equity, F&O, Currency, Commodity — all in one place<br>
+✅ Advanced trading platform with real-time data<br>
+✅ Expert guidance at every step`,
     options: [
       { label: '📋 Book Free Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Loan Menu', value: 'back', next: 'loan_menu_en' },
+      { label: '⬅️ Investment Menu',        value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_trading_en: {
+    message: `💹 <b>Trading Account</b><br><br>
+The best platform for professional trading:<br><br>
+✅ Equity & Derivatives trading<br>
+✅ Intraday & positional strategies<br>
+✅ Real-time market data & charts<br>
+✅ Mobile + desktop trading app<br>
+✅ Research reports & expert tips`,
+    options: [
+      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',   value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_advisory_en: {
+    message: `📋 <b>Investment Advisory</b><br><br>
+Expert financial advisors to help grow your wealth:<br><br>
+✅ Personalized investment planning<br>
+✅ Risk profiling & asset allocation<br>
+✅ Tax-efficient investment strategies<br>
+✅ Regular portfolio review<br>
+✅ Goal-based investment planning`,
+    options: [
+      { label: '📋 Book Free Advisory Session', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',            value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_mf_en: {
+    message: `🏦 <b>Mutual Funds</b><br><br>
+Invest smart with mutual funds:<br><br>
+✅ 1000+ mutual fund schemes<br>
+✅ Direct & regular plans both available<br>
+✅ Equity, Debt, Hybrid funds<br>
+✅ ELSS for tax saving<br>
+✅ Zero commission direct plans`,
+    options: [
+      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',   value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_sip_en: {
+    message: `📅 <b>SIP Investment</b><br><br>
+Build big wealth with small, regular investments:<br><br>
+✅ Start from just ₹500/month<br>
+✅ Benefit of rupee cost averaging<br>
+✅ Long-term wealth creation<br>
+✅ Auto-debit facility<br>
+✅ Pause / stop anytime`,
+    options: [
+      { label: '📋 Start SIP Now',   value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu', value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_ipo_en: {
+    message: `🚀 <b>IPO Services</b><br><br>
+Invest early in promising new companies:<br><br>
+✅ Upcoming IPO alerts<br>
+✅ IPO analysis & recommendations<br>
+✅ Seamless online IPO application<br>
+✅ ASBA & UPI application support<br>
+✅ Grey market premium tracking`,
+    options: [
+      { label: '📋 Book IPO Advisory', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',   value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_portfolio_en: {
+    message: `💼 <b>Portfolio Management</b><br><br>
+Professional portfolio management services:<br><br>
+✅ Customized investment portfolio<br>
+✅ Regular rebalancing<br>
+✅ Risk-adjusted returns<br>
+✅ Dedicated relationship manager<br>
+✅ Monthly performance reports`,
+    options: [
+      { label: '📋 Book Portfolio Review', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',       value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_retirement_en: {
+    message: `🎯 <b>Retirement Planning</b><br><br>
+Plan today, secure tomorrow:<br><br>
+✅ Retirement corpus calculation<br>
+✅ NPS (National Pension System) advisory<br>
+✅ Annuity & pension products<br>
+✅ Senior citizen investment plans<br>
+✅ Tax-efficient retirement strategy`,
+    options: [
+      { label: '📋 Book Retirement Plan', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',      value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  inv_wealth_en: {
+    message: `💡 <b>Wealth Creation Solutions</b><br><br>
+Smart strategies for long-term financial freedom:<br><br>
+✅ Goal-based wealth planning<br>
+✅ Multi-asset diversification<br>
+✅ Tax & estate planning<br>
+✅ HNI & ultra-HNI solutions<br>
+✅ Quarterly wealth review`,
+    options: [
+      { label: '📋 Book Wealth Consultation', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Investment Menu',          value: 'back',    next: 'investment_menu_en' },
+    ]
+  },
+
+  // ── INSURANCE (English) ───────────────────────────────────────────────────
+  insurance_menu_en: {
+    message: `🛡️ <b>Insurance Services</b><br><br>
+Protect yourself and your family with the right insurance. What are you looking for?`,
+    options: [
+      { label: '❤️ Life Insurance',              value: 'life',     next: 'ins_life_en'     },
+      { label: '🏥 Health Insurance',            value: 'health',   next: 'ins_health_en'   },
+      { label: '🛡️ Term Insurance',             value: 'term',     next: 'ins_term_en'     },
+      { label: '🚗 Motor Insurance',             value: 'motor',    next: 'ins_motor_en'    },
+      { label: '🛵 Two-Wheeler Insurance',       value: 'bike',     next: 'ins_bike_en'     },
+      { label: '✈️ Travel Insurance',            value: 'travel',   next: 'ins_travel_en'   },
+      { label: '🏠 Home Insurance',              value: 'home',     next: 'ins_home_en'     },
+      { label: '🩺 Personal Accident Insurance', value: 'accident', next: 'ins_accident_en' },
+      { label: '🎯 Retirement/Pension Plans',    value: 'pension',  next: 'ins_pension_en'  },
+      { label: '⬅️ Go Back',                    value: 'back',     next: 'welcome_en'      },
+    ]
+  },
+
+  ins_life_en: {
+    message: `❤️ <b>Life Insurance</b><br><br>
+Secure your family's future:<br><br>
+✅ Whole life & endowment plans<br>
+✅ ULIP (Unit Linked Insurance Plans)<br>
+✅ Money-back policies<br>
+✅ Child future security plans<br>
+✅ Best premium rates comparison`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_health_en: {
+    message: `🏥 <b>Health Insurance</b><br><br>
+Stay worry-free from medical expenses:<br><br>
+✅ Individual & family floater plans<br>
+✅ Cashless hospitalisation network<br>
+✅ Critical illness cover<br>
+✅ Senior citizen health plans<br>
+✅ Top-up & super top-up plans`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_term_en: {
+    message: `🛡️ <b>Term Insurance</b><br><br>
+The most affordable life cover:<br><br>
+✅ High sum assured at low premium<br>
+✅ ₹1 Crore+ cover available<br>
+✅ Death benefit + critical illness rider<br>
+✅ Instant online policy<br>
+✅ 30-day free-look period`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_motor_en: {
+    message: `🚗 <b>Motor Insurance</b><br><br>
+Protect your car in every situation:<br><br>
+✅ Third-party & comprehensive cover<br>
+✅ Instant online renewal<br>
+✅ 5000+ cashless garage network<br>
+✅ Zero depreciation add-on<br>
+✅ 24x7 roadside assistance`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_bike_en: {
+    message: `🛵 <b>Two-Wheeler Insurance</b><br><br>
+Protect your bike or scooter:<br><br>
+✅ Third-party (mandatory) cover<br>
+✅ Own damage cover<br>
+✅ Personal accident cover for rider<br>
+✅ Instant online renewal<br>
+✅ No-claim bonus protection`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_travel_en: {
+    message: `✈️ <b>Travel Insurance</b><br><br>
+Secure every domestic or international trip:<br><br>
+✅ Flight delay & cancellation cover<br>
+✅ Medical emergency abroad<br>
+✅ Lost baggage & passport cover<br>
+✅ Trip cancellation cover<br>
+✅ Adventure sports cover available`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_home_en: {
+    message: `🏠 <b>Home Insurance</b><br><br>
+Protect your home and belongings:<br><br>
+✅ Structure & content cover<br>
+✅ Fire, flood, earthquake protection<br>
+✅ Burglary & theft cover<br>
+✅ Tenant & landlord policies<br>
+✅ Affordable annual premiums`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_accident_en: {
+    message: `🩺 <b>Personal Accident Insurance</b><br><br>
+Get financial support in case of accidents:<br><br>
+✅ Accidental death benefit<br>
+✅ Permanent disability cover<br>
+✅ Temporary disability income<br>
+✅ Hospital cash benefit<br>
+✅ Low premium, high cover`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  ins_pension_en: {
+    message: `🎯 <b>Retirement / Pension Plans</b><br><br>
+Enjoy regular income even after retirement:<br><br>
+✅ Guaranteed pension plans<br>
+✅ Deferred & immediate annuity options<br>
+✅ NPS integration possible<br>
+✅ Tax benefits under 80CCC<br>
+✅ Joint life annuity option`,
+    options: [
+      { label: '📋 Get Free Quote',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Insurance Menu', value: 'back',    next: 'insurance_menu_en' },
+    ]
+  },
+
+  // ── LOANS (English) ───────────────────────────────────────────────────────
+  loans_menu_en: {
+    message: `💰 <b>Loan Services</b><br><br>
+What type of loan are you looking for?`,
+    options: [
+      { label: '👤 Personal Loan',           value: 'personal', next: 'loan_personal_en' },
+      { label: '🏠 Home Loan',               value: 'home',     next: 'loan_home_en'     },
+      { label: '🏭 Business Loan',           value: 'business', next: 'loan_business_en' },
+      { label: '🔐 Loan Against Security',   value: 'security', next: 'loan_security_en' },
+      { label: '🏗️ Loan Against Property',  value: 'property', next: 'loan_property_en' },
+      { label: '🚘 Vehicle Loan',            value: 'vehicle',  next: 'loan_vehicle_en'  },
+      { label: '💼 Working Capital Loan',    value: 'wc',       next: 'loan_wc_en'       },
+      { label: '🏢 MSME Loan',               value: 'msme',     next: 'loan_msme_en'     },
+      { label: '⬅️ Go Back',                value: 'back',     next: 'welcome_en'       },
+    ]
+  },
+
+  loan_personal_en: {
+    message: `👤 <b>Personal Loan</b><br><br>
+Instant personal loan for any need:<br><br>
+✅ ₹50,000 to ₹40 Lakh<br>
+✅ No collateral required<br>
+✅ Approval in 24-48 hours<br>
+✅ Flexible tenure 12-60 months<br>
+✅ Minimal documentation`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
+    ]
+  },
+
+  loan_home_en: {
+    message: `🏠 <b>Home Loan</b><br><br>
+Build your dream home with Aadi Fintech:<br><br>
+✅ ₹5 Lakh to ₹10 Crore<br>
+✅ Competitive interest rates<br>
+✅ Tenure up to 30 years<br>
+✅ Balance transfer facility<br>
+✅ Top-up loan available`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
+    ]
+  },
+
+  loan_business_en: {
+    message: `🏭 <b>Business Loan</b><br><br>
+Secured & Unsecured — both options available:<br><br>
+✅ ₹1 Lakh to ₹50 Crore<br>
+✅ Collateral & non-collateral options<br>
+✅ Quick approval in 3-7 working days<br>
+✅ SME, MSME, startup — all eligible<br>
+✅ Flexible repayment options`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
+    ]
+  },
+
+  loan_security_en: {
+    message: `🔐 <b>Loan Against Security</b><br><br>
+Use your investments as collateral for instant loans:<br><br>
+✅ Loan against shares / mutual funds<br>
+✅ Loan against FD / bonds<br>
+✅ Low interest rates<br>
+✅ No prepayment charges<br>
+✅ Overdraft facility available`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
+    ]
+  },
+
+  loan_property_en: {
+    message: `🏗️ <b>Loan Against Property</b><br><br>
+Unlock the value of your property:<br><br>
+✅ Residential & commercial both<br>
+✅ Up to 70% of property value<br>
+✅ Loan up to ₹25 Crore<br>
+✅ Tenure up to 15 years<br>
+✅ Balance transfer facility`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
+    ]
+  },
+
+  loan_vehicle_en: {
+    message: `🚘 <b>Vehicle Loan</b><br><br>
+Easy financing for new or used vehicles:<br><br>
+✅ Car, bike, commercial vehicle — all covered<br>
+✅ Up to 100% on-road price funding<br>
+✅ Low EMI options<br>
+✅ Quick approval<br>
+✅ Attractive interest rates`,
+    options: [
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
     ]
   },
 
   loan_wc_en: {
     message: `💼 <b>Working Capital Loan</b><br><br>
-Instant working capital for day-to-day business operations:<br><br>
+Meet your day-to-day business needs:<br><br>
 ✅ CC / OD limit enhancement<br>
-✅ Invoice financing available<br>
-✅ Flexible repayment terms<br>
-✅ Turnover-based limit`,
+✅ Invoice financing<br>
+✅ Flexible revolving credit<br>
+✅ Turnover-based eligibility<br>
+✅ Fast disbursement`,
     options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Loan Menu', value: 'back', next: 'loan_menu_en' },
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
     ]
   },
 
-  loan_proj_en: {
-    message: `🏗️ <b>Machinery / Project Loan</b><br><br>
-Funding for new equipment or projects:<br><br>
-✅ Term loans up to 7 years<br>
-✅ Bank + NBFC options<br>
-✅ Subsidy-linked loans available<br>
-✅ MSME registered businesses preferred`,
+  loan_msme_en: {
+    message: `🏢 <b>MSME Loan</b><br><br>
+Special funding for Micro, Small & Medium Enterprises:<br><br>
+✅ Government-backed MSME schemes<br>
+✅ MUDRA loan up to ₹10 lakh<br>
+✅ CGTMSE collateral-free loans<br>
+✅ Subsidy-linked loan options<br>
+✅ Priority sector lending benefits`,
     options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Loan Menu', value: 'back', next: 'loan_menu_en' },
+      { label: '📋 Apply Now',  value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Loan Menu', value: 'back',    next: 'loans_menu_en' },
     ]
   },
 
-  loan_bill_en: {
-    message: `📄 <b>Bill Discounting Solutions</b><br><br>
-Convert your invoices into instant cash:<br><br>
-✅ Trade invoice discounting<br>
-✅ Purchase order financing<br>
-✅ 80-90% invoice value instantly<br>
-✅ B2B & B2G both accepted`,
+  // ── CONNECT WITH US (English) ─────────────────────────────────────────────
+  connect_menu_en: {
+    message: `📞 <b>Connect With Us</b><br><br>
+How would you like to reach us?`,
     options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Loan Menu', value: 'back', next: 'loan_menu_en' },
+      { label: '💬 WhatsApp Chat',      value: 'whatsapp', next: 'connect_whatsapp_en' },
+      { label: '📲 Request a Callback', value: 'callback', next: 'collect_name_en'      },
+      { label: '📧 Email Support',      value: 'email',    next: 'connect_email_en'     },
+      { label: '🏢 Visit Office',       value: 'office',   next: 'connect_office_en'    },
+      { label: '⬅️ Go Back',           value: 'back',     next: 'welcome_en'           },
     ]
   },
 
-  loan_export_en: {
-    message: `🌍 <b>Export Bill Discounting</b><br><br>
-Get instant funding on export invoices:<br><br>
-✅ Pre & post shipment financing<br>
-✅ Letter of Credit (LC) discounting<br>
-✅ Foreign currency loans<br>
-✅ RBI compliant process`,
+  connect_whatsapp_en: {
+    message: `💬 <b>WhatsApp Chat</b><br><br>
+Chat directly with our expert on WhatsApp!<br><br>
+📱 <b>+91 99536 56810</b><br><br>
+We typically reply <b>instantly</b>.`,
     options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Loan Menu', value: 'back', next: 'loan_menu_en' },
+      { label: '💬 Chat on WhatsApp', value: 'wa',   next: 'collect_name_en' },
+      { label: '⬅️ Connect Menu',     value: 'back', next: 'connect_menu_en' },
     ]
   },
 
-  credit_menu_en: {
-    message: `📊 <b>Credit & CIBIL Services</b><br><br>
-Your credit score is your financial reputation. We help you improve it!`,
+  connect_email_en: {
+    message: `📧 <b>Email Support</b><br><br>
+📩 Email us at:<br>
+<b>customer.care@aadifintech.com</b><br><br>
+We respond to all emails <b>within 24 hours</b>.`,
     options: [
-      { label: '📉 CIBIL Score Check/Improve', value: 'cibil', next: 'credit_cibil_en' },
-      { label: '🏆 Credit Rating Advisory', value: 'rating', next: 'credit_rating_en' },
-      { label: '🔧 Loan Restructuring', value: 'restructure', next: 'credit_restructure_en' },
-      { label: '⬅️ Go Back', value: 'back', next: 'welcome_en' },
+      { label: '📋 Request a Callback', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Connect Menu',       value: 'back',    next: 'connect_menu_en' },
     ]
   },
 
-  credit_cibil_en: {
-    message: `📉 <b>CIBIL Score Improvement</b><br><br>
-Getting loan rejections due to a low CIBIL score? We'll fix it!<br><br>
-✅ Free CIBIL analysis<br>
-✅ Error rectification in bureau records<br>
-✅ Step-by-step improvement plan<br>
-✅ Score 600 → 750+ achievable in 6 months<br>
-✅ 500+ cases successfully resolved`,
+  connect_office_en: {
+    message: `🏢 <b>Visit Our Office</b><br><br>
+📍 <b>Address:</b><br>
+i-THUM Building, Tower-A,<br>
+Sector-62, Noida,<br>
+Uttar Pradesh — 201301<br><br>
+🕐 <b>Office Hours:</b> Mon–Fri, 09:00 AM – 05:00 PM`,
     options: [
-      { label: '📋 Book Free Analysis', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Credit Menu', value: 'back', next: 'credit_menu_en' },
+      { label: '📋 Book Appointment', value: 'consult', next: 'collect_name_en' },
+      { label: '⬅️ Connect Menu',     value: 'back',    next: 'connect_menu_en' },
     ]
   },
 
-  credit_rating_en: {
-    message: `🏆 <b>Credit Rating Advisory</b><br><br>
-Improve your corporate credit rating to get better rates:<br><br>
-✅ CRISIL / ICRA / CARE rating advisory<br>
-✅ Bank rating improvement strategy<br>
-✅ Financial statement optimization<br>
-✅ Lender presentation support`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Credit Menu', value: 'back', next: 'credit_menu_en' },
-    ]
-  },
-
-  credit_restructure_en: {
-    message: `🔧 <b>Loan Restructuring Services</b><br><br>
-Reduce EMI burden and restore financial health:<br><br>
-✅ NPA / bad loan resolution<br>
-✅ OTS (One Time Settlement) advisory<br>
-✅ Interest rate renegotiation<br>
-✅ Bank negotiation support<br>
-✅ RBI SARFAESI guidance`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Credit Menu', value: 'back', next: 'credit_menu_en' },
-    ]
-  },
-
-  business_menu_en: {
-    message: `🏢 <b>Business Services</b><br><br>
-Aadi Fintech provides 360° support for your business. What do you need?`,
-    options: [
-      { label: '🏦 Banking Domain Consultancy', value: 'banking', next: 'biz_banking_en' },
-      { label: '⚖️ Compliance Advisory', value: 'compliance', next: 'biz_compliance_en' },
-      { label: '🏠 Real Estate Advisory', value: 'realestate', next: 'biz_realestate_en' },
-      { label: '💻 Tech Services', value: 'tech', next: 'biz_tech_en' },
-      { label: '📣 Digital Marketing', value: 'digital', next: 'biz_digital_en' },
-      { label: '⬅️ Go Back', value: 'back', next: 'welcome_en' },
-    ]
-  },
-
-  biz_banking_en: {
-    message: `🏦 <b>Banking Domain Expert Consultancy</b><br><br>
-<b>Mr. Raj Sharma</b> — Ex-McKinsey, 22+ years banking experience:<br><br>
-✅ Interest cost optimization<br>
-✅ CC/OD limit enhancement<br>
-✅ Bank relationship management<br>
-✅ Strategic banking restructuring<br><br>
-<i>"Lower Interest, Higher Limits, Better Financial Health"</i>`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Business Menu', value: 'back', next: 'business_menu_en' },
-    ]
-  },
-
-  biz_compliance_en: {
-    message: `⚖️ <b>Compliance Advisory</b><br><br>
-Keep your business legally compliant:<br><br>
-✅ RERA compliance<br>
-✅ Company Law advisory<br>
-✅ GST & tax compliance<br>
-✅ RBI regulatory guidance`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Business Menu', value: 'back', next: 'business_menu_en' },
-    ]
-  },
-
-  biz_realestate_en: {
-    message: `🏠 <b>Real Estate Advisory</b><br><br>
-Make informed property investment decisions:<br><br>
-✅ Property financing guidance<br>
-✅ RERA-compliant projects only<br>
-✅ Loan against property<br>
-✅ Commercial & residential both`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Business Menu', value: 'back', next: 'business_menu_en' },
-    ]
-  },
-
-  biz_tech_en: {
-    message: `💻 <b>Tech Services</b><br><br>
-Scale your business with modern technology:<br><br>
-✅ CRM implementation<br>
-✅ Digital tools setup<br>
-✅ Fintech software consulting<br>
-✅ Process automation`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Business Menu', value: 'back', next: 'business_menu_en' },
-    ]
-  },
-
-  biz_digital_en: {
-    message: `📣 <b>Digital Marketing</b><br><br>
-Build a strong online presence for your brand:<br><br>
-✅ SEO & content marketing<br>
-✅ Social media management<br>
-✅ Lead generation campaigns<br>
-✅ Google & Meta ads`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Business Menu', value: 'back', next: 'business_menu_en' },
-    ]
-  },
-
-  wealth_menu_en: {
-    message: `📈 <b>Investment & Wealth Management</b><br><br>
-Grow your wealth smartly. What service do you need?`,
-    options: [
-      { label: '📊 Wealth Management', value: 'wealth', next: 'wealth_detail_en' },
-      { label: '📈 IIFL Demat Account', value: 'demat', next: 'wealth_demat_en' },
-      { label: '🌐 Foreign Services', value: 'foreign', next: 'wealth_foreign_en' },
-      { label: '⬅️ Go Back', value: 'back', next: 'welcome_en' },
-    ]
-  },
-
-  wealth_detail_en: {
-    message: `📊 <b>Wealth Management</b><br><br>
-Personalized wealth solutions:<br><br>
-✅ Portfolio management<br>
-✅ Mutual fund advisory<br>
-✅ Fixed deposit optimization<br>
-✅ Tax-efficient investment planning`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Wealth Menu', value: 'back', next: 'wealth_menu_en' },
-    ]
-  },
-
-  wealth_demat_en: {
-    message: `📈 <b>IIFL Demat & Trading Account</b><br><br>
-✅ <b>Free Demat Account</b> — Zero charges<br>
-✅ Paperless KYC — done in minutes<br>
-✅ Equity, F&O, Currency, Commodity<br>
-✅ Advanced trading platform<br><br>
-<b>Powered by IIFL Capital</b> 🏦`,
-    options: [
-      { label: '🔗 Open Account', value: 'demat_open', next: 'demat_redirect_en' },
-      { label: '📋 Consult First', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Wealth Menu', value: 'back', next: 'wealth_menu_en' },
-    ]
-  },
-
-  demat_redirect_en: {
-    message: `✅ Opening IIFL Capital link for you!<br><br>
-Feel free to ask if you have any questions. 😊`,
-    options: [
-      { label: '🏠 Main Menu', value: 'home', next: 'welcome_en' },
-      { label: '📞 Talk to an Expert', value: 'consult', next: 'collect_name_en' },
-    ]
-  },
-
-  wealth_foreign_en: {
-    message: `🌐 <b>End-to-End Foreign Services</b><br><br>
-✅ Foreign currency loans<br>
-✅ FEMA compliance advisory<br>
-✅ NRI banking solutions<br>
-✅ Import/Export financing`,
-    options: [
-      { label: '📋 Book Consultation', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Wealth Menu', value: 'back', next: 'wealth_menu_en' },
-    ]
-  },
-
-  training_menu_en: {
-    message: `🎓 <b>Training & Placement Services</b><br><br>
-Build your career in fintech/banking. What do you need?`,
-    options: [
-      { label: '🎓 Internship Program', value: 'intern', next: 'training_intern_en' },
-      { label: '💼 Job Placement', value: 'job', next: 'training_job_en' },
-      { label: '📚 Banking Domain Training', value: 'course', next: 'training_course_en' },
-      { label: '⬅️ Go Back', value: 'back', next: 'welcome_en' },
-    ]
-  },
-
-  training_intern_en: {
-    message: `🎓 <b>Internship Program</b><br><br>
-Intern with Aadi Fintech:<br><br>
-✅ Paid internship opportunities<br>
-✅ Live project experience<br>
-✅ Certificate + recommendation letter<br>
-✅ PPO (Pre-Placement Offer) chances`,
-    options: [
-      { label: '📋 Apply Now', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Training Menu', value: 'back', next: 'training_menu_en' },
-    ]
-  },
-
-  training_job_en: {
-    message: `💼 <b>Job Placement Services</b><br><br>
-Our placement network is very strong:<br><br>
-✅ Banking & NBFC placements<br>
-✅ Resume & interview preparation<br>
-✅ 500+ successful placements<br>
-✅ Freshers to experienced — all welcome`,
-    options: [
-      { label: '📋 Register Now', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Training Menu', value: 'back', next: 'training_menu_en' },
-    ]
-  },
-
-  training_course_en: {
-    message: `📚 <b>Banking Domain Training</b><br><br>
-Learn with Mr. Raj Sharma:<br><br>
-✅ Credit analysis & appraisal<br>
-✅ MSME banking operations<br>
-✅ Loan documentation<br>
-✅ Online + offline batches available`,
-    options: [
-      { label: '📋 Enroll Now', value: 'consult', next: 'collect_name_en' },
-      { label: '⬅️ Training Menu', value: 'back', next: 'training_menu_en' },
-    ]
-  },
-
+  // ── LEAD COLLECTION (English) ─────────────────────────────────────────────
   collect_name_en: {
-    message: `📋 <b>Book a Free Consultation</b><br><br>
-We'll connect you with an expert! 🎯<br><br>
+    message: `📋 <b>Great! We're here to help.</b><br><br>
+Our Financial Expert will contact you shortly. 🎯<br><br>
 Please share your <b>name</b> first:`,
     options: []
   },
@@ -1710,15 +2147,14 @@ Please share your <b>name</b> first:`,
     options: []
   },
 
-  collect_service_en: {
+collect_service_en: {
     message: `📌 Which service are you primarily interested in?`,
     options: [
-      { label: '💰 Loan/Funding', value: 'Loan/Funding', next: 'send_whatsapp_en' },
-      { label: '📊 CIBIL/Credit', value: 'CIBIL/Credit Rating', next: 'send_whatsapp_en' },
-      { label: '🏢 Business Consultancy', value: 'Business Consultancy', next: 'send_whatsapp_en' },
-      { label: '📈 Investment/Wealth', value: 'Investment/Wealth', next: 'send_whatsapp_en' },
-      { label: '🎓 Training/Placement', value: 'Training/Placement', next: 'send_whatsapp_en' },
-      { label: '🔄 Other / General Query', value: 'General Query', next: 'send_whatsapp_en' },
+      { label: '📈 Investment',     value: 'Investment',    next: 'send_whatsapp_en' },
+      { label: '🛡️ Insurance',     value: 'Insurance',     next: 'send_whatsapp_en' },
+      { label: '💰 Loan',          value: 'Loan',          next: 'send_whatsapp_en' },
+      { label: '🎓 Career Training', value: 'Career Training', next: 'send_whatsapp_en' },
+      { label: '🔄 General Query', value: 'General Query', next: 'send_whatsapp_en' },
     ]
   },
 
@@ -1731,22 +2167,24 @@ Connecting you with our team on WhatsApp...<br><br>
   },
 
   final_message_en: {
-    message: `🎉 <b>Congratulations! Your request has been submitted.</b><br><br>
-Our team will contact you <b>within 24 hours</b>.<br><br>
+    message: `🎉 <b>Your request has been submitted!</b><br><br>
+Our Financial Expert will contact you <b>shortly</b>.<br><br>
+Thank you for choosing <b>Aadi Fintech</b>! 🙏<br><br>
 Anything else you'd like to know?`,
     options: [
-      { label: '🏠 Main Menu', value: 'home', next: 'welcome_en' },
-      { label: '✕ Close Chat', value: 'close', next: 'close' },
+      { label: '🏠 Main Menu',   value: 'home',  next: 'welcome_en' },
+      { label: '✕ Close Chat',  value: 'close', next: 'close'       },
     ]
   },
 
-  // ── KEEP ORIGINAL (for safety, unused) ──
-  welcome: { message: '', options: [] },
-  collect_name: { message: '', options: [] },
-  collect_phone: { message: '', options: [] },
+
+  // ── SAFETY STUBS (unused, kept for type-safety) ───────────────────────────
+  welcome:         { message: '', options: [] },
+  collect_name:    { message: '', options: [] },
+  collect_phone:   { message: '', options: [] },
   collect_service: { message: '', options: [] },
-  send_whatsapp: { message: '', options: [], isEnd: true },
-  final_message: { message: '', options: [] },
+  send_whatsapp:   { message: '', options: [], isEnd: true },
+  final_message:   { message: '', options: [] },
 };
  
 
@@ -1849,7 +2287,7 @@ async sendCustomMessage(): Promise<void> {
     return;
   }
 
-  if (this.currentStep === `collect_phone_${lang}`) {
+if (this.currentStep === `collect_phone_${lang}`) {
     if (!/^\d{10}$/.test(input.replace(/\s/g, ''))) {
       const errMsg = lang === 'en'
         ? '⚠️ Please enter a valid 10-digit mobile number.'
@@ -1858,11 +2296,15 @@ async sendCustomMessage(): Promise<void> {
       return;
     }
     this.userData['phone'] = input;
-    this.currentStep = `collect_service_${lang}`;
-    this.addBotMessage(
-      this.flow[`collect_service_${lang}`].message,
-      this.flow[`collect_service_${lang}`].options || []
-    );
+    // collect_service skip — seedha WhatsApp pe bhejo
+    const sendNode = this.flow[`send_whatsapp_${lang}`];
+    this.currentStep = `send_whatsapp_${lang}`;
+    this.addBotMessage(sendNode.message, []);
+    await this.showTyping(1500);
+    this.sendToWhatsApp();
+    await this.showTyping(600);
+    const finalKey = lang === 'en' ? 'final_message_en' : 'final_message_hi';
+    this.addBotMessage(this.flow[finalKey].message, this.flow[finalKey].options || []);
     return;
   }
 

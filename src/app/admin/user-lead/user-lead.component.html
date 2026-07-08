@@ -6,211 +6,245 @@
     <span>{{ successMessage }}</span>
   </div>
 
-  <!-- Header Section -->
-  <div class="lead-page-header">
-    <div class="header-content">
+  <!-- Compact Header Bar -->
+  <div class="crm-header-bar">
+    <div class="header-left">
       <h1 class="page-main-title">Lead Management</h1>
-      <p class="page-subtitle">Manage and track all incoming leads from various sources</p>
+      <p class="page-subtitle">Track, assign and manage incoming leads</p>
     </div>
-    <div class="header-stats">
-      <div class="stat-mini-box">
-        <i class="fas fa-list"></i>
-        <div class="stat-info">
-          <span class="stat-label">Total Leads</span>
-          <span class="stat-number">{{ getTotalLeads() }}</span>
+
+    <div class="header-right">
+      <button class="refresh-btn" (click)="refreshLeads()" [disabled]="isRefreshing" title="Refresh leads">
+        <i class="fas fa-sync-alt" [class.spinning]="isRefreshing"></i>
+      </button>
+
+      <div class="stat-chip">
+        <i class="fas fa-layer-group"></i>
+        <div class="stat-chip-info">
+          <span class="stat-chip-label">Total Leads</span>
+          <span class="stat-chip-value">{{ getTotalLeads() }}</span>
         </div>
       </div>
 
-      <!-- <div class="stat-mini-box">
-        <i class="fas fa-calendar-day"></i>
-        <div class="stat-info">
-          <span class="stat-label">Today Leads</span>
-          <span class="stat-number">{{ getTodayLeads() }}</span>
-        </div>
-      </div> -->
-      <!-- <div class="stat-mini-box">
-        <i class="fas fa-star"></i>
-        <div class="stat-info">
-          <span class="stat-label">New Leads</span>
-          <span class="stat-number">{{ getNewLeads() }}</span>
-        </div>
-      </div> -->
-      <!-- <div class="stat-mini-box">
-        <i class="fas fa-trophy"></i>
-        <div class="stat-info">
-          <span class="stat-label">Converted</span>
-          <span class="stat-number">{{ getConvertedLeads() }}</span>
-        </div>
-      </div> -->
-
-      <!-- Export PDF Section -->
       <button class="export-excel-btn" (click)="exportToExcel()">
         <i class="fas fa-file-excel"></i>
-        Export to Excel
+        Export
       </button>
     </div>
   </div>
 
-  <!-- Export PDF Section -->
-  <!-- <div class="export-section">
-    <button class="export-pdf-btn" (click)="exportToPDF()">
-      <i class="fas fa-file-pdf"></i>
-      Export to PDF
-    </button>
-  </div> -->
-
-  <!-- Add Lead Form Section -->
-  <div class="add-lead-section">
+  <!-- Toolbar: Add Lead + Search + Sort, all in one row -->
+  <div class="crm-toolbar">
     <button class="add-lead-btn" (click)="toggleFormVisibility()">
       <i class="fas fa-plus"></i> Add New Lead
     </button>
 
-    <div class="lead-form-container" *ngIf="showForm">
-      <h3 class="form-title">Submit New Lead</h3>
-      <form class="lead-form" (ngSubmit)="submitLead()">
-        <div class="form-group">
-          <label class="form-label">Full Name *</label>
-          <input type="text" class="form-input" placeholder="Enter lead name" [(ngModel)]="newLeadForm.leadName"
-            name="name" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Phone Number *</label>
-          <input type="tel" class="form-input" placeholder="Enter phone number (e.g., +91 98765 43210)"
-            [(ngModel)]="newLeadForm.leadPhone" name="leadPhone" maxlength="10" pattern="[0-9]{10}" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Message </label>
-          <input type="tel" class="form-input" placeholder="Enter Message" [(ngModel)]="newLeadForm.notes" name="notes">
-        </div>
-
-        <div class="form-buttons">
-          <button type="submit" class="submit-btn" [disabled]="isLoading">
-            <i *ngIf="!isLoading" class="fas fa-paper-plane"></i>
-            <span *ngIf="isLoading">Processing...</span>
-            <span *ngIf="!isLoading">Submit Lead</span>
-          </button>
-
-          <button type="button" class="cancel-btn" (click)="toggleFormVisibility()">
-            <i class="fas fa-times"></i> Cancel
-          </button>
-        </div>
-      </form>
-
-      <div *ngIf="message" class="message-box" [ngClass]="messageType">
-        {{ message }}
-      </div>
-    </div>
-  </div>
-
-  <!-- Controls Section -->
-  <div class="controls-section">
     <div class="search-container">
       <i class="fas fa-search search-icon"></i>
       <input type="text" class="search-input-field" placeholder="Search by name, email, or phone..."
         [(ngModel)]="searchQuery">
     </div>
 
-    <div class="filter-controls">
-      <select class="sort-dropdown" [(ngModel)]="sortBy">
-        <option value="date">Sort by Date</option>
-        <option value="name">Sort by Name</option>
-        <option value="status">Sort by Status</option>
-      </select>
+    <select class="sort-dropdown" [(ngModel)]="sortBy">
+      <option value="date">Sort by Date</option>
+      <option value="name">Sort by Name</option>
+      <option value="status">Sort by Status</option>
+    </select>
+  </div>
+
+  <!-- Add Lead Form (collapsible, sits above table only when opened) -->
+  <div class="lead-form-container" *ngIf="showForm">
+    <h3 class="form-title">Submit New Lead</h3>
+    <form class="lead-form" (ngSubmit)="submitLead()">
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input type="text" class="form-input" placeholder="Enter lead name" [(ngModel)]="newLeadForm.leadName"
+          name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone Number *</label>
+        <input type="tel" class="form-input" placeholder="Enter phone number (e.g., +91 98765 43210)"
+          [(ngModel)]="newLeadForm.leadPhone" name="leadPhone" maxlength="10" pattern="[0-9]{10}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <input type="text" class="form-input" placeholder="Enter Message" [(ngModel)]="newLeadForm.notes" name="notes">
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="submit-btn" [disabled]="isLoading">
+          <i *ngIf="!isLoading" class="fas fa-paper-plane"></i>
+          <span *ngIf="isLoading">Processing...</span>
+          <span *ngIf="!isLoading">Submit Lead</span>
+        </button>
+
+        <button type="button" class="cancel-btn" (click)="toggleFormVisibility()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="message" class="message-box" [ngClass]="messageType">
+      {{ message }}
     </div>
   </div>
 
   <!-- Table Container -->
   <div class="table-container-wrapper">
     <div class="table-scroll">
-    <table class="lead-table" id="leads-table-print">
-      <thead class="table-header-section">
-        <tr class="header-row">
-          <th class="table-header-cell">Lead Details</th>
-          <th class="table-header-cell">Date </th>
-          <th class="table-header-cell">Source</th>
-          <th class="table-header-cell">Notes</th>
-          <th class="table-header-cell">Assignment</th>
-          <th class="table-header-cell">Action</th>
-        </tr>
-      </thead>
-      <tbody class="table-body-section">
-        <tr class="data-row" *ngFor="let lead of getPaginatedLeads()" [class.assigned-row]="lead.assignTo">
-          <td class="table-data-cell">
-            <div class="lead-cell-info">
-              <div class="lead-name-section">
-                <div class="lead-avatar-mini">
-                  {{ lead.leadName.charAt(0).toUpperCase() }}
-                </div>
-                <span class="lead-name-text">{{ lead.leadName }}</span>
-              </div>
-              <div class="contact-info">
-                <div class="phone-info">
-                  <i class="fas fa-phone phone-icon"></i>
-                  <span>{{ lead.leadPhone }}</span>
-                </div>
-                <div class="email-info" *ngIf="lead.leadEmail">
-                  <i class="fas fa-envelope email-icon"></i>
-                  <span>{{ lead.leadEmail }}</span>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="table-data-cell">
-            <div class="datetime-wrapper">
-              <span class="date-text">{{ lead.submittedDate }}</span>
-              <!-- <span class="time-text">{{ lead.submittedTime }}</span> -->
-            </div>
-          </td>
-          <td class="table-data-cell">
-            <div class="source-badge">
-              <i [class]="getLeadSourceIcon(lead.leadSource)" class="source-icon"></i>
-              <span>{{ lead.leadSource }}</span>
-            </div>
-          </td>
-          <td class="table-data-cell">
-            <span class="notes-text" [title]="lead.notes">{{ lead.notes }}</span>
-          </td>
-          <td class="table-data-cell">
-            <div class="assignment-section">
-              <div class="assign-container">
-                <div class="loader-circle" *ngIf="assigningLeadId === lead._id">
-                  <i class="fas fa-spinner"></i>
-                </div>
+      <table class="lead-table" id="leads-table-print">
+        <thead class="table-header-section">
+          <tr class="header-row">
+            <th class="table-header-cell col-expand"></th>
+            <th class="table-header-cell">Lead Details</th>
+            <th class="table-header-cell">Date</th>
+            <th class="table-header-cell">Source</th>
+            <th class="table-header-cell">Notes</th>
+            <th class="table-header-cell">Status</th>
+            <th class="table-header-cell">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-body-section">
+          <ng-container *ngFor="let lead of getPaginatedLeads()">
 
-                <select *ngIf="assigningLeadId !== lead._id" class="assign-dropdown"
-                  (change)="assignLead(lead._id!, $any($event.target).value)" [value]="lead.assignTo?._id || ''">
-                  <option value="" disabled>👤 Assign / Reassign Employee</option>
-                  <option *ngFor="let emp of employees" [value]="emp._id">
-                    {{ emp.name }}
-                  </option>
-                </select>
-              </div>
+            <!-- Main Row -->
+            <tr class="data-row" [class.assigned-row]="lead.assignTo" [class.row-expanded]="expandedLeadId === lead._id"
+              (click)="toggleExpand(lead._id!)">
 
-              <div class="assigned-info" *ngIf="lead.assignTo">
-                <span class="assigned-label">Assigned To</span>
-                <div class="assigned-name">
-                  <i class="fas fa-user-check"></i>
-                  <span>{{ lead.assignTo.name }}</span>
+              <td class="table-data-cell col-expand">
+                <i class="fas fa-chevron-right expand-caret" [class.rotated]="expandedLeadId === lead._id"></i>
+              </td>
+
+              <td class="table-data-cell">
+                <div class="lead-cell-info">
+                  <div class="lead-name-section">
+                    <div class="lead-avatar-mini">
+                      {{ lead.leadName.charAt(0).toUpperCase() }}
+                    </div>
+                    <span class="lead-name-text">{{ lead.leadName }}</span>
+                  </div>
+                  <div class="contact-info">
+                    <div class="phone-info">
+                      <i class="fas fa-phone phone-icon"></i>
+                      <span>{{ lead.leadPhone }}</span>
+                    </div>
+                    <div class="email-info" *ngIf="lead.leadEmail">
+                      <i class="fas fa-envelope email-icon"></i>
+                      <span>{{ lead.leadEmail }}</span>
+                    </div>
+                  </div>
                 </div>
-                <span class="assigned-date" *ngIf="lead.assignedDate">
-                  <i class="fas fa-calendar-alt"></i> {{ lead.assignedDate }}
+              </td>
+
+              <td class="table-data-cell">
+                <span class="date-text">{{ lead.submittedDate }}</span>
+              </td>
+
+              <td class="table-data-cell">
+                <div class="source-badge">
+                  <i [class]="getLeadSourceIcon(lead.leadSource)" class="source-icon"></i>
+                  <span>{{ lead.leadSource }}</span>
+                </div>
+              </td>
+
+              <td class="table-data-cell">
+                <span class="notes-text" [title]="lead.notes">{{ lead.notes || '-' }}</span>
+              </td>
+
+              <td class="table-data-cell">
+                <span class="status-pill status-unassigned" *ngIf="!lead.assignTo">Unassigned</span>
+                <span class="status-pill status-pending" *ngIf="lead.assignTo && lead.jobStatus !== 'completed'">
+                  <i class="fas fa-clock"></i> Pending
                 </span>
-              </div>
-            </div>
-          </td>
+                <span class="status-pill status-success" *ngIf="lead.assignTo && lead.jobStatus === 'completed'">
+                  <i class="fas fa-check-circle"></i> Done
+                </span>
+              </td>
 
-          <td class="table-data-cell">
-            <div class="action-buttons">
-              <button class="action-btn delete-btn" (click)="openDeleteConfirm(lead._id!)" title="Delete lead">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <td class="table-data-cell" (click)="$event.stopPropagation()">
+                <div class="action-buttons">
+                  <button class="action-btn delete-btn" (click)="openDeleteConfirm(lead._id!)" title="Delete lead">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Accordion: Expanded Assignment Panel -->
+            <tr class="expand-panel-row" *ngIf="expandedLeadId === lead._id">
+              <td class="expand-panel-cell" colspan="7" (click)="$event.stopPropagation()">
+                <div class="expand-panel">
+
+                  <div class="expand-col">
+                    <span class="expand-col-title">Assign / Reassign</span>
+
+                    <div class="assign-row">
+                      <div class="loader-circle" *ngIf="assigningLeadId === lead._id">
+                        <i class="fas fa-spinner"></i>
+                      </div>
+                      <select *ngIf="assigningLeadId !== lead._id" class="assign-dropdown"
+                        (change)="assignLead(lead._id!, $any($event.target).value)" [value]="lead.assignTo?._id || ''">
+                        <option value="" disabled>👤 Assign / Reassign Employee</option>
+                        <option *ngFor="let emp of employees" [value]="emp._id">
+                          {{ emp.name }}
+                        </option>
+                      </select>
+
+                      <button class="mark-complete-btn" *ngIf="lead.assignTo && lead.jobStatus !== 'completed'"
+                        (click)="markLeadComplete(lead._id!)">
+                        <i class="fas fa-check"></i> Mark Complete
+                      </button>
+                    </div>
+
+                    <div class="current-assignment" *ngIf="lead.assignTo">
+                      <span class="assigned-label">Currently Assigned To</span>
+                      <div class="assigned-name">
+                        <i class="fas fa-user-check"></i>
+                        <span>{{ lead.assignTo.name }}</span>
+                        <span class="status-pill status-pending" *ngIf="lead.jobStatus !== 'completed'">
+                          <i class="fas fa-clock"></i> Pending
+                        </span>
+                        <span class="status-pill status-success" *ngIf="lead.jobStatus === 'completed'">
+                          <i class="fas fa-check-circle"></i> Done
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="expand-col">
+                    <span class="expand-col-title">Assignment History</span>
+
+                    <div class="history-list"
+                      *ngIf="lead.assignmentHistory && lead.assignmentHistory.length; else noHistory">
+                      <div class="history-item" *ngFor="let h of lead.assignmentHistory">
+                        <div class="history-dot" [class.dot-success]="h.status === 'completed'"></div>
+                        <div class="history-details">
+                          <span class="history-name">{{ h.employeeName }}</span>
+                          <span class="history-meta">
+                            Assigned on {{ h.assignedDate }}
+                            <ng-container *ngIf="h.status === 'completed'"> • Completed on {{ h.completedDate
+                              }}</ng-container>
+                          </span>
+                        </div>
+                        <span class="status-pill status-pending" *ngIf="h.status !== 'completed'">Pending</span>
+                        <span class="status-pill status-success" *ngIf="h.status === 'completed'">Done</span>
+                      </div>
+                    </div>
+
+                    <ng-template #noHistory>
+                      <span class="no-history-text">No assignment history yet</span>
+                    </ng-template>
+                  </div>
+
+                </div>
+              </td>
+            </tr>
+
+          </ng-container>
+        </tbody>
+      </table>
     </div>
   </div>
 
