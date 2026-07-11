@@ -40,6 +40,13 @@
       </div>
 
       <div class="menu-item-wrapper">
+        <a routerLink="/admin/partner" routerLinkActive="active" class="menu-item">
+          <span class="icon"><i class="fas fa-address-card"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Partner Leads</span>
+        </a>
+      </div>
+
+      <div class="menu-item-wrapper">
         <a routerLink="/admin/usermgmt" routerLinkActive="active" class="menu-item">
           <span class="icon"><i class="fas fa-user-tie"></i></span>
           <span class="label" *ngIf="isSidebarOpen">Account Creation</span>
@@ -123,6 +130,12 @@
         <a routerLink="/admin/partner/dashboard" routerLinkActive="active" class="menu-item">
           <span class="icon"><i class="fas fa-handshake"></i></span>
           <span class="label" *ngIf="isSidebarOpen">Partner Dashboard</span>
+        </a>
+      </div>
+      <div class="menu-item-wrapper">
+        <a routerLink="/admin/partner/partnerTable" routerLinkActive="active" class="menu-item">
+          <span class="icon"><i class="fas fa-handshake"></i></span>
+          <span class="label" *ngIf="isSidebarOpen">Partner table</span>
         </a>
       </div>
 

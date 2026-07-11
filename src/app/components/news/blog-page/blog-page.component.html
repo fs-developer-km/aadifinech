@@ -21,10 +21,9 @@
     Grow With India's Most Comprehensive Financial Platform
   </p>
 
-  <a (click)="openWhatsApp()" class="btn btn-primary-custom"
-    style="color: #DD3333; background-color: #FFF;">
-    <i class="fas fa-rocket me-2"></i>Start Your Journey
-  </a>
+<a (click)="openForm()" class="btn btn-primary-custom" style="color: #DD3333; background-color: #FFF; cursor:pointer;">
+  <i class="fas fa-rocket me-2"></i>Start Your Journey
+</a>
 </div>
     </div>
   </div>
@@ -286,9 +285,9 @@
         <p class="lead mb-4" style="color: #fff;">Join hundreds of successful partners who are building wealth and
           transforming lives with
           Aadi Fintech.</p>
-        <a (click)="openWhatsApp()" class="btn btn-primary-custom me-3" style="background-color: #fff;">
-          <i class="fas fa-user-plus me-2"></i>Become a Partner Now
-        </a>
+      <a (click)="openForm()" class="btn btn-primary-custom me-3" style="background-color: #fff; cursor:pointer;">
+  <i class="fas fa-user-plus me-2"></i>Become a Partner Now
+</a>
       </div>
     </div>
   </div>
@@ -310,13 +309,11 @@
         <div class="success-icon-wrapper">
           <i class="fas fa-check-circle success-icon"></i>
         </div>
-        <h3>Welcome to Aadi Fintech!</h3>
-        <p class="success-message">Your partner registration has been completed successfully.</p>
-        <p class="success-submessage">Our team will contact you within 24-48 hours.</p>
-        <div class="success-footer">
-          <i class="fas fa-phone-alt"></i>
-          <span>We'll reach out soon!</span>
-        </div>
+        <h3 *ngIf="successMode === 'admin'">Thank You!</h3>
+        <h3 *ngIf="successMode === 'whatsapp'">Redirecting to WhatsApp!</h3>
+        <p class="success-message" *ngIf="successMode === 'admin'">Aapki details humari team tak pahunch gayi hai.</p>
+        <p class="success-message" *ngIf="successMode === 'whatsapp'">WhatsApp chat khul gayi hai, message send kar dijiye.</p>
+        <p class="success-submessage">Hamari team jaldi hi aapse contact karegi.</p>
       </div>
     </div>
 
@@ -326,119 +323,102 @@
         <i class="fas fa-times"></i>
       </button>
 
-      <!-- HEADER -->
       <div class="popup-header">
         <h2>Become Our Channel Partner</h2>
-        <p>Join India's Most Comprehensive Financial Platform</p>
+        <p>Apni details bharein aur humse connect ho jaayein</p>
       </div>
 
-      <!-- STEP INDICATOR -->
-      <div class="steps-indicator">
-        <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
-          <div class="step-number">1</div>
-          <div class="step-label">Details</div>
-        </div>
-        <div class="step-line" [class.active]="currentStep > 1"></div>
-        <div class="step" [class.active]="currentStep >= 2">
-          <div class="step-number">2</div>
-          <div class="step-label">Verify</div>
-        </div>
-      </div>
+      <form class="partner-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="name" [(ngModel)]="formData.name" name="name" placeholder="Enter your full name"
+                maxlength="50" [disabled]="isSubmittingAdmin">
+            </div>
+          </div>
 
-      <!-- STEP 1: NAME & MOBILE -->
-      <form *ngIf="currentStep === 1" class="partner-form">
-        <div class="form-group">
-          <label for="name">Full Name <span class="required">*</span></label>
-          <div class="input-wrapper">
-            <i class="fas fa-user input-icon"></i>
-            <input type="text" id="name" [(ngModel)]="formData.name" name="name" placeholder="Enter your full name"
-              maxlength="50" [disabled]="isLoading">
+          <div class="form-group">
+            <label for="mobile">Mobile Number <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-mobile-alt input-icon"></i>
+              <input type="tel" id="mobile" [(ngModel)]="formData.mobile" name="mobile"
+                placeholder="10-digit mobile number" maxlength="10" [disabled]="isSubmittingAdmin">
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="mobile">Mobile Number <span class="required">*</span></label>
-          <div class="input-wrapper">
-            <i class="fas fa-mobile-alt input-icon"></i>
-            <input type="tel" id="mobile" [(ngModel)]="formData.mobile" name="mobile"
-              placeholder="10-digit mobile number" maxlength="10" [disabled]="isLoading">
-          </div>
-          <small class="input-hint">We'll send OTP to verify your number</small>
-        </div>
-
-        <button type="button" class="submit-btn" (click)="sendOTP()" [disabled]="isLoading">
-          <span *ngIf="!isLoading">
-            <i class="fas fa-paper-plane"></i> Send OTP
-          </span>
-          <span *ngIf="isLoading" class="loader-container">
-            <span class="loader"></span> Sending...
-          </span>
-        </button>
-      </form>
-
-      <!-- STEP 2: OTP VERIFICATION -->
-      <form *ngIf="currentStep === 2" class="partner-form otp-form">
-        <div class="otp-section">
-          <div class="otp-header">
-            <i class="fas fa-shield-alt otp-shield-icon"></i>
-            <h3>Enter Verification Code</h3>
-            <p>We've sent a 6-digit OTP to</p>
-            <p class="mobile-display"><strong>+91 {{ formData.mobile }}</strong></p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email" [(ngModel)]="formData.email" name="email"
+                placeholder="Enter your email" [disabled]="isSubmittingAdmin">
+            </div>
           </div>
 
-          <!-- DEV OTP DISPLAY -->
-<div *ngIf="devOtp" 
-     style="margin-bottom:12px; padding:10px; 
-            background:#fff3cd; border:1px dashed #856404;
-            border-radius:6px; text-align:center;">
-  <strong>DEV OTP:</strong> {{ devOtp }}
-</div>
-
-          <!-- ✅ FIXED OTP INPUTS - NO BINDING, PURE JS -->
-          <div class="otp-inputs" (paste)="onOTPPaste($event)">
-            <input id="otp-0" type="text" inputmode="numeric" maxlength="1" (input)="onOTPInput(0, $event)"
-              (keydown)="onOTPKeyDown(0, $event)" class="otp-input" [disabled]="isLoading" autocomplete="off">
-
-            <input id="otp-1" type="text" inputmode="numeric" maxlength="1" (input)="onOTPInput(1, $event)"
-              (keydown)="onOTPKeyDown(1, $event)" class="otp-input" [disabled]="isLoading" autocomplete="off">
-
-            <input id="otp-2" type="text" inputmode="numeric" maxlength="1" (input)="onOTPInput(2, $event)"
-              (keydown)="onOTPKeyDown(2, $event)" class="otp-input" [disabled]="isLoading" autocomplete="off">
-
-            <input id="otp-3" type="text" inputmode="numeric" maxlength="1" (input)="onOTPInput(3, $event)"
-              (keydown)="onOTPKeyDown(3, $event)" class="otp-input" [disabled]="isLoading" autocomplete="off">
-
-            <input id="otp-4" type="text" inputmode="numeric" maxlength="1" (input)="onOTPInput(4, $event)"
-              (keydown)="onOTPKeyDown(4, $event)" class="otp-input" [disabled]="isLoading" autocomplete="off">
-
-            <input id="otp-5" type="text" inputmode="numeric" maxlength="1" (input)="onOTPInput(5, $event)"
-              (keydown)="onOTPKeyDown(5, $event)" class="otp-input" [disabled]="isLoading" autocomplete="off">
-          </div>
-
-          <div class="resend-section">
-            <button type="button" class="resend-btn" (click)="resendOTP()" [disabled]="!canResend || isLoading">
-              <span *ngIf="!canResend">
-                <i class="fas fa-clock"></i> Resend OTP in {{ resendTimer }}s
-              </span>
-              <span *ngIf="canResend">
-                <i class="fas fa-redo"></i> Resend OTP
-              </span>
-            </button>
+          <div class="form-group">
+            <label for="profession">Profession</label>
+            <div class="input-wrapper">
+              <i class="fas fa-briefcase input-icon"></i>
+              <input type="text" id="profession" [(ngModel)]="formData.profession" name="profession"
+                placeholder="e.g. Insurance Agent" [disabled]="isSubmittingAdmin">
+            </div>
           </div>
         </div>
 
-        <button type="button" class="submit-btn" (click)="verifyOTP()" [disabled]="isLoading">
-          <span *ngIf="!isLoading">
-            <i class="fas fa-check-circle"></i> Verify & Register
-          </span>
-          <span *ngIf="isLoading" class="loader-container">
-            <span class="loader"></span> Verifying...
-          </span>
-        </button>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <div class="input-wrapper">
+              <i class="fas fa-map-marker-alt input-icon"></i>
+              <input type="text" id="city" [(ngModel)]="formData.city" name="city"
+                placeholder="Enter your city" [disabled]="isSubmittingAdmin">
+            </div>
+          </div>
 
-        <button type="button" class="back-btn" (click)="goBack()" [disabled]="isLoading">
-          <i class="fas fa-arrow-left"></i> Change Number
-        </button>
+          <div class="form-group">
+            <label for="state">State</label>
+            <div class="input-wrapper">
+              <i class="fas fa-map input-icon"></i>
+              <input type="text" id="state" [(ngModel)]="formData.state" name="state"
+                placeholder="Enter your state" [disabled]="isSubmittingAdmin">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="experienceYears">Experience (Years)</label>
+            <div class="input-wrapper">
+              <i class="fas fa-clock input-icon"></i>
+              <input type="number" id="experienceYears" [(ngModel)]="formData.experienceYears"
+                name="experienceYears" placeholder="Years" min="0" [disabled]="isSubmittingAdmin">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="companyName">Company Name</label>
+            <div class="input-wrapper">
+              <i class="fas fa-building input-icon"></i>
+              <input type="text" id="companyName" [(ngModel)]="formData.companyName" name="companyName"
+                placeholder="Enter company name" [disabled]="isSubmittingAdmin">
+            </div>
+          </div>
+        </div>
+
+        <div class="dual-btn-row">
+          <button type="button" class="submit-btn admin-btn" (click)="sendToAdmin()" [disabled]="isSubmittingAdmin">
+            <span *ngIf="!isSubmittingAdmin"><i class="fas fa-database"></i> Send to Admin Panel</span>
+            <span *ngIf="isSubmittingAdmin" class="loader-container"><span class="loader"></span> Saving...</span>
+          </button>
+
+          <button type="button" class="submit-btn whatsapp-btn" (click)="continueOnWhatsApp()" [disabled]="isSubmittingAdmin">
+            <i class="fab fa-whatsapp"></i> Continue on WhatsApp
+          </button>
+        </div>
       </form>
     </div>
   </div>

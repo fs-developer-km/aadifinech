@@ -67,6 +67,8 @@ export class PartnerTableComponent implements OnInit {
   showCreateModal = false;
   showDetailsModal = false;
   showRemarkModal = false;
+  showEditModal = false;      // ✅ NEW
+  showDeleteConfirm = false;  // ✅ NEW
 
   // Loading
   isLoading = false;
@@ -86,8 +88,25 @@ export class PartnerTableComponent implements OnInit {
     loanAmount: 0,
     monthlyIncome: 0,
     employmentType: 'Salaried',
+    priority: 'medium',
     remarks: ''
   };
+
+  // ✅ NEW: Edit Lead form + which lead is being edited/deleted
+  editLead = {
+    customerName: '',
+    customerMobile: '',
+    customerEmail: '',
+    loanType: 'Personal Loan',
+    loanAmount: 0,
+    monthlyIncome: 0,
+    employmentType: 'Salaried',
+    priority: 'medium'
+  };
+  editingLeadId: string | null = null;
+  deletingLead: PartnerLead | null = null;
+
+  priorityOptions = ['low', 'medium', 'high', 'urgent'];
 
   // Remark Form
   remarkMessage = '';
@@ -127,13 +146,13 @@ export class PartnerTableComponent implements OnInit {
   // Load Leads
   loadLeads() {
     this.isLoading = true;
-    
+
     let url = `https://api.aadifintech.com/api/partnerLead/partner/my-leads?page=${this.currentPage}&limit=${this.limit}`;
-    
+
     if (this.statusFilter) {
       url += `&status=${this.statusFilter}`;
     }
-    
+
     if (this.searchQuery) {
       url += `&search=${this.searchQuery}`;
     }
@@ -144,16 +163,19 @@ export class PartnerTableComponent implements OnInit {
         this.totalLeads = response.total;
         this.totalPages = response.totalPages;
         this.stats = response.stats;
-        console.log("statsssssss",this.stats);
         this.isLoading = false;
-
-        console.log("partner lead data...",this.leads)
       },
       error: (error) => {
         this.showError(error.error?.msg || 'Failed to load leads');
         this.isLoading = false;
       }
     });
+  }
+
+  // ✅ NEW: manual refresh (so status/priority changes made by employee/manager
+  // show up here without needing a full page reload)
+  refreshLeads() {
+    this.loadLeads();
   }
 
   // Create Lead
@@ -164,8 +186,8 @@ export class PartnerTableComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    this.http.post<any>(`${this.apiUrl}/partner/create`, this.newLead, { 
-      headers: this.getHeaders() 
+    this.http.post<any>(`${this.apiUrl}/partner/create`, this.newLead, {
+      headers: this.getHeaders()
     }).subscribe({
       next: (response) => {
         this.showSuccess('Lead created successfully!');
@@ -185,8 +207,8 @@ export class PartnerTableComponent implements OnInit {
   viewLeadDetails(leadId: string) {
     this.isLoading = true;
 
-    this.http.get<any>(`${this.apiUrl}/partner/${leadId}`, { 
-      headers: this.getHeaders() 
+    this.http.get<any>(`${this.apiUrl}/partner/${leadId}`, {
+      headers: this.getHeaders()
     }).subscribe({
       next: (response) => {
         this.selectedLead = response.lead;
@@ -225,6 +247,94 @@ export class PartnerTableComponent implements OnInit {
       },
       error: (error) => {
         this.showError(error.error?.msg || 'Failed to add remark');
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  // ==================== NEW: Edit Lead ====================
+
+  openEditModal(lead: PartnerLead, event?: Event) {
+    if (event) event.stopPropagation();
+
+    this.editingLeadId = lead._id;
+    this.editLead = {
+      customerName: lead.customerName,
+      customerMobile: lead.customerMobile,
+      customerEmail: lead.customerEmail || '',
+      loanType: lead.loanType,
+      loanAmount: lead.loanAmount,
+      monthlyIncome: lead.monthlyIncome || 0,
+      employmentType: lead.employmentType || 'Salaried',
+      priority: lead.priority || 'medium'
+    };
+    this.showEditModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditModal = false;
+    this.editingLeadId = null;
+  }
+
+  submitEditLead() {
+    if (!this.editingLeadId) return;
+
+    if (!this.editLead.customerName.trim() || !this.editLead.customerMobile.trim()) {
+      this.showError('Customer name and mobile are required');
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    this.http.put<any>(
+      `${this.apiUrl}/partner/${this.editingLeadId}`,
+      this.editLead,
+      { headers: this.getHeaders() }
+    ).subscribe({
+      next: () => {
+        this.showSuccess('Lead updated successfully!');
+        this.closeEditModal();
+        this.loadLeads();
+        this.isSubmitting = false;
+      },
+      error: (error) => {
+        this.showError(error.error?.msg || 'Failed to update lead');
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  // ==================== NEW: Delete Lead ====================
+
+  openDeleteConfirm(lead: PartnerLead, event?: Event) {
+    if (event) event.stopPropagation();
+    this.deletingLead = lead;
+    this.showDeleteConfirm = true;
+  }
+
+  closeDeleteConfirm() {
+    this.showDeleteConfirm = false;
+    this.deletingLead = null;
+  }
+
+  confirmDeleteLead() {
+    if (!this.deletingLead) return;
+
+    const leadId = this.deletingLead._id;
+    this.isSubmitting = true;
+
+    this.http.delete<any>(
+      `${this.apiUrl}/partner/${leadId}`,
+      { headers: this.getHeaders() }
+    ).subscribe({
+      next: () => {
+        this.showSuccess('Lead deleted successfully!');
+        this.closeDeleteConfirm();
+        this.loadLeads();
+        this.isSubmitting = false;
+      },
+      error: (error) => {
+        this.showError(error.error?.msg || 'Failed to delete lead');
         this.isSubmitting = false;
       }
     });
@@ -324,6 +434,7 @@ export class PartnerTableComponent implements OnInit {
       loanAmount: 0,
       monthlyIncome: 0,
       employmentType: 'Salaried',
+      priority: 'medium',
       remarks: ''
     };
   }
@@ -389,18 +500,18 @@ export class PartnerTableComponent implements OnInit {
   get pageNumbers(): number[] {
     const pages: number[] = [];
     const maxVisible = 5;
-    
+
     let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
     let end = Math.min(this.totalPages, start + maxVisible - 1);
-    
+
     if (end - start < maxVisible - 1) {
       start = Math.max(1, end - maxVisible + 1);
     }
-    
+
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-    
+
     return pages;
   }
 

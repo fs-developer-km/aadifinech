@@ -1,40 +1,45 @@
 <div class="partner-lead-container">
-  <!-- Beautiful Header Section -->
+  <!-- Combined Header + Search Section -->
   <div class="header-section">
-    <div class="header-content">
-      <div class="header-icon">
-        <i class="fas fa-handshake"></i>
+    <div class="header-top-row">
+      <div class="header-content">
+        <div class="header-icon">
+          <i class="fas fa-handshake"></i>
+        </div>
+        <div class="header-text">
+          <h1 class="main-title">Partner Management</h1>
+          <p class="subtitle">Manage your channel partners efficiently</p>
+        </div>
       </div>
-      <div class="header-text">
-        <h1 class="main-title">Partner Management</h1>
-        <p class="subtitle">Manage your channel partners efficiently</p>
+
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalPartners }}</span>
+            <span class="stat-label">Total Partners</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="header-stats">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-users"></i>
-        </div>
-        <div class="stat-info">
-          <span class="stat-value">{{ totalPartners }}</span>
-          <span class="stat-label">Total Partners</span>
-        </div>
+    <div class="header-search-row">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search by name or mobile..." [(ngModel)]="searchQuery" (input)="onSearch()"
+          class="search-input">
       </div>
+      <button class="view-toggle-btn" (click)="toggleViewMode()">
+        <i class="fas" [ngClass]="viewMode === 'table' ? 'fa-th-large' : 'fa-list'"></i>
+        <span>{{ viewMode === 'table' ? 'Grid View' : 'Table View' }}</span>
+      </button>
+      <button class="refresh-btn" (click)="fetchPartners()">
+        <i class="fas fa-sync-alt"></i>
+        <span>Refresh</span>
+      </button>
     </div>
-  </div>
-
-  <!-- Search Bar -->
-  <div class="search-section">
-    <div class="search-wrapper">
-      <i class="fas fa-search"></i>
-      <input type="text" placeholder="Search by name or mobile..." [(ngModel)]="searchQuery" (input)="onSearch()"
-        class="search-input">
-    </div>
-    <button class="refresh-btn" (click)="fetchPartners()">
-      <i class="fas fa-sync-alt"></i>
-      <span>Refresh</span>
-    </button>
   </div>
 
   <!-- Loading State -->
@@ -43,8 +48,74 @@
     <p>Loading partners data...</p>
   </div>
 
-  <!-- Partners Cards Grid -->
-  <div *ngIf="!isLoading" class="partners-grid">
+  <!-- ==================== TABLE VIEW (Default) ==================== -->
+<div *ngIf="!isLoading && viewMode === 'table'" class="table-container">
+    <div class="table-responsive">
+      <table class="partners-table">
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Profession</th>
+            <th>Location</th>
+            <th>Experience</th>
+            <th>Company</th>
+            <th>Registered</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let partner of paginatedPartners">
+            <td class="td-name">
+              <div class="td-name-wrap">
+                <div class="table-avatar">{{ getInitials(partner.name) }}</div>
+                <span>{{ partner.name }}</span>
+              </div>
+            </td>
+            <td>{{ partner.mobile }}</td>
+            <td>{{ partner.email || '—' }}</td>
+            <td>{{ partner.profession || '—' }}</td>
+            <td>{{ partner.city || partner.state ? (partner.city || '') + (partner.city && partner.state ? ', ' : '') + (partner.state || '') : '—' }}</td>
+            <td>{{ partner.experienceYears ? partner.experienceYears + ' yrs' : '—' }}</td>
+            <td>{{ partner.companyName || '—' }}</td>
+            <td class="td-datetime">
+              <div>{{ getDate(partner.createdAt) }}</div>
+              <div class="time-text">{{ getTime(partner.createdAt) }}</div>
+            </td>
+            <td>
+              <span [class]="'status-badge ' + getStatusClass(partner.status)">
+                <i class="fas fa-circle"></i>
+                {{ partner.status }}
+              </span>
+            </td>
+            <td class="td-actions">
+              <div class="table-actions">
+                <button class="card-btn-icon view-btn" (click)="viewDetails(partner)" title="View Details">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="card-btn-icon update-btn" (click)="openUpdateStatusModal(partner)" title="Update Status">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="card-btn-icon delete-btn" (click)="confirmDelete(partner)" title="Delete Partner">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="paginatedPartners.length === 0" class="no-data">
+      <i class="fas fa-inbox"></i>
+      <p>No partners found</p>
+    </div>
+  </div>
+
+  <!-- ==================== GRID VIEW ==================== -->
+  <div *ngIf="!isLoading && viewMode === 'grid'" class="partners-grid">
     <div *ngFor="let partner of paginatedPartners" class="partner-card">
       <!-- Card Header -->
       <div class="card-header">
@@ -69,39 +140,33 @@
         <div class="info-grid">
           <div class="info-item">
             <i class="fas fa-calendar"></i>
-            <!-- <span>{{ partner.registeredAt  }}</span> -->
-            <!-- <h1>{{partner.registeredAt}}</h1> -->
-            <!-- <span>{{ partner.registeredAt | date:'dd MMM yyyy, hh:mm a':'IST' }}</span> -->
-            <!-- <h1>{{ partner.registeredAt }}</h1> -->
             <span>{{ getDate(partner.createdAt) }}</span>
-
-
-
-
           </div>
           <div class="info-item">
             <i class="fas fa-clock"></i>
             <span>{{ getTime(partner.createdAt) }}</span>
-            <!-- <span>{{ partner.registeredAt }}</span> -->
-            <!-- <span>{{ partner.registeredAt | date:'dd MMM yyyy, hh:mm a' }}</span> -->
-
-          </div>
-          <!-- <div class="info-item">
-            <i class="fas fa-id-badge"></i>
-            <span>{{ partner._id }}</span>
-          </div> -->
-          <div class="info-item" [ngClass]="partner.isVerified ? 'verified' : 'not-verified'">
-
-            <i class="fas" [ngClass]="partner.isVerified 
-                ? 'fa-check-circle' 
-                : 'fa-times-circle'">
-            </i>
-
-            <span>
-              {{ partner.isVerified ? 'Verified' : 'Not Verified' }}
-            </span>
           </div>
 
+          <div class="info-item" *ngIf="partner.email">
+            <i class="fas fa-envelope"></i>
+            <span>{{ partner.email }}</span>
+          </div>
+          <div class="info-item" *ngIf="partner.profession">
+            <i class="fas fa-briefcase"></i>
+            <span>{{ partner.profession }}</span>
+          </div>
+          <div class="info-item" *ngIf="partner.city || partner.state">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ partner.city }}{{ partner.city && partner.state ? ', ' : '' }}{{ partner.state }}</span>
+          </div>
+          <div class="info-item" *ngIf="partner.experienceYears">
+            <i class="fas fa-hourglass-half"></i>
+            <span>{{ partner.experienceYears }} yrs experience</span>
+          </div>
+          <div class="info-item" *ngIf="partner.companyName">
+            <i class="fas fa-building"></i>
+            <span>{{ partner.companyName }}</span>
+          </div>
 
           <!-- Admin Remarks Section -->
           <div *ngIf="partner.adminRemarks" class="remarks-section">
@@ -129,31 +194,31 @@
     </div>
 
     <!-- No Data -->
-    <div *ngIf="!isLoading && paginatedPartners.length === 0" class="no-data">
+    <div *ngIf="paginatedPartners.length === 0" class="no-data">
       <i class="fas fa-inbox"></i>
       <p>No partners found</p>
     </div>
+  </div>
 
-    <!-- Pagination -->
-    <div *ngIf="!isLoading && totalPages > 1" class="pagination">
-      <button class="page-btn" (click)="previousPage()" [disabled]="currentPage === 1">
-        <i class="fas fa-chevron-left"></i>
+  <!-- Pagination (shared for both views) -->
+  <div *ngIf="!isLoading && totalPages > 1" class="pagination">
+    <button class="page-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <div class="page-numbers">
+      <button *ngFor="let page of pages.slice(0, 5)" class="page-number" [class.active]="page === currentPage"
+        (click)="goToPage(page)">
+        {{ page }}
       </button>
-
-      <div class="page-numbers">
-        <button *ngFor="let page of pages.slice(0, 5)" class="page-number" [class.active]="page === currentPage"
-          (click)="goToPage(page)">
-          {{ page }}
-        </button>
-        <span *ngIf="totalPages > 5">...</span>
-      </div>
-
-      <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
-        <i class="fas fa-chevron-right"></i>
-      </button>
-
-      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+      <span *ngIf="totalPages > 5">...</span>
     </div>
+
+    <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
   </div>
 
   <!-- View Details Modal -->
@@ -184,13 +249,30 @@
               <label>Partner ID</label>
               <span>{{ selectedPartner._id }}</span>
             </div>
-            <div class="detail-item">
-              <label>Verification Status</label>
-              <span [class]="selectedPartner.isVerified ? 'verified-badge' : 'not-verified-badge'">
-                <i [class]="selectedPartner.isVerified ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i>
-                {{ selectedPartner.isVerified ? 'Verified' : 'Not Verified' }}
-              </span>
+
+            <div class="detail-item" *ngIf="selectedPartner.email">
+              <label>Email</label>
+              <span>{{ selectedPartner.email }}</span>
             </div>
+            <div class="detail-item" *ngIf="selectedPartner.profession">
+              <label>Profession</label>
+              <span>{{ selectedPartner.profession }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedPartner.city || selectedPartner.state">
+              <label>Location</label>
+              <span>{{ selectedPartner.city }}{{ selectedPartner.city && selectedPartner.state ? ', ' : '' }}{{
+                selectedPartner.state }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedPartner.experienceYears">
+              <label>Experience</label>
+              <span>{{ selectedPartner.experienceYears }} years</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedPartner.companyName">
+              <label>Company</label>
+              <span>{{ selectedPartner.companyName }}</span>
+            </div>
+
+
           </div>
         </div>
 
@@ -199,14 +281,11 @@
           <div class="detail-grid">
             <div class="detail-item">
               <label>Registration Date</label>
-              <!-- <span>{{ formatDate(selectedPartner.registeredAt) }}</span> -->
               <span>{{ getDate(selectedPartner.createdAt) }}</span>
             </div>
             <div class="detail-item">
               <label>Registration Time</label>
-              <!-- <span>{{ formatTime(selectedPartner.registeredAt) }}</span> -->
               <span>{{ getTime(selectedPartner.createdAt) }}</span>
-
             </div>
             <div class="detail-item">
               <label>Status</label>
@@ -292,3 +371,4 @@
       </div>
     </div>
   </div>
+</div>

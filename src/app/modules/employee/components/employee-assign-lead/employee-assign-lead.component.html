@@ -20,8 +20,22 @@
     </div>
   </div>
 
-  <!-- Compact Statistics Cards -->
+  <!-- ✅ NEW: Tab Switcher -->
   <div class="content-wrapper">
+    <div class="lead-tabs">
+      <button class="lead-tab-btn" [class.active]="activeTab === 'admin'" (click)="switchTab('admin')">
+        🏦 Admin Assigned Leads
+      </button>
+      <button class="lead-tab-btn" [class.active]="activeTab === 'partner'" (click)="switchTab('partner')">
+        🤝 Partner Leads
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN TAB (ORIGINAL — UNCHANGED) ==================== -->
+  <div class="content-wrapper" *ngIf="activeTab === 'admin'">
+
+    <!-- Compact Statistics Cards -->
     <div class="stats-container">
       <div class="stat-card stat-total">
         <div class="stat-icon">📊</div>
@@ -63,7 +77,8 @@
         </select>
       </div>
 
-      <button class="view-toggle-btn" (click)="toggleViewMode()" [title]="viewMode === 'grid' ? 'Switch to Table View' : 'Switch to Grid View'">
+      <button class="view-toggle-btn" (click)="toggleViewMode()"
+        [title]="viewMode === 'grid' ? 'Switch to Table View' : 'Switch to Grid View'">
         <span *ngIf="viewMode === 'grid'">📋 Table View</span>
         <span *ngIf="viewMode === 'table'">🎴 Grid View</span>
       </button>
@@ -81,9 +96,8 @@
 
     <!-- GRID VIEW - Compact Cards -->
     <div class="leads-grid" *ngIf="!loading && viewMode === 'grid'">
-      <div class="lead-card-compact" *ngFor="let lead of getPaginatedLeads()" 
-        [class.card-pending]="lead.status === 'pending'"
-        [class.card-success]="lead.status === 'success'">
+      <div class="lead-card-compact" *ngFor="let lead of getPaginatedLeads()"
+        [class.card-pending]="lead.status === 'pending'" [class.card-success]="lead.status === 'success'">
 
         <!-- Card Header -->
         <div class="card-header-compact">
@@ -93,20 +107,25 @@
               {{ lead.status || 'pending' }}
             </span>
           </div>
-          
-          <div class="card-actions">
-            <button class="btn-dropdown" (click)="toggleDropdown(lead._id, $event)" type="button" title="Actions">⋮</button>
 
-            <div class="dropdown-menu" *ngIf="openDropdownId === lead._id" [style.display]="openDropdownId === lead._id ? 'block' : 'none'">
-              <button class="dropdown-item view-item" (click)="viewDetails(lead, $event); $event.stopPropagation()" type="button">
+          <div class="card-actions">
+            <button class="btn-dropdown" (click)="toggleDropdown(lead._id, $event)" type="button"
+              title="Actions">⋮</button>
+
+            <div class="dropdown-menu" *ngIf="openDropdownId === lead._id"
+              [style.display]="openDropdownId === lead._id ? 'block' : 'none'">
+              <button class="dropdown-item view-item" (click)="viewDetails(lead, $event); $event.stopPropagation()"
+                type="button">
                 <span class="item-icon">👁️</span>
                 <span>View Details</span>
               </button>
-              <button class="dropdown-item pending-item" (click)="updateToPending(lead, $event); $event.stopPropagation()" type="button">
+              <button class="dropdown-item pending-item"
+                (click)="updateToPending(lead, $event); $event.stopPropagation()" type="button">
                 <span class="item-icon">⏳</span>
                 <span>Mark Pending</span>
               </button>
-              <button class="dropdown-item success-item" (click)="updateToSuccess(lead, $event); $event.stopPropagation()" type="button">
+              <button class="dropdown-item success-item"
+                (click)="updateToSuccess(lead, $event); $event.stopPropagation()" type="button">
                 <span class="item-icon">✓</span>
                 <span>Mark Success</span>
               </button>
@@ -120,22 +139,22 @@
             <span class="info-icon">📱</span>
             <span class="info-text">{{ lead.leadPhone }}</span>
           </div>
-          
+
           <div class="info-row-compact">
             <span class="info-icon">📅</span>
             <span class="info-text">{{ lead.submittedDate }} • {{ lead.submittedTime }}</span>
           </div>
-          
+
           <div class="info-row-compact">
             <span class="info-icon">🌐</span>
             <span class="info-text source-badge-inline">{{ lead.leadSource }}</span>
           </div>
-          
+
           <div class="info-row-compact notes-row">
             <span class="info-icon">📝</span>
             <span class="info-text notes-text">{{ lead.notes }}</span>
           </div>
-          
+
           <div class="info-row-compact">
             <span class="info-icon">👤</span>
             <span class="info-text">{{ lead.assignTo.name }}</span>
@@ -168,8 +187,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let lead of getPaginatedLeads()" 
-              [class.row-pending]="lead.status === 'pending'"
+            <tr *ngFor="let lead of getPaginatedLeads()" [class.row-pending]="lead.status === 'pending'"
               [class.row-success]="lead.status === 'success'">
               <td class="td-name">{{ lead.leadName }}</td>
               <td>{{ lead.leadPhone }}</td>
@@ -190,9 +208,12 @@
               </td>
               <td class="td-actions">
                 <div class="table-actions">
-                  <button class="btn-table-action btn-view" (click)="viewDetails(lead)" title="View Details">👁️</button>
-                  <button class="btn-table-action btn-pending" (click)="updateToPending(lead, $event)" title="Mark Pending">⏳</button>
-                  <button class="btn-table-action btn-success" (click)="updateToSuccess(lead, $event)" title="Mark Success">✓</button>
+                  <button class="btn-table-action btn-view" (click)="viewDetails(lead)"
+                    title="View Details">👁️</button>
+                  <button class="btn-table-action btn-pending" (click)="updateToPending(lead, $event)"
+                    title="Mark Pending">⏳</button>
+                  <button class="btn-table-action btn-success" (click)="updateToSuccess(lead, $event)"
+                    title="Mark Success">✓</button>
                 </div>
               </td>
             </tr>
@@ -225,7 +246,204 @@
     </div>
   </div>
 
-  <!-- Details Modal -->
+  <!-- ==================== PARTNER TAB (NEW) ==================== -->
+  <div class="content-wrapper" *ngIf="activeTab === 'partner'">
+
+    <!-- Stats -->
+    <div class="stats-container">
+      <div class="stat-card stat-total">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <h3>{{ partnerLeads.length }}</h3>
+          <p>Total Partner Leads</p>
+        </div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+          <h3>{{ getPartnerPendingCount() }}</h3>
+          <p>Pending</p>
+        </div>
+      </div>
+      <div class="stat-card stat-accepted">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <h3>{{ getPartnerDisbursedCount() }}</h3>
+          <p>Disbursed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-section">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" [(ngModel)]="partnerSearchTerm"
+          placeholder="Search by customer name, mobile, application no..." class="search-input" />
+      </div>
+
+      <div class="filter-group">
+        <label>Status:</label>
+        <select [(ngModel)]="partnerFilterStatus" class="filter-select">
+          <option value="All">All Applications</option>
+          <option *ngFor="let s of partnerStatusOptions" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <button class="view-toggle-btn" (click)="toggleViewModePartner()"
+        [title]="partnerViewMode === 'grid' ? 'Switch to Table View' : 'Switch to Grid View'">
+        <span *ngIf="partnerViewMode === 'grid'">📋 Table View</span>
+        <span *ngIf="partnerViewMode === 'table'">🎴 Grid View</span>
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="partnerLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading partner leads...</p>
+    </div>
+
+    <!-- GRID VIEW -->
+    <div class="leads-grid" *ngIf="!partnerLoading && partnerViewMode === 'grid'">
+      <div class="lead-card-compact" *ngFor="let lead of getPartnerPaginatedLeads()">
+        <div class="card-header-compact">
+          <div class="card-title-compact">
+            <h3>{{ lead.customerName }}</h3>
+            <span [class]="getPartnerStatusClass(lead.status)" class="status-badge">{{ lead.status }}</span>
+          </div>
+
+    <div class="card-actions-simple">
+  <button class="btn-table-action btn-view" (click)="viewPartnerDetails(lead, $event)" type="button" title="View Details">👁️</button>
+
+  <select class="status-select" [ngModel]="lead.status"
+    (change)="updatePartnerStatus(lead, $any($event.target).value)"
+    (click)="$event.stopPropagation()"
+    [disabled]="updatingStatusId === lead._id">
+    <option *ngFor="let s of partnerStatusOptions" [value]="s">{{ s }}</option>
+  </select>
+
+  <span class="spinner-mini" *ngIf="updatingStatusId === lead._id"></span>
+</div>
+        </div>
+
+        <div class="card-body-compact">
+          <div class="info-row-compact">
+            <span class="info-icon">📱</span><span class="info-text">{{ lead.customerMobile }}</span>
+          </div>
+          <div class="info-row-compact">
+            <span class="info-icon">💰</span><span class="info-text">{{ lead.loanType }} • {{
+              formatCurrency(lead.loanAmount) }}</span>
+          </div>
+          <div class="info-row-compact">
+            <span class="info-icon">📅</span><span class="info-text">{{ lead.submittedDate }} • {{ lead.submittedTime
+              }}</span>
+          </div>
+          <div class="info-row-compact" *ngIf="lead.partnerName">
+            <span class="info-icon">🏢</span><span class="info-text source-badge-inline">{{ lead.partnerName }}</span>
+          </div>
+          <div class="info-row-compact">
+            <span class="info-icon">⚡</span>
+            <span [class]="getPartnerPriorityClass(lead.priority)" class="status-badge">{{ lead.priority }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="getPartnerPaginatedLeads().length === 0" class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>No partner leads found</h3>
+        <p>Leads created by partners and assigned to you will appear here</p>
+      </div>
+    </div>
+
+    <!-- TABLE VIEW -->
+    <div class="table-container" *ngIf="!partnerLoading && partnerViewMode === 'table'">
+      <div class="table-responsive">
+        <table class="leads-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Loan</th>
+              <th>Amount</th>
+              <th>Date & Time</th>
+              <th>Partner</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let lead of getPartnerPaginatedLeads()">
+              <td class="td-name">
+                {{ lead.customerName }}
+                <div class="mobile-text">{{ lead.customerMobile }}</div>
+              </td>
+              <td>{{ lead.loanType }}</td>
+              <td>{{ formatCurrency(lead.loanAmount) }}</td>
+              <td class="td-datetime">
+                <div>{{ lead.submittedDate }}</div>
+                <div class="time-text">{{ lead.submittedTime }}</div>
+              </td>
+              <td><span class="source-badge-table">{{ lead.partnerName }}</span></td>
+              <td><span [class]="getPartnerPriorityClass(lead.priority)" class="status-badge">{{ lead.priority }}</span>
+              </td>
+              <td><span [class]="getPartnerStatusClass(lead.status)" class="status-badge">{{ lead.status }}</span></td>
+
+              <!-- <td class="td-actions">
+                <div class="table-actions">
+                  <button class="btn-table-action btn-view" (click)="viewPartnerDetails(lead)" title="View Details">👁️</button>
+                  <select class="status-select" [ngModel]="lead.status"
+                    (change)="updatePartnerStatus(lead, $any($event.target).value)"
+                    (click)="$event.stopPropagation()" title="Change Status">
+                    <option *ngFor="let s of partnerStatusOptions" [value]="s">{{ s }}</option>
+                  </select>
+                </div>
+              </td> -->
+
+              <td class="td-actions">
+  <div class="table-actions">
+    <button class="btn-table-action btn-view" (click)="viewPartnerDetails(lead)" title="View Details">👁️</button>
+
+    <select class="status-select" [ngModel]="lead.status"
+      (change)="updatePartnerStatus(lead, $any($event.target).value)"
+      (click)="$event.stopPropagation()"
+      [disabled]="updatingStatusId === lead._id">
+      <option *ngFor="let s of partnerStatusOptions" [value]="s">{{ s }}</option>
+    </select>
+
+    <span class="spinner-mini" *ngIf="updatingStatusId === lead._id"></span>
+  </div>
+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="getPartnerPaginatedLeads().length === 0" class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>No partner leads found</h3>
+        <p>Leads created by partners and assigned to you will appear here</p>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="getPartnerTotalPages() > 1 && !partnerLoading">
+      <button class="page-btn" (click)="goToPartnerPage(partnerCurrentPage - 1)" [disabled]="partnerCurrentPage === 1">‹
+        Previous</button>
+      <button *ngFor="let page of getPartnerPageNumbers()" class="page-number"
+        [class.active]="page === partnerCurrentPage" (click)="goToPartnerPage(page)">{{ page }}</button>
+      <button class="page-btn" (click)="goToPartnerPage(partnerCurrentPage + 1)"
+        [disabled]="partnerCurrentPage === getPartnerTotalPages()">Next ›</button>
+    </div>
+  </div>
+
+
+  <div class="partner-toast" *ngIf="showPartnerToastFlag" [class.toast-success]="partnerToastType === 'success'"
+    [class.toast-error]="partnerToastType === 'error'">
+    <span class="toast-icon">{{ partnerToastType === 'success' ? '✅' : '⚠️' }}</span>
+    <span>{{ partnerToastMessage }}</span>
+  </div>
+
+  <!-- Admin Lead Details Modal (ORIGINAL — UNCHANGED) -->
   <div *ngIf="showDetailsModal" class="modal-overlay" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -314,36 +532,145 @@
     </div>
   </div>
 
-  <!-- Confirmation Modal -->
+  <!-- Confirmation Modal (ORIGINAL — UNCHANGED) -->
   <div *ngIf="showConfirmModal" class="modal-overlay confirm-overlay" (click)="closeConfirmModal()">
     <div class="confirm-modal" (click)="$event.stopPropagation()">
-      <div class="confirm-icon" [class.pending-icon]="confirmAction === 'pending'" 
-           [class.success-icon]="confirmAction === 'success'">
+      <div class="confirm-icon" [class.pending-icon]="confirmAction === 'pending'"
+        [class.success-icon]="confirmAction === 'success'">
         <span *ngIf="confirmAction === 'pending'">⏳</span>
         <span *ngIf="confirmAction === 'success'">✓</span>
       </div>
-      
+
       <h3 class="confirm-title">Confirm Status Change</h3>
-      
+
       <p class="confirm-message" *ngIf="confirmLead">
-        Are you sure you want to mark <strong>{{ confirmLead.leadName }}</strong>'s status as 
-        <span [class.text-pending]="confirmAction === 'pending'" 
-              [class.text-success]="confirmAction === 'success'">
+        Are you sure you want to mark <strong>{{ confirmLead.leadName }}</strong>'s status as
+        <span [class.text-pending]="confirmAction === 'pending'" [class.text-success]="confirmAction === 'success'">
           {{ confirmAction }}
         </span>?
       </p>
-      
+
       <div class="confirm-actions">
         <button class="confirm-btn cancel-btn" (click)="closeConfirmModal()">
           <span>✕</span> Cancel
         </button>
-        <button class="confirm-btn" 
-                [class.pending-btn]="confirmAction === 'pending'"
-                [class.success-btn]="confirmAction === 'success'"
-                (click)="confirmStatusUpdate()">
+        <button class="confirm-btn" [class.pending-btn]="confirmAction === 'pending'"
+          [class.success-btn]="confirmAction === 'success'" (click)="confirmStatusUpdate()">
           <span *ngIf="confirmAction === 'pending'">⏳</span>
           <span *ngIf="confirmAction === 'success'">✓</span>
           Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ NEW: Partner Lead Details Modal -->
+  <div *ngIf="showPartnerDetailsModal" class="modal-overlay" (click)="closePartnerModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h2>Partner Lead Details</h2>
+          <span class="modal-subtitle">Complete application information</span>
+        </div>
+        <button class="close-btn" (click)="closePartnerModal()">✕</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedPartnerLead">
+        <div class="detail-section">
+          <h4>📋 Customer Information</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Customer Name</span>
+              <span class="detail-value">{{ selectedPartnerLead.customerName }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Mobile</span>
+              <span class="detail-value">{{ selectedPartnerLead.customerMobile }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedPartnerLead.customerEmail">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">{{ selectedPartnerLead.customerEmail }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Loan Type</span>
+              <span class="detail-value">{{ selectedPartnerLead.loanType }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Loan Amount</span>
+              <span class="detail-value">{{ formatCurrency(selectedPartnerLead.loanAmount) }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedPartnerLead.monthlyIncome">
+              <span class="detail-label">Monthly Income</span>
+              <span class="detail-value">{{ formatCurrency(selectedPartnerLead.monthlyIncome) }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Status</span>
+              <span [class]="getPartnerStatusClass(selectedPartnerLead.status)" class="status-badge">{{
+                selectedPartnerLead.status }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Priority</span>
+              <span [class]="getPartnerPriorityClass(selectedPartnerLead.priority)" class="status-badge">{{
+                selectedPartnerLead.priority }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="selectedPartnerLead.assignedManager">
+          <h4>👥 Assigned Manager</h4>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">Manager Name</span>
+              <span class="detail-value">{{ selectedPartnerLead.assignedManager.name }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Manager Mobile</span>
+              <span class="detail-value">{{ selectedPartnerLead.assignedManager.mobile }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <div style="display:flex; justify-content: space-between; align-items:center;">
+            <h4 style="margin:0;">📝 Remarks</h4>
+            <button class="view-toggle-btn" (click)="openPartnerRemarkModal()">+ Add Remark</button>
+          </div>
+          <div class="detail-grid" *ngIf="selectedPartnerLead.remarks && selectedPartnerLead.remarks.length > 0">
+            <div class="detail-item full-width" *ngFor="let r of selectedPartnerLead.remarks">
+              <span class="detail-label">{{ r.addedByName }} ({{ r.addedByRole }})</span>
+              <span class="detail-value">{{ r.message }}</span>
+            </div>
+          </div>
+          <p *ngIf="!selectedPartnerLead.remarks || selectedPartnerLead.remarks.length === 0"
+            style="margin-top:8px; color:#8a8f9b; font-size:13px;">
+            No remarks yet
+          </p>
+        </div>
+
+        <div class="detail-section"
+          *ngIf="selectedPartnerLead.statusHistory && selectedPartnerLead.statusHistory.length > 0">
+          <h4>🕐 Status History</h4>
+          <div class="detail-grid">
+            <div class="detail-item full-width" *ngFor="let h of selectedPartnerLead.statusHistory">
+              <span class="detail-label">{{ h.status }} — {{ h.updatedByName }}</span>
+              <span class="detail-value">{{ h.remark }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ NEW: Add Partner Remark Modal -->
+  <div *ngIf="showPartnerRemarkModal" class="modal-overlay" (click)="closePartnerRemarkModal()">
+    <div class="confirm-modal" (click)="$event.stopPropagation()">
+      <h3 class="confirm-title">Add Remark</h3>
+      <textarea class="search-input" rows="4" style="width:100%; margin: 12px 0;" placeholder="Enter your remark..."
+        [(ngModel)]="partnerRemarkMessage"></textarea>
+      <div class="confirm-actions">
+        <button class="confirm-btn cancel-btn" (click)="closePartnerRemarkModal()"><span>✕</span> Cancel</button>
+        <button class="confirm-btn success-btn" (click)="addPartnerRemark()" [disabled]="partnerSubmitting">
+          <span>✓</span> Save
         </button>
       </div>
     </div>

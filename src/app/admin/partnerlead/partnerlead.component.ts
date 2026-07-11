@@ -17,6 +17,24 @@ interface Partner {
   adminRemarks?: string;
 }
 
+interface Partner {
+  _id: string;
+  name: string;
+  mobile: string;
+  email?: string;
+  profession?: string;
+  city?: string;
+  state?: string;
+  experienceYears?: string | number;
+  companyName?: string;
+  isVerified: boolean;
+  status: string;
+  createdAt: string;
+  updatedAt?: string;
+  verifiedAt?: string;
+  adminRemarks?: string;
+}
+
 interface ApiResponse {
   success: boolean;
   message: string;
@@ -36,6 +54,12 @@ export class PartnerleadComponent implements OnInit {
   paginatedPartners: Partner[] = [];
   isLoading = true;
   searchQuery = '';
+
+  viewMode: 'table' | 'grid' = 'table';
+
+toggleViewMode(): void {
+  this.viewMode = this.viewMode === 'table' ? 'grid' : 'table';
+}
 
   // Modals
   showDetailsModal = false;

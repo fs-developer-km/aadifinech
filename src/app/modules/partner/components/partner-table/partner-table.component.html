@@ -21,7 +21,7 @@
 
 <!-- Dashboard Container -->
 <div class="dashboard-container mt-3">
-  
+
   <!-- Header Section -->
   <div class="dashboard-header">
     <div class="header-left">
@@ -29,6 +29,9 @@
       <p class="subtitle">Track and manage your submitted leads</p>
     </div>
     <div class="header-right">
+      <button class="btn-secondary" (click)="refreshLeads()" [disabled]="isLoading">
+        🔄 Refresh
+      </button>
       <button class="btn-primary" (click)="openCreateModal()">
         <span class="btn-icon">+</span> Create New Lead
       </button>
@@ -74,9 +77,9 @@
   <div class="filter-section">
     <div class="filter-row">
       <div class="filter-item">
-        <input 
-          type="text" 
-          class="input-field search-input" 
+        <input
+          type="text"
+          class="input-field search-input"
           placeholder="🔍 Search by name, mobile, or application number..."
           [(ngModel)]="searchQuery"
           (keyup.enter)="applyFilter()">
@@ -103,7 +106,7 @@
   <!-- Leads Table -->
   <div class="table-container">
     <div class="table-card">
-      
+
       <!-- No Data -->
       <div class="no-data" *ngIf="leads.length === 0 && !isLoading">
         <div class="no-data-icon">📋</div>
@@ -119,12 +122,12 @@
             <tr>
               <th>Customer</th>
               <th>Loan Details</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Priority</th>
+              <th class="col-amount">Amount</th>
+              <th class="col-status">Status</th>
+              <th class="col-priority">Priority</th>
               <th>Assigned To</th>
               <th>Date</th>
-              <th>Action</th>
+              <th class="col-action">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -141,16 +144,16 @@
                   <p class="employment-type" *ngIf="lead.employmentType">{{ lead.employmentType }}</p>
                 </div>
               </td>
-              <td>
+              <td class="col-amount">
                 <p class="amount-value">{{ formatCurrency(lead.loanAmount) }}</p>
               </td>
-              <td>
-                <span class="badgeee" [class]="getStatusBadgeClass(lead.status)">
+              <td class="col-status">
+                <span class="badge" [class]="getStatusBadgeClass(lead.status)">
                   {{ lead.status }}
                 </span>
               </td>
-              <td>
-                <span class="badgeee" [class]="getPriorityBadgeClass(lead.priority)">
+              <td class="col-priority">
+                <span class="badge" [class]="getPriorityBadgeClass(lead.priority)">
                   {{ lead.priority }}
                 </span>
               </td>
@@ -166,8 +169,12 @@
                   <p class="time">{{ lead.submittedTime }}</p>
                 </div>
               </td>
-              <td>
-                <button class="btn-view" (click)="viewLeadDetails(lead._id)">View</button>
+              <td class="col-action">
+                <div class="row-actions">
+                  <button class="btn-view" (click)="viewLeadDetails(lead._id)">View</button>
+                  <button class="btn-icon-action btn-edit" (click)="openEditModal(lead, $event)" title="Edit Lead">✏️</button>
+                  <button class="btn-icon-action btn-delete" (click)="openDeleteConfirm(lead, $event)" title="Delete Lead">🗑️</button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -179,43 +186,47 @@
         <div class="lead-card" *ngFor="let lead of leads">
           <div class="lead-card-header">
             <h4>{{ lead.customerName }}</h4>
-            <span class="badgeee" [class]="getStatusBadgeClass(lead.status)">{{ lead.status }}</span>
+            <span class="badge" [class]="getStatusBadgeClass(lead.status)">{{ lead.status }}</span>
           </div>
-          
+
           <div class="lead-card-body">
             <div class="lead-detail">
-              <span class="detail-label">📞 Mobile:</span>
+              <span class="detail-label">📞 Mobile</span>
               <span class="detail-value">{{ lead.customerMobile }}</span>
             </div>
-            
+
             <div class="lead-detail">
-              <span class="detail-label">💰 Loan Type:</span>
+              <span class="detail-label">💰 Loan Type</span>
               <span class="detail-value">{{ lead.loanType }}</span>
             </div>
-            
+
             <div class="lead-detail">
-              <span class="detail-label">💵 Amount:</span>
+              <span class="detail-label">💵 Amount</span>
               <span class="detail-value bold">{{ formatCurrency(lead.loanAmount) }}</span>
             </div>
-            
+
             <div class="lead-detail">
-              <span class="detail-label">⚡ Priority:</span>
-              <span class="badgeee" [class]="getPriorityBadgeClass(lead.priority)">{{ lead.priority }}</span>
+              <span class="detail-label">⚡ Priority</span>
+              <span class="badge" [class]="getPriorityBadgeClass(lead.priority)">{{ lead.priority }}</span>
             </div>
-            
+
             <div class="lead-detail" *ngIf="lead.assignedEmployee">
-              <span class="detail-label">👤 Employee:</span>
+              <span class="detail-label">👤 Employee</span>
               <span class="detail-value">{{ lead.assignedEmployee.name }}</span>
             </div>
-            
+
             <div class="lead-detail">
-              <span class="detail-label">📅 Date:</span>
+              <span class="detail-label">📅 Date</span>
               <span class="detail-value">{{ lead.submittedDate }} • {{ lead.submittedTime }}</span>
             </div>
           </div>
-          
+
           <div class="lead-card-footer">
-            <button class="btn-view-full" (click)="viewLeadDetails(lead._id)">View Details</button>
+            <div class="row-actions">
+              <button class="btn-view-full" (click)="viewLeadDetails(lead._id)">View Details</button>
+              <button class="btn-icon-action btn-edit" (click)="openEditModal(lead, $event)" title="Edit Lead">✏️</button>
+              <button class="btn-icon-action btn-delete" (click)="openDeleteConfirm(lead, $event)" title="Delete Lead">🗑️</button>
+            </div>
           </div>
         </div>
       </div>
@@ -226,15 +237,15 @@
   <!-- Pagination -->
   <div class="pagination" *ngIf="totalPages > 1">
     <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">‹ Prev</button>
-    
-    <button 
+
+    <button
       *ngFor="let page of pageNumbers"
       class="page-btn"
       [class.active]="page === currentPage"
       (click)="goToPage(page)">
       {{ page }}
     </button>
-    
+
     <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next ›</button>
   </div>
 
@@ -247,15 +258,15 @@
       <h2>Create New Lead</h2>
       <button class="modal-close" (click)="closeCreateModal()">×</button>
     </div>
-    
+
     <div class="modal-body">
       <form (ngSubmit)="createLead()">
-        
+
         <div class="form-group">
           <label>Customer Name *</label>
-          <input 
-            type="text" 
-            class="input-field" 
+          <input
+            type="text"
+            class="input-field"
             placeholder="Enter customer name"
             [(ngModel)]="newLead.customerName"
             name="customerName"
@@ -265,9 +276,9 @@
         <div class="form-row">
           <div class="form-group">
             <label>Mobile Number *</label>
-            <input 
-              type="tel" 
-              class="input-field" 
+            <input
+              type="tel"
+              class="input-field"
               placeholder="+91 9876543210"
               [(ngModel)]="newLead.customerMobile"
               name="customerMobile"
@@ -276,9 +287,9 @@
 
           <div class="form-group">
             <label>Email (Optional)</label>
-            <input 
-              type="email" 
-              class="input-field" 
+            <input
+              type="email"
+              class="input-field"
               placeholder="customer@email.com"
               [(ngModel)]="newLead.customerEmail"
               name="customerEmail">
@@ -295,9 +306,9 @@
 
           <div class="form-group">
             <label>Loan Amount *</label>
-            <input 
-              type="number" 
-              class="input-field" 
+            <input
+              type="number"
+              class="input-field"
               placeholder="500000"
               [(ngModel)]="newLead.loanAmount"
               name="loanAmount"
@@ -309,9 +320,9 @@
         <div class="form-row">
           <div class="form-group">
             <label>Monthly Income</label>
-            <input 
-              type="number" 
-              class="input-field" 
+            <input
+              type="number"
+              class="input-field"
               placeholder="75000"
               [(ngModel)]="newLead.monthlyIncome"
               name="monthlyIncome"
@@ -327,9 +338,19 @@
         </div>
 
         <div class="form-group">
+          <label>Priority</label>
+          <select class="input-field" [(ngModel)]="newLead.priority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label>Remarks (Optional)</label>
-          <textarea 
-            class="input-field textarea-field" 
+          <textarea
+            class="input-field textarea-field"
             rows="3"
             placeholder="Add any additional notes..."
             [(ngModel)]="newLead.remarks"
@@ -355,9 +376,9 @@
       <h2>Lead Details</h2>
       <button class="modal-close" (click)="closeDetailsModal()">×</button>
     </div>
-    
+
     <div class="modal-body" *ngIf="selectedLead">
-      
+
       <!-- Lead Info Grid -->
       <div class="details-grid">
         <div class="detail-box">
@@ -397,12 +418,12 @@
 
         <div class="detail-box">
           <label>Status</label>
-          <span class="badgeee" [class]="getStatusBadgeClass(selectedLead.status)">{{ selectedLead.status }}</span>
+          <span class="badge" [class]="getStatusBadgeClass(selectedLead.status)">{{ selectedLead.status }}</span>
         </div>
 
         <div class="detail-box">
           <label>Priority</label>
-          <span class="badgeee" [class]="getPriorityBadgeClass(selectedLead.priority)">{{ selectedLead.priority }}</span>
+          <span class="badge" [class]="getPriorityBadgeClass(selectedLead.priority)">{{ selectedLead.priority }}</span>
         </div>
 
         <div class="detail-box">
@@ -414,7 +435,7 @@
       <!-- Assigned Team -->
       <div class="section-divider"></div>
       <h3 class="section-title">Assigned Team</h3>
-      
+
       <div class="team-grid">
         <div class="team-member" *ngIf="selectedLead.assignedEmployee">
           <div class="member-icon">👤</div>
@@ -466,7 +487,7 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="badgeee" [class]="getStatusBadgeClass(history.status)">{{ history.status }}</span>
+              <span class="badge" [class]="getStatusBadgeClass(history.status)">{{ history.status }}</span>
               <span class="timeline-time">{{ formatDate(history.timestamp) }}</span>
             </div>
             <p class="timeline-user">Updated by: {{ history.updatedByName }}</p>
@@ -490,12 +511,12 @@
       <h2>Add Remark</h2>
       <button class="modal-close" (click)="closeRemarkModal()">×</button>
     </div>
-    
+
     <div class="modal-body">
       <div class="form-group">
         <label>Your Remark</label>
-        <textarea 
-          class="input-field textarea-field" 
+        <textarea
+          class="input-field textarea-field"
           rows="4"
           placeholder="Enter your remark here..."
           [(ngModel)]="remarkMessage"
@@ -507,6 +528,134 @@
         <button class="btn-primary" (click)="addRemark()" [disabled]="isSubmitting">
           <span class="loader-mini" *ngIf="isSubmitting"></span>
           <span *ngIf="!isSubmitting">Add Remark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ NEW: Edit Lead Modal -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Edit Lead</h2>
+      <button class="modal-close" (click)="closeEditModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="submitEditLead()">
+
+        <div class="form-group">
+          <label>Customer Name *</label>
+          <input
+            type="text"
+            class="input-field"
+            [(ngModel)]="editLead.customerName"
+            name="editCustomerName"
+            required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Mobile Number *</label>
+            <input
+              type="tel"
+              class="input-field"
+              [(ngModel)]="editLead.customerMobile"
+              name="editCustomerMobile"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label>Email (Optional)</label>
+            <input
+              type="email"
+              class="input-field"
+              [(ngModel)]="editLead.customerEmail"
+              name="editCustomerEmail">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Loan Type *</label>
+            <select class="input-field" [(ngModel)]="editLead.loanType" name="editLoanType" required>
+              <option *ngFor="let type of loanTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Loan Amount *</label>
+            <input
+              type="number"
+              class="input-field"
+              [(ngModel)]="editLead.loanAmount"
+              name="editLoanAmount"
+              min="1"
+              required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Monthly Income</label>
+            <input
+              type="number"
+              class="input-field"
+              [(ngModel)]="editLead.monthlyIncome"
+              name="editMonthlyIncome"
+              min="0">
+          </div>
+
+          <div class="form-group">
+            <label>Employment Type</label>
+            <select class="input-field" [(ngModel)]="editLead.employmentType" name="editEmploymentType">
+              <option *ngFor="let type of employmentTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Priority</label>
+          <select class="input-field" [(ngModel)]="editLead.priority" name="editPriority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeEditModal()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+            <span class="loader-mini" *ngIf="isSubmitting"></span>
+            <span *ngIf="!isSubmitting">Save Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ NEW: Delete Confirmation Modal -->
+<div class="modal-overlay" *ngIf="showDeleteConfirm" (click)="closeDeleteConfirm()">
+  <div class="modal-container modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Delete Lead</h2>
+      <button class="modal-close" (click)="closeDeleteConfirm()">×</button>
+    </div>
+
+    <div class="modal-body" *ngIf="deletingLead">
+      <p>
+        Are you sure you want to delete the lead for
+        <strong>{{ deletingLead.customerName }}</strong>? This cannot be undone.
+      </p>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeDeleteConfirm()">Cancel</button>
+        <button class="btn-primary" style="background:#a3282f;" (click)="confirmDeleteLead()" [disabled]="isSubmitting">
+          <span class="loader-mini" *ngIf="isSubmitting"></span>
+          <span *ngIf="!isSubmitting">Delete</span>
         </button>
       </div>
     </div>
