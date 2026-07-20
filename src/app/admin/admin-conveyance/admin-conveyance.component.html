@@ -67,28 +67,71 @@
     </div>
 
     <!-- Status Breakdown -->
-    <div class="status-breakdown" *ngIf="statistics && statistics.byStatus">
-      <h3>Status Breakdown</h3>
-      <div class="breakdown-grid">
-        <div class="breakdown-card" *ngFor="let status of statistics.byStatus">
-          <div class="breakdown-header">
-            <span class="status-badge" [ngClass]="status._id">{{ status._id | uppercase }}</span>
-            <span class="count-badge">{{ status.count }}</span>
-          </div>
-          <div class="breakdown-details">
-            <div class="detail-item">
-              <span class="label">Amount:</span>
-              <span class="value">₹{{ status.totalAmount | number:'1.0-0' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Distance:</span>
-              <span class="value">{{ status.totalDistance | number:'1.0-0' }} km</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+ <div class="status-breakdown" *ngIf="statistics && statistics.byStatus && statistics.byStatus.length > 0">
+  <h3>Status Breakdown</h3>
+  <div class="breakdown-table-wrapper">
+    <table class="breakdown-table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Count</th>
+          <th>Total Amount</th>
+          <th>Total Distance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let status of statistics.byStatus">
+          <td><span class="status-badge" [ngClass]="status._id">{{ status._id | uppercase }}</span></td>
+          <td class="center"><span class="count-badge">{{ status.count }}</span></td>
+          <td class="amount">₹{{ status.totalAmount | number:'1.0-0' }}</td>
+          <td>{{ status.totalDistance | number:'1.0-0' }} km</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
+  </div>
+
+  <!-- CONVEYANCE HISTORY -->
+<div class="history-section">
+  <div class="history-header">
+    <h3><i class="fas fa-history"></i> Conveyance History (All Time)</h3>
+  </div>
+
+  <div class="history-table-wrapper" *ngIf="!loadingHistory && historyConveyances.length > 0">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Month</th>
+          <th>Distance</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of historyConveyances">
+          <td>{{ c.employeeName }}</td>
+          <td>{{ c.month | date:'MMM yyyy' }}</td>
+          <td>{{ c.totalDistance }} km</td>
+          <td class="amount">₹{{ c.totalAmount }}</td>
+          <td><span class="status-badge" [ngClass]="c.status">{{ c.status | uppercase }}</span></td>
+          <td>
+            <button class="btn-icon" (click)="viewDetails(c)" title="View">
+              <i class="fas fa-eye"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-history" *ngIf="!loadingHistory && historyConveyances.length === 0">
+    <p>No conveyance history yet</p>
+  </div>
+</div>
+
 
   <!-- Filters Section -->
   <div class="filters-section">
@@ -410,7 +453,25 @@
                   </span>
                 </div>
               </div>
+
               <div class="entry-row">
+  <div class="entry-field">
+    <span class="field-label">Distance:</span>
+    <span class="field-value">{{ entry.distance }} km</span>
+  </div>
+  <div class="entry-field">
+    <span class="field-label">Rate Applied:</span>
+    <span class="field-value">₹{{ entry.ratePerKm || 0 }}/km</span>
+  </div>
+</div>
+<div class="entry-row">
+  <div class="entry-field full">
+    <span class="field-label">Amount:</span>
+    <span class="field-value amount">₹{{ entry.amount }}</span>
+  </div>
+</div>
+
+              <!-- <div class="entry-row">
                 <div class="entry-field">
                   <span class="field-label">Distance:</span>
                   <span class="field-value">{{ entry.distance }} km</span>
@@ -419,7 +480,7 @@
                   <span class="field-label">Amount:</span>
                   <span class="field-value amount">₹{{ entry.amount }}</span>
                 </div>
-              </div>
+              </div> -->
               <div class="entry-row">
                 <div class="entry-field full">
                   <span class="field-label">Purpose:</span>
@@ -452,14 +513,14 @@
 
     <div class="modal-footer">
       <button class="btn-cancel" (click)="closeDetailsModal()">Close</button>
-      <button class="btn-approve" *ngIf="selectedConveyance && selectedConveyance.status === 'submitted'" 
-              (click)="closeDetailsModal(); openApproveModal(selectedConveyance)">
-        <i class="fas fa-check"></i> Approve
-      </button>
-      <button class="btn-reject" *ngIf="selectedConveyance && selectedConveyance.status === 'submitted'" 
-              (click)="closeDetailsModal(); openRejectModal(selectedConveyance)">
-        <i class="fas fa-times"></i> Reject
-      </button>
+     <button class="btn-approve" *ngIf="selectedConveyance && selectedConveyance.status === 'submitted'" 
+        (click)="openApproveFromDetails()">
+  <i class="fas fa-check"></i> Approve
+</button>
+<button class="btn-reject" *ngIf="selectedConveyance && selectedConveyance.status === 'submitted'" 
+        (click)="openRejectFromDetails()">
+  <i class="fas fa-times"></i> Reject
+</button>
     </div>
   </div>
 </div>

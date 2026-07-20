@@ -27,6 +27,12 @@
       <i class="fas fa-chart-line"></i>
       <span>Reports</span>
     </button>
+
+    <button class="tab-btn" [class.active]="activeTab === 'grid'" (click)="switchTab('grid')">
+      <i class="fas fa-table"></i>
+      <span>Monthly Sheet</span>
+    </button>
+
     <button class="tab-btn" [class.active]="activeTab === 'leaves'" (click)="switchTab('leaves')">
       <i class="fas fa-umbrella-beach"></i>
       <span>Leave Requests</span>
@@ -309,6 +315,89 @@
         <i class="fas fa-chart-pie"></i>
         <p>Click "Load" to view monthly report</p>
       </div>
+    </div>
+  </div>
+
+  <!-- MONTHLY SHEET (GRID) TAB -->
+  <div *ngIf="activeTab === 'grid' && !isLoading" class="tab-content">
+
+    <div class="grid-toolbar">
+      <div class="month-header">
+        <button class="month-nav-btn" (click)="changeGridMonth(-1)">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <h2>{{ getMonthName(gridMonth) }} {{ gridYear }} - Monthly Sheet</h2>
+        <button class="month-nav-btn" (click)="changeGridMonth(1)">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="grid-actions">
+        <select [(ngModel)]="gridEmployeeFilter" class="form-select">
+          <option value="">All Employees</option>
+          <option *ngFor="let emp of employees" [value]="emp._id">
+            {{ emp.name }} ({{ emp.employeeCode }})
+          </option>
+        </select>
+        <button class="load-btn" (click)="loadMonthlyGrid()">
+          <i class="fas fa-sync-alt"></i> Load
+        </button>
+        <button class="export-btn" (click)="exportGridToExcel()" [disabled]="filteredGridData.length === 0">
+          <i class="fas fa-file-excel"></i> Export to Excel
+        </button>
+      </div>
+    </div>
+
+    <div class="grid-legend">
+      <span class="legend-item"><span class="legend-dot present"></span> Present</span>
+      <span class="legend-item"><span class="legend-dot halfday"></span> Half Day</span>
+      <span class="legend-item"><span class="legend-dot leave"></span> Leave</span>
+      <span class="legend-item"><span class="legend-dot absent"></span> Absent</span>
+    </div>
+
+    <div *ngIf="isGridLoading" class="grid-loading">
+      <div class="loader"></div>
+    </div>
+
+    <div class="grid-table-wrapper" *ngIf="!isGridLoading && filteredGridData.length > 0">
+      <table class="grid-table">
+        <thead>
+          <tr>
+            <th class="sticky-col emp-col">Employee</th>
+            <th *ngFor="let day of gridDaysArray" class="day-col">{{ day }}</th>
+            <th class="summary-col present">P</th>
+            <th class="summary-col absent">A</th>
+            <th class="summary-col halfday">H</th>
+            <th class="summary-col leave">L</th>
+            <th class="summary-col">Hrs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of filteredGridData">
+            <td class="sticky-col emp-col">
+              <div class="emp-cell">
+                <strong>{{ emp.name }}</strong>
+                <span>{{ emp.code }}</span>
+              </div>
+            </td>
+            <td *ngFor="let day of gridDaysArray" class="day-cell">
+              <span [class]="'day-badge ' + getGridCellClass(emp.days[day])">
+                {{ emp.days[day] || '-' }}
+              </span>
+            </td>
+            <td class="summary-cell present">{{ emp.totalPresent }}</td>
+            <td class="summary-cell absent">{{ emp.totalAbsent }}</td>
+            <td class="summary-cell halfday">{{ emp.totalHalfDay }}</td>
+            <td class="summary-cell leave">{{ emp.totalLeave }}</td>
+            <td class="summary-cell hours">{{ emp.totalWorkHours.toFixed(1) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!isGridLoading && filteredGridData.length === 0" class="no-data">
+      <i class="fas fa-table"></i>
+      <p>Click "Load" to view the monthly sheet</p>
     </div>
   </div>
 

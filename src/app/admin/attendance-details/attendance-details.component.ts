@@ -15,6 +15,19 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import * as XLSX from 'xlsx-js-style';
+
+interface EmployeeMonthlyGrid {
+  employeeId: string;
+  name: string;
+  code: string;
+  days: { [day: number]: string };
+  totalPresent: number;
+  totalAbsent: number;
+  totalHalfDay: number;
+  totalLeave: number;
+  totalWorkHours: number;
+}
 
 interface Employee {
   _id: string;
@@ -112,6 +125,15 @@ export class AttendanceDetailsComponent implements OnInit {
   statistics: any = null;
   statsMonth = new Date().getMonth() + 1;
   statsYear = new Date().getFullYear();
+
+  // Monthly Sheet (Grid)
+  gridMonth = new Date().getMonth() + 1;
+  gridYear = new Date().getFullYear();
+  gridEmployeeFilter = '';
+  gridDaysArray: number[] = [];
+  gridDaysInMonth = 0;
+  monthlyGridData: EmployeeMonthlyGrid[] = [];
+  isGridLoading = false;
   
   // Loading and messages
   isSubmitting = false;
@@ -189,6 +211,7 @@ monthlyReportSummary: any = null; // ✅ totalEmployees, workingDays etc
             }
           });
           this.employees = Array.from(uniqueEmployees.values());
+          console.log('Employees loaded:', this.employees); 
         }
       },
       error: (error) => console.error('Error loading employees:', error)
@@ -547,4 +570,240 @@ onMonthlyEmployeeFilterChange(): void {
       this.loadStatistics();
     }
   }
+
+  // ==================== MONTHLY SHEET (GRID) ====================
+
+  get filteredGridData(): EmployeeMonthlyGrid[] {
+    if (!this.gridEmployeeFilter) return this.monthlyGridData;
+    return this.monthlyGridData.filter(e => e.employeeId === this.gridEmployeeFilter);
+  }
+
+  loadMonthlyGrid() {
+    this.isGridLoading = true;
+
+    const startDate = new Date(this.gridYear, this.gridMonth - 1, 1).toISOString().split('T')[0];
+    const endDate = new Date(this.gridYear, this.gridMonth, 0).toISOString().split('T')[0];
+    this.gridDaysInMonth = new Date(this.gridYear, this.gridMonth, 0).getDate();
+    this.gridDaysArray = Array.from({ length: this.gridDaysInMonth }, (_, i) => i + 1);
+
+    this.http.get<any>(`${this.apiUrl}/date-range`, {
+      ...this.getHeaders(),
+      params: { startDate, endDate }
+    }).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.buildMonthlyGrid(response.attendance);
+        }
+        this.isGridLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading monthly grid:', error);
+        this.isGridLoading = false;
+      }
+    });
+  }
+
+  private buildMonthlyGrid(records: Attendance[]) {
+    const gridMap = new Map<string, EmployeeMonthlyGrid>();
+
+    // Sabhi known employees ko pehle se seed karo (zero-attendance wale bhi dikhein)
+ this.employees.forEach(emp => {
+      gridMap.set(emp._id, {
+        employeeId: emp._id,
+        name: emp.name || 'Unknown',
+        code: emp.employeeCode || '-',
+        days: {},
+        totalPresent: 0,
+        totalAbsent: 0,
+        totalHalfDay: 0,
+        totalLeave: 0,
+        totalWorkHours: 0
+      });
+    });
+
+    records.forEach(record => {
+      const empId = record.employeeId?._id;
+      if (!empId) return;
+
+     if (!gridMap.has(empId)) {
+        gridMap.set(empId, {
+          employeeId: empId,
+          name: record.employeeName || record.employeeId?.name || 'Unknown',
+          code: record.employeeCode || record.employeeId?.employeeCode || '-',
+          days: {},
+          totalPresent: 0,
+          totalAbsent: 0,
+          totalHalfDay: 0,
+          totalLeave: 0,
+          totalWorkHours: 0
+        });
+      }
+
+      const entry = gridMap.get(empId)!;
+      const day = new Date(record.date).getDate();
+
+      let code = 'P';
+      if (record.status === 'Half-Day') code = 'H';
+      else if (record.status === 'Leave') code = 'L';
+
+      entry.days[day] = code;
+
+      if (code === 'P') entry.totalPresent++;
+      else if (code === 'H') entry.totalHalfDay++;
+      else if (code === 'L') entry.totalLeave++;
+
+      entry.totalWorkHours += (record.workDuration || 0) / 60;
+    });
+
+    // Jin dino ka record nahi mila (aur date future nahi hai), unhe Absent maano
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === this.gridYear && (today.getMonth() + 1) === this.gridMonth;
+    const lastDayToMark = isCurrentMonth ? today.getDate() : this.gridDaysInMonth;
+
+    gridMap.forEach(entry => {
+      for (let d = 1; d <= lastDayToMark; d++) {
+        if (!entry.days[d]) {
+          entry.days[d] = 'A';
+          entry.totalAbsent++;
+        }
+      }
+    });
+
+    this.monthlyGridData = Array.from(gridMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  changeGridMonth(delta: number) {
+    this.gridMonth += delta;
+    if (this.gridMonth > 12) {
+      this.gridMonth = 1;
+      this.gridYear++;
+    } else if (this.gridMonth < 1) {
+      this.gridMonth = 12;
+      this.gridYear--;
+    }
+    this.loadMonthlyGrid();
+  }
+
+  getGridCellClass(code: string): string {
+    const classes: any = { P: 'present', A: 'absent', H: 'halfday', L: 'leave' };
+    return classes[code] || '';
+  }
+
+exportGridToExcel() {
+    const data = this.filteredGridData;
+    if (data.length === 0) return;
+
+    const dayHeaders = this.gridDaysArray.map(d => `Day ${d}`);
+    const headers = ['Employee Name', 'Employee Code', ...dayHeaders, 'Present', 'Absent', 'Half Day', 'Leave', 'Total Hours'];
+
+    const aoa: any[][] = [headers];
+
+    data.forEach(emp => {
+      const row: any[] = [emp.name || '-', emp.code || '-'];
+      this.gridDaysArray.forEach(day => row.push(emp.days[day] || '-'));
+      row.push(
+        emp.totalPresent,
+        emp.totalAbsent,
+        emp.totalHalfDay,
+        emp.totalLeave,
+        Number(emp.totalWorkHours.toFixed(1))
+      );
+      aoa.push(row);
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(aoa);
+    const dayColCount = this.gridDaysArray.length;
+    const totalCols = 2 + dayColCount + 5;
+
+    const thinBorder = {
+      top: { style: 'thin', color: { rgb: 'E5E7EB' } },
+      bottom: { style: 'thin', color: { rgb: 'E5E7EB' } },
+      left: { style: 'thin', color: { rgb: 'E5E7EB' } },
+      right: { style: 'thin', color: { rgb: 'E5E7EB' } }
+    };
+
+    // Header row style
+    for (let c = 0; c < totalCols; c++) {
+      const ref = XLSX.utils.encode_cell({ r: 0, c });
+      if (worksheet[ref]) {
+        worksheet[ref].s = {
+          font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 10 },
+          fill: { fgColor: { rgb: 'DD3333' } },
+          alignment: { horizontal: 'center', vertical: 'center' },
+          border: thinBorder
+        };
+      }
+    }
+
+    const dayColors: any = { P: 'DCFCE7', A: 'FDEAEA', H: 'FFF3D6', L: 'DBEAFE', '-': 'F3F4F6' };
+    const dayFontColors: any = { P: '15803D', A: 'DD3333', H: 'C2760A', L: '1D4ED8', '-': '9CA3AF' };
+
+    for (let r = 1; r <= data.length; r++) {
+      for (let c = 0; c < totalCols; c++) {
+        const ref = XLSX.utils.encode_cell({ r, c });
+        const cell = worksheet[ref];
+        if (!cell) continue;
+
+        if (c === 0) {
+          cell.s = {
+            font: { bold: true, sz: 10 },
+            alignment: { horizontal: 'left', vertical: 'center' },
+            border: thinBorder
+          };
+        } else if (c === 1) {
+          cell.s = {
+            font: { sz: 10, color: { rgb: '6B7280' } },
+            alignment: { horizontal: 'center', vertical: 'center' },
+            border: thinBorder
+          };
+        } else if (c >= 2 && c < 2 + dayColCount) {
+          const val = String(cell.v);
+          cell.s = {
+            font: { bold: true, sz: 9, color: { rgb: dayFontColors[val] || '374151' } },
+            fill: { fgColor: { rgb: dayColors[val] || 'FFFFFF' } },
+            alignment: { horizontal: 'center', vertical: 'center' },
+            border: thinBorder
+          };
+        } else {
+          cell.s = {
+            font: { bold: true, sz: 10 },
+            alignment: { horizontal: 'center', vertical: 'center' },
+            border: thinBorder
+          };
+        }
+      }
+    }
+
+    worksheet['!cols'] = [
+      { wch: 22 }, { wch: 14 },
+      ...this.gridDaysArray.map(() => ({ wch: 5 })),
+      { wch: 9 }, { wch: 9 }, { wch: 9 }, { wch: 9 }, { wch: 11 }
+    ];
+    worksheet['!rows'] = [{ hpt: 24 }];
+
+    const workbook = XLSX.utils.book_new();
+    const monthLabel = `${this.getMonthName(this.gridMonth)}_${this.gridYear}`;
+    // XLSX.utils.book_append_sheet(workbook, worksheet, `Attendance ${monthLabel}`.substring(0, 31));
+    // XLSX.writeFile(workbook, `Attendance_Report_${monthLabel}.xlsx`);
+
+
+       // Iski jagah ye karo:
+    XLSX.utils.book_append_sheet(workbook, worksheet, `Attendance ${monthLabel}`.substring(0, 31));
+
+const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Attendance_Report_${monthLabel}.xlsx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
+
 }

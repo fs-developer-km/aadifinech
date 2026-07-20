@@ -9,6 +9,7 @@ interface ConveyanceEntry {
   toLocation: string;
   distance: number;
   mode: string;
+  ratePerKm?: number;   // 👈 add
   amount: number;
   purpose: string;
   remarks?: string;
@@ -65,6 +66,9 @@ export class AdminConveyanceComponent implements OnInit {
   filteredConveyances: Conveyance[] = [];
   statistics: Statistics | null = null;
   selectedConveyance: Conveyance | null = null;
+
+  historyConveyances: Conveyance[] = [];
+  loadingHistory = false;
   
   // UI State
   loading = false;
@@ -93,6 +97,7 @@ export class AdminConveyanceComponent implements OnInit {
   ngOnInit(): void {
     this.loadStatistics();
     this.loadConveyances();
+    this.loadHistory();   
   }
 
   // =============================================
@@ -168,6 +173,25 @@ export class AdminConveyanceComponent implements OnInit {
           console.error('Error loading conveyances:', error);
           this.showError('Failed to load conveyances');
           this.loading = false;
+        }
+      });
+  }
+
+  // =============================================
+  // History (All Time, No Month Filter)
+  // =============================================
+  loadHistory(): void {
+    this.loadingHistory = true;
+    this.http.get<any>(`${this.apiUrl}/conveyance/admin/all`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (response) => {
+          this.historyConveyances = (response.data || [])
+            .sort((a: Conveyance, b: Conveyance) => b.month.localeCompare(a.month));
+          this.loadingHistory = false;
+        },
+        error: (error) => {
+          console.error('Error loading history:', error);
+          this.loadingHistory = false;
         }
       });
   }
@@ -312,6 +336,18 @@ export class AdminConveyanceComponent implements OnInit {
     this.showApproveModal = false;
     this.selectedConveyance = null;
     this.approveRemarks = '';
+  }
+
+  openApproveFromDetails(): void {
+    const conveyance = this.selectedConveyance;
+    this.closeDetailsModal();
+    if (conveyance) this.openApproveModal(conveyance);
+  }
+
+  openRejectFromDetails(): void {
+    const conveyance = this.selectedConveyance;
+    this.closeDetailsModal();
+    if (conveyance) this.openRejectModal(conveyance);
   }
 
   // =============================================

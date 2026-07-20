@@ -13,6 +13,33 @@
     </div>
   </div>
 
+  <!-- MY CONVEYANCE HISTORY -->
+<div class="history-section" *ngIf="historyConveyances.length > 0">
+  <div class="history-header">
+    <h3><i class="fas fa-history"></i> My Conveyance History</h3>
+  </div>
+  <div class="history-table-wrapper">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Distance</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of historyConveyances">
+          <td>{{ c.month | date:'MMM yyyy' }}</td>
+          <td>{{ c.totalDistance }} km</td>
+          <td class="amount">₹{{ c.totalAmount }}</td>
+          <td><span class="status-badge" [ngClass]="c.status">{{ c.status | uppercase }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
   <!-- Filters Section -->
   <div class="filters-section">
     <div class="filter-group">
@@ -151,14 +178,15 @@
           <div class="entries-table-wrapper">
             <table class="entries-table">
               <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>From → To</th>
-                  <th>Distance</th>
-                  <th>Mode</th>
-                  <th>Amount</th>
-                  <th>Purpose</th>
-                </tr>
+               <tr>
+  <th>Date</th>
+  <th>From → To</th>
+  <th>Distance</th>
+  <th>Mode</th>
+  <th>Rate</th>
+  <th>Amount</th>
+  <th>Purpose</th>
+</tr>
               </thead>
               <tbody>
                 <tr *ngFor="let entry of conveyance.entries">
@@ -171,9 +199,14 @@
                     </div>
                   </td>
                   <td>{{ entry.distance }} km</td>
-                  <td><span class="mode-badge">{{ entry.mode }}</span></td>
+                  <!-- <td><span class="mode-badge">{{ entry.mode }}</span></td>
                   <td class="amount">₹{{ entry.amount }}</td>
-                  <td class="purpose-cell">{{ entry.purpose }}</td>
+                  <td class="purpose-cell">{{ entry.purpose }}</td> -->
+
+                  <td><span class="mode-badge">{{ entry.mode }}</span></td>
+                  <td class="rate-cell">₹{{ entry.ratePerKm || 0 }}/km</td>
+                  <td class="amount">₹{{ entry.amount }}</td>
+
                 </tr>
               </tbody>
             </table>
@@ -249,6 +282,31 @@
         </div>
       </div>
 
+
+      <div class="rate-chart-box" *ngIf="rates">
+  <div class="rate-chart-header" (click)="showRateChart = !showRateChart">
+    <i class="fas fa-info-circle"></i>
+    <span>View Conveyance Rate Chart</span>
+    <i class="fas" [ngClass]="showRateChart ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+  </div>
+  <div class="rate-chart-table" *ngIf="showRateChart">
+    <table>
+      <thead>
+        <tr><th>Mode</th><th>Distance Slab</th><th>Rate/km</th></tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let mode of getRateModes()">
+          <tr *ngFor="let slab of rates[mode]; let first = first">
+            <td *ngIf="first" [attr.rowspan]="rates[mode].length"><strong>{{ formatModeName(mode) }}</strong></td>
+            <td>{{ slab.minKm }} - {{ slab.maxKm === null ? '∞' : slab.maxKm }} km</td>
+            <td>₹{{ slab.ratePerKm }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+
       <!-- Entries Section -->
       <div class="entries-form-section">
         <div class="section-header">
@@ -273,7 +331,8 @@
             </div>
             <div class="form-group">
               <label>Mode *</label>
-              <select [(ngModel)]="entry.mode" class="form-control" required>
+              <select [(ngModel)]="entry.mode" (ngModelChange)="onEntryChange(entry)" class="form-control" required>
+              <!-- <select [(ngModel)]="entry.mode" class="form-control" required> -->
                 <option value="">Select</option>
                 <option value="bike">Bike</option>
                 <option value="car">Car</option>
@@ -299,16 +358,19 @@
           </div>
 
           <div class="form-row">
-            <div class="form-group">
-              <label>Distance (km) *</label>
-              <input type="number" [(ngModel)]="entry.distance" class="form-control"
-                     min="0" step="0.1" placeholder="0" required>
-            </div>
-            <div class="form-group">
-              <label>Amount (₹) *</label>
-              <input type="number" [(ngModel)]="entry.amount" class="form-control"
-                     min="0" step="1" placeholder="0" required>
-            </div>
+           <div class="form-group">
+  <label>Distance (km) *</label>
+  <input type="number" [(ngModel)]="entry.distance" (ngModelChange)="onEntryChange(entry)"
+         class="form-control" min="0" step="0.1" placeholder="0" required>
+</div>
+<div class="form-group">
+  <label>Amount (Auto-Calculated)</label>
+  <div class="calc-amount-box">
+    <span class="calc-value">₹{{ entry.amount || 0 }}</span>
+    <!-- <span class="calc-rate" *ngIf="entry.ratePerKm">@ ₹{{ entry.ratePerKm }}/km</span> -->
+     <span class="calc-rate" *ngIf="entry.ratePerKm">&#64; ₹{{ entry.ratePerKm }}/km</span>
+  </div>
+</div>
           </div>
 
           <div class="form-row">

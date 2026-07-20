@@ -1491,3 +1491,183 @@ font-family: "Poppins", sans-serif;
 .wa-close-btn:hover {
   color: #fde97a;
 }
+
+
+/* motilal oswal   css qr code start*/
+
+/* ============== QR REGISTER SECTION ============== */
+.qr-register-section {
+  padding: 40px 20px;
+  background: #ffffff;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.qr-register-card {
+  max-width: 1160px;
+  margin: 0 auto;
+  background: linear-gradient(
+    135deg,
+    rgba(45, 85, 135, 0.95) 0%,
+    rgba(30, 60, 110, 0.95) 100%
+  );
+  border-radius: 20px;
+  padding: 48px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  position: relative;
+  overflow: hidden;
+  min-height: 340px;
+}
+
+/* ---- Left Info ---- */
+.qr-info {
+  flex: 1;
+  min-width: 300px;
+  z-index: 1;
+}
+
+.qr-badge {
+  display: inline-block;
+  background: rgba(255, 199, 0, 0.15);
+  color: #ffc700;
+  border: 1px solid rgba(255, 199, 0, 0.4);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.qr-title {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.qr-subtitle {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+  max-width: 460px;
+}
+
+.qr-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.qr-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.qr-points svg {
+  width: 18px;
+  height: 18px;
+  color: #ffc700;
+  flex-shrink: 0;
+}
+
+/* ---- Right QR Box ---- */
+.qr-box {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 1;
+}
+
+.qr-frame {
+  padding: 5px;
+  border-radius: 18px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+}
+
+.qr-scan-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 992px) {
+  .qr-register-card {
+    padding: 40px 40px;
+  }
+
+  .qr-frame {
+    width: 230px;
+    height: 230px;
+  }
+}
+
+@media (max-width: 768px) {
+  .qr-register-card {
+    flex-direction: column;
+    padding: 24px;
+    min-height: auto;
+  }
+
+  /* Text/points content hide on mobile */
+  .qr-info {
+    display: none;
+  }
+
+  .qr-box {
+    width: 100%;
+  }
+
+  .qr-frame {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    max-width: 420px;
+  }
+
+  .qr-scan-label {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-register-section {
+    padding: 20px 14px;
+  }
+
+  .qr-register-card {
+    padding: 5px;
+    border-radius: 16px;
+  }
+
+  .qr-frame {
+    max-width: 100%;
+  }
+}
+
+/* end css scna coed */

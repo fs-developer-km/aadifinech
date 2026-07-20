@@ -9,9 +9,20 @@ interface ConveyanceEntry {
   toLocation: string;
   distance: number;
   mode: string;
+  ratePerKm?: number;   // 👈 add
   amount: number;
   purpose: string;
   remarks?: string;
+}
+
+interface RateSlab {
+  minKm: number;
+  maxKm: number | null;
+  ratePerKm: number;
+}
+
+interface RatesConfig {
+  [mode: string]: RateSlab[];
 }
 
 interface Conveyance {
@@ -45,6 +56,7 @@ export class ConveyanceComponent implements OnInit {
   // API Configuration
   // private apiUrl = 'https://api.aadifintech.com/api'; // Change as per your backend
   private apiUrl = 'https://api.aadifintech.com/api'; // Change as per your backend
+  // private apiUrl = 'http://localhost:5000/api'; // Change as per your backend
   private token = localStorage.getItem('token') || '';
   
   // User Info
@@ -53,11 +65,17 @@ export class ConveyanceComponent implements OnInit {
   // Data
   conveyances: Conveyance[] = [];
   statistics: any = null;
+
+  rates: RatesConfig = {};
+  showRateChart = false;
   
   // UI State
   loading = false;
   saving = false;
   expandedCard: string | null = null;
+
+  historyConveyances: Conveyance[] = [];
+  loadingHistory = false;
   
   // Filters
   filters = {
@@ -91,6 +109,8 @@ export class ConveyanceComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadConveyances();
+     this.loadRates();
+       this.loadHistory();    
     if (this.userRole === 'admin') {
       this.loadStatistics();
     }
@@ -116,17 +136,79 @@ export class ConveyanceComponent implements OnInit {
     return `${year}-${month}`;
   }
 
-  getEmptyEntry(): ConveyanceEntry {
+getEmptyEntry(): ConveyanceEntry {
     return {
       date: new Date().toISOString().split('T')[0],
       fromLocation: '',
       toLocation: '',
       distance: 0,
       mode: '',
+      ratePerKm: 0,
       amount: 0,
       purpose: '',
       remarks: ''
     };
+  }
+
+  // =============================================
+  // Rate Calculation
+  // =============================================
+  loadRates(): void {
+    this.http.get<any>(`${this.apiUrl}/conveyance/rates`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.rates = response.data;
+          }
+        },
+        error: (error) => console.error('Error loading rates:', error)
+      });
+  }
+
+  getRateModes(): string[] {
+    return Object.keys(this.rates);
+  }
+
+  formatModeName(mode: string): string {
+    return mode.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  calculateAmount(mode: string, distance: number): { amount: number; ratePerKm: number } {
+    if (!mode || !distance || !this.rates[mode]) {
+      return { amount: 0, ratePerKm: 0 };
+    }
+    const slabs = this.rates[mode];
+    const slab = slabs.find(
+      s => distance > s.minKm && (s.maxKm === null || distance <= s.maxKm)
+    ) || slabs[slabs.length - 1];
+
+    const amount = Math.round(distance * slab.ratePerKm);
+    return { amount, ratePerKm: slab.ratePerKm };
+  }
+
+  onEntryChange(entry: ConveyanceEntry): void {
+    const result = this.calculateAmount(entry.mode, entry.distance);
+    entry.amount = result.amount;
+    entry.ratePerKm = result.ratePerKm;
+  }
+
+  // =============================================
+  // History (All Time, No Month Filter)
+  // =============================================
+  loadHistory(): void {
+    this.loadingHistory = true;
+    this.http.get<any>(`${this.apiUrl}/conveyance/my-conveyances`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (response) => {
+          this.historyConveyances = (response.data || [])
+            .sort((a: Conveyance, b: Conveyance) => b.month.localeCompare(a.month));
+          this.loadingHistory = false;
+        },
+        error: (error) => {
+          console.error('Error loading history:', error);
+          this.loadingHistory = false;
+        }
+      });
   }
 
   // =============================================
@@ -193,15 +275,18 @@ export class ConveyanceComponent implements OnInit {
   // =============================================
   saveConveyance(): void {
     // Validation
-    if (!this.conveyanceForm.month || this.conveyanceForm.entries.length === 0) {
+      if (!this.conveyanceForm.month || this.conveyanceForm.entries.length === 0) {
       this.showError('Please fill all required fields');
       return;
     }
 
+        this.conveyanceForm.entries.forEach((e: ConveyanceEntry) => this.onEntryChange(e));
+
+
     // Validate entries
-    for (let entry of this.conveyanceForm.entries) {
-      if (!entry.date || !entry.fromLocation || !entry.toLocation || 
-          !entry.distance || !entry.mode || !entry.amount || !entry.purpose) {
+   for (let entry of this.conveyanceForm.entries) {
+      if (!entry.date || !entry.fromLocation || !entry.toLocation ||
+          !entry.distance || !entry.mode || !entry.purpose) {
         this.showError('Please fill all entry fields');
         return;
       }
